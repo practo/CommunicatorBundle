@@ -1,0 +1,81 @@
+parameters:
+    practo_communicator.mail_patient.class: Practo\CommunicatorBundle\Clients\MailPatient
+    practo_communicator.mail_doctor.class: Practo\CommunicatorBundle\Clients\MailDoctor
+    practo_communicator.mail_staff.class: Practo\CommunicatorBundle\Clients\MailStaff
+    practo_communicator.sms_doctor.class: Practo\CommunicatorBundle\Clients\SmsDoctor
+    practo_communicator.sms_patient.class: Practo\CommunicatorBundle\Clients\SmsPatient
+    practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
+
+    communicator.send_mail_queue: mail_sender
+    communicator.update_mail_queue: mail_updater
+    #mails
+    communicator.mail_patient.host: 54.251.27.31
+    communicator.mail_patient.port: 2020
+    communicator.mail_doctor.host: 54.251.27.31
+    communicator.mail_doctor.port: 1010
+    communicator.mail_staff.host: 54.251.27.31
+    communicator.mail_staff.port: 3030
+    #sms
+    communicator.sms_patient.host: 54.251.27.31
+    communicator.sms_patient.port: 6060
+    communicator.sms_doctor.host: 54.251.27.31
+    communicator.sms_doctor.port: 5050
+    communicator.sms_staff.host: 54.251.27.31
+    communicator.sms_staff.port: 7070
+
+services:
+  practo_communicator.mail_patient:
+    class: %practo_communicator.mail_patient.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_patient.host%
+      - %communicator.mail_patient.port%
+      - RAY
+  practo_communicator.mail_doctor:
+    class: %practo_communicator.mail_doctor.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_doctor.host%
+      - %communicator.mail_doctor.port%
+      - RAY
+  practo_communicator.mail_staff:
+    class: %practo_communicator.mail_staff.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_staff.host%
+      - %communicator.mail_staff.port%
+      - RAY
+  practo_communicator.sms_patient:
+    class: %practo_communicator.sms_patient.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_staff.host%
+      - %communicator.mail_staff.port%
+      - RAY
+  practo_communicator.sms_doctor:
+    class: %practo_communicator.sms_doctor.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_staff.host%
+      - %communicator.mail_staff.port%
+      - RAY
+  practo_communicator.sms_staff:
+    class: %practo_communicator.sms_staff.class%
+    arguments:
+      - @leezy.pheanstalk
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_staff.host%
+      - %communicator.mail_staff.port%
+      - RAY
+

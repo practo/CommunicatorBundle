@@ -1,0 +1,218 @@
+<?php
+namespace Practo\CommunicatorBundle\Clients;
+
+use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Clients\Helper;
+use praccomm;
+
+/**
+ * Mail clinet for mailing patients
+ */
+class MailPatient
+{
+    private $_mailServer;
+    private $_mailPort;
+    private $_sendMailQueue;
+    private $_updateMailQueue;
+    private $_appName;
+
+    private $pheanstalk;
+
+    public function __construct($pheanstalk, $sendQueue,
+                                $updateQueue, $serviceHost,
+                                $servicePort, $appName)
+    {
+        $this->_mailServer = $serviceHost;
+        $this->_mailPort = $servicePort;
+        $this->_sendMailQueue = $sendQueue;
+        $this->_updateMailQueue = $updateQueue;
+        $this->_appName = Helper::getValidAppName($appName);
+        $this->pheanstalk = $pheanstalk;
+    }
+
+    public function sendMail($contactId, $practiceId, $fromName,
+                             $fromMail, $to_name = "", $to, $cc = "",
+                             $bcc = "", $subject, $body, $type,
+                             $fileId, $hash, $plaintext = "")
+    {
+        $job = new praccomm\PatientMail();
+        $job->patient_contact_id = $contactId;
+        $job->practice_id = $practiceId;
+        $job->from_name = $fromName;
+        $job->from_address = $fromMail;
+        $job->to_name = $to_name;
+        $job->to_address = $to;
+        if(is_string($cc) && !empty($cc))
+        {
+            $job->cc = array($cc);
+        }
+        else
+        {
+            $job->cc = $cc;
+        }
+        if(is_string($bcc) && !empty($bcc))
+        {
+            $job->bcc = array($bcc);
+        }
+        else
+        {
+            $job->bcc = $bcc;
+        }
+        $job->subject = $subject;
+        $job->body = $body;
+        $job->plaintext = $plaintext;
+        $job->app_name = $this->_appName;
+        $job->date = time();
+        $job->email_type = $this->getMailType($type);
+        $job->attachments = $fileId;
+        $job->hash = $hash;
+        $job->mail_type = 'patient';
+        $jsonified_job = json_encode($job);
+        $queueName = $this->_sendMailQueue;
+        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+    }
+
+    public function updateMail($hash, $status, $messageId,
+                               $open_time, $open_bounce_data,
+                               $unsubscribe_data, $spam_data)
+    {
+        $job = new praccomm\PatientMail();
+        $job->hash = $hash;
+        $job->delivery_status = Helper::getMailDeliveryStatus($status);
+        $job->email_provider = $emailProvider;
+        $job->message_id = $messageId;
+        $job->smtp_reply = $smtpReply;
+        $job->open_time = $open_time;
+        $job->open_bounce_data = $open_bounce_data;
+        $job->unsubscribe_data = $unsubscribe_data;
+        $job->spam_data = $spam_data;
+        $job->mail_type = 'patient';
+        $jsonified_job = json_encode($job);
+        $queueName = $this->_updateMailQueue;
+        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+    }
+
+    public function searchMailByPracticeId($pid, $sendDate)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->search_by_practice_id($pid, $sendDate);
+        $transport->close();
+        return $result;
+    }
+
+    public function searchMailByContactId($pid, $cid)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_mails_by_contact_id($pid, $cid);
+        $transport->close();
+        return $result;
+    }
+
+    public function getMailByDateRange($pid, $startDate, $endDate)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_mails_by_status($pid, $startDate, $endDate);
+        $transport->close();
+        return $result;
+    }
+
+    public function getMailByApplication($startDate, $endDate)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_mails_by_application($startDate, $endDate);
+        $transport->close();
+        return $result;
+    }
+
+    public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result =
+          $client->get_mails_by_app_for_pid($pid, $startDate, $endDate);
+        $transport->close();
+        return $result;
+    }
+
+    public function getMailByCidGroupedByApp($pid, $cid, $startDate, $endDate)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result =
+          $client->get_mails_by_app_for_cid($pid, $cid, $startDate, $endDate);
+        $transport->close();
+        return $result;
+    }
+
+    public function getMailById($mailId)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_mail_by_id($mailId);
+        $transport->close();
+        return $result;
+    }
+
+    private function getTransport()
+    {
+        $socket = new Thrift\Transport\TSocket($this->_mailServer,
+                                               $this->_mailPort);
+        $transport =
+          new Thrift\Transport\TBufferedTransport($socket, 1024, 1024);
+        return $transport;
+    }
+
+    private function getClient($transport)
+    {
+        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
+        $client = new praccomm\PatientMailServiceClient($protocol);
+        return $client;
+    }
+
+    private function getMailType($type)
+    {
+      switch($type)
+        {
+        case "ACCOUNT_INVITE":
+          return \praccomm\PatientEmailType::ACCOUNT_INVITE;
+        case "AMOUNT_DUE":
+          return \praccomm\PatientEmailType::AMOUNT_DUE;
+        case "BILL":
+          return \praccomm\PatientEmailType::BILL;
+        case "BIRTHDAY":
+          return \praccomm\PatientEmailType::BIRTHDAY;
+        case "CANCELLATION":
+          return \praccomm\PatientEmailType::CANCELLATION;
+        case "CONFIRMATION":
+          return \praccomm\PatientEmailType::CONFIRMATION;
+        case "FOLLOWUP":
+          return \praccomm\PatientEmailType::FOLLOWUP;
+        case "ONLINE_APPOINTMENT":
+          return \praccomm\PatientEmailType::ONLINE_APPOINTMENT;
+        case "PRESCRIPTION":
+          return \praccomm\PatientEmailType::PRESCRIPTION;
+        case "REMINDER":
+          return \praccomm\PatientEmailType::REMINDER;
+        case "RESCHEDULE":
+          return \praccomm\PatientEmailType::RESCHEDULE;
+        case "TREATMENT":
+          return \praccomm\PatientEmailType::TREATMENT;
+        case "TREATMENTPLAN":
+          return \praccomm\PatientEmailType::TREATMENTPLAN;
+        default:
+          throw new Exception("Invalid message type");
+        }
+    }
+}
+?>
