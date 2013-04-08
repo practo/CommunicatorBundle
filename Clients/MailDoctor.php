@@ -16,9 +16,9 @@ class MailDoctor
     private $_sendMailQueue;
     private $_updateMailQueue;
     private $_appName;
-    
+
     private $pheanstalk;
-    
+
     public function __construct($pheanstalk, $sendQueue,
                                 $updateQueue, $serviceHost,
                                 $servicePort, $appName)

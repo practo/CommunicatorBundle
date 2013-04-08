@@ -14,9 +14,9 @@ class SmsCredit
     private $_queuePort;
     private $_insertCreditQueue;
     private $_updateCreditQueue;
-    
+
     private $pheanstalk;
-    
+
     public function __construct($queueHost, $queuePort, $insertCreditQueue,
                                 $updateCreditQueue, $serviceHost, $servicePort)
     {

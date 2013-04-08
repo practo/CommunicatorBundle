@@ -16,9 +16,9 @@ class MailStaff
     private $_sendMailQueue;
     private $_updateMailQueue;
     private $_appName;
-    
+
     private $_pheanstalk;
-    
+
     public function __construct($pheanstalk, $sendQueue,
                                 $updateQueue, $serviceHost,
                                 $servicePort, $appName)
