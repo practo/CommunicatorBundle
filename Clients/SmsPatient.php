@@ -1,9 +1,12 @@
 <?php
+
 namespace Practo\CommunicatorBundle\Clients;
 
 use Pheanstalk\Pheanstalk;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
+require_once __DIR__.'/genphp/praccomm/PatientSMSService.php';
 
 /**
  * Mail clinet for mailing doctors
@@ -85,12 +88,32 @@ class SmsPatient
         return $result;
     }
 
-    public function searchSmsByContactId($pid, $cid)
+    public function searchSmsByContactId($pid, $cid,
+                                         $start = NULL, $end = NULL)
     {
+        if(is_null($start) and !is_int($start))
+        {
+            $start_ts = mktime(0, 0, 0, 1, 2, 1970);
+        }
+        else
+        {
+            $start_ts = $start;
+        }
+
+        if(is_null($end) and !is_int($end))
+        {
+            $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+        }
+        else
+        {
+            $end_ts = $end;
+        }
+
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_messages_by_contact_id($pid, $cid);
+        $result = $client->get_messages_by_contact_id($pid, $cid,
+                                                      $start_ts, $end_ts);
         $transport->close();
         return $result;
     }

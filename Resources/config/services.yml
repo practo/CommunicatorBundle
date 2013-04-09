@@ -8,6 +8,13 @@ parameters:
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
+    communicator.error_mail_queue: mail_sender_error
+    communicator.update_error_mail_queue: mail_update_error
+    communicator.send_sms_queue: sms_sender
+    communicator.update_sms_queue: sms_updater
+    communicator.error_sms_queue: sms_sender_error
+    communicator.update_error_sms_queue: sms_updater_error
+
     #mails
     communicator.mail_patient.host: 54.251.27.31
     communicator.mail_patient.port: 2020
@@ -55,27 +62,26 @@ services:
     class: %practo_communicator.sms_patient.class%
     arguments:
       - @leezy.pheanstalk
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
-      - %communicator.mail_staff.host%
-      - %communicator.mail_staff.port%
+      - %communicator.send_sms_queue%
+      - %communicator.update_sms_queue%
+      - %communicator.sms_patient.host%
+      - %communicator.sms_patient.port%
       - RAY
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
       - @leezy.pheanstalk
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
-      - %communicator.mail_staff.host%
-      - %communicator.mail_staff.port%
+      - %communicator.send_sms_queue%
+      - %communicator.update_sms_queue%
+      - %communicator.sms_doctor.host%
+      - %communicator.sms_doctor.port%
       - RAY
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:
       - @leezy.pheanstalk
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - %communicator.send_sms_queue%
+      - %communicator.update_sms_queue%
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
-

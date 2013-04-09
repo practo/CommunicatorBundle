@@ -20,7 +20,7 @@ interface PatientMailServiceIf {
   public function search_by_practice_id($pid, $send_date);
   public function get_mails_by_status($pid, $start_date, $end_date);
   public function get_mail_by_id($patient_mail_id);
-  public function get_mails_by_contact_id($pid, $cid);
+  public function get_mails_by_contact_id($pid, $cid, $start_date, $end_date);
   public function get_mails_by_application($start_date, $end_date);
   public function get_mails_by_app_for_pid($pid, $start_date, $end_date);
   public function get_mails_by_app_for_cid($pid, $cid, $start_date, $end_date);
@@ -245,17 +245,19 @@ class PatientMailServiceClient implements \praccomm\PatientMailServiceIf {
     throw new \Exception("get_mail_by_id failed: unknown result");
   }
 
-  public function get_mails_by_contact_id($pid, $cid)
+  public function get_mails_by_contact_id($pid, $cid, $start_date, $end_date)
   {
-    $this->send_get_mails_by_contact_id($pid, $cid);
+    $this->send_get_mails_by_contact_id($pid, $cid, $start_date, $end_date);
     return $this->recv_get_mails_by_contact_id();
   }
 
-  public function send_get_mails_by_contact_id($pid, $cid)
+  public function send_get_mails_by_contact_id($pid, $cid, $start_date, $end_date)
   {
     $args = new \praccomm\PatientMailService_get_mails_by_contact_id_args();
     $args->pid = $pid;
     $args->cid = $cid;
+    $args->start_date = $start_date;
+    $args->end_date = $end_date;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -1157,6 +1159,8 @@ class PatientMailService_get_mails_by_contact_id_args {
 
   public $pid = null;
   public $cid = null;
+  public $start_date = null;
+  public $end_date = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1169,6 +1173,14 @@ class PatientMailService_get_mails_by_contact_id_args {
           'var' => 'cid',
           'type' => TType::STRING,
           ),
+        3 => array(
+          'var' => 'start_date',
+          'type' => TType::I64,
+          ),
+        4 => array(
+          'var' => 'end_date',
+          'type' => TType::I64,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -1177,6 +1189,12 @@ class PatientMailService_get_mails_by_contact_id_args {
       }
       if (isset($vals['cid'])) {
         $this->cid = $vals['cid'];
+      }
+      if (isset($vals['start_date'])) {
+        $this->start_date = $vals['start_date'];
+      }
+      if (isset($vals['end_date'])) {
+        $this->end_date = $vals['end_date'];
       }
     }
   }
@@ -1214,6 +1232,20 @@ class PatientMailService_get_mails_by_contact_id_args {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 3:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->start_date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->end_date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1235,6 +1267,16 @@ class PatientMailService_get_mails_by_contact_id_args {
     if ($this->cid !== null) {
       $xfer += $output->writeFieldBegin('cid', TType::STRING, 2);
       $xfer += $output->writeString($this->cid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->start_date !== null) {
+      $xfer += $output->writeFieldBegin('start_date', TType::I64, 3);
+      $xfer += $output->writeI64($this->start_date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->end_date !== null) {
+      $xfer += $output->writeFieldBegin('end_date', TType::I64, 4);
+      $xfer += $output->writeI64($this->end_date);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

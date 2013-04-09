@@ -4,6 +4,8 @@ namespace Practo\CommunicatorBundle\Clients;
 use Pheanstalk\Pheanstalk;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
+require_once __DIR__.'/genphp/praccomm/PatientMailService.php';
 
 /**
  * Mail clinet for mailing patients
@@ -102,12 +104,31 @@ class MailPatient
         return $result;
     }
 
-    public function searchMailByContactId($pid, $cid)
+    public function searchMailByContactId($pid, $cid,
+                                          $start = NULL, $end = NULL)
     {
+        if(is_null($start) and !is_int($start))
+        {
+            $start_ts = mktime(0, 0, 0, 1, 2, 1970);
+        }
+        else
+        {
+            $start_ts = $start;
+        }
+
+        if(is_null($end) and !is_int($end))
+        {
+            $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+        }
+        else
+        {
+            $end_ts = $end;
+        }
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_mails_by_contact_id($pid, $cid);
+        $result = $client->get_mails_by_contact_id($pid, $cid,
+                                                   $start_ts, $end_ts);
         $transport->close();
         return $result;
     }
@@ -185,33 +206,41 @@ class MailPatient
       switch($type)
         {
         case "ACCOUNT_INVITE":
-          return \praccomm\PatientEmailType::ACCOUNT_INVITE;
+            return \praccomm\PatientEmailType::ACCOUNT_INVITE;
         case "AMOUNT_DUE":
-          return \praccomm\PatientEmailType::AMOUNT_DUE;
+            return \praccomm\PatientEmailType::AMOUNT_DUE;
         case "BILL":
-          return \praccomm\PatientEmailType::BILL;
+            return \praccomm\PatientEmailType::BILL;
         case "BIRTHDAY":
-          return \praccomm\PatientEmailType::BIRTHDAY;
+            return \praccomm\PatientEmailType::BIRTHDAY;
         case "CANCELLATION":
-          return \praccomm\PatientEmailType::CANCELLATION;
+            return \praccomm\PatientEmailType::CANCELLATION;
         case "CONFIRMATION":
-          return \praccomm\PatientEmailType::CONFIRMATION;
+            return \praccomm\PatientEmailType::CONFIRMATION;
         case "FOLLOWUP":
-          return \praccomm\PatientEmailType::FOLLOWUP;
+            return \praccomm\PatientEmailType::FOLLOWUP;
         case "ONLINE_APPOINTMENT":
-          return \praccomm\PatientEmailType::ONLINE_APPOINTMENT;
+            return \praccomm\PatientEmailType::ONLINE_APPOINTMENT;
         case "PRESCRIPTION":
-          return \praccomm\PatientEmailType::PRESCRIPTION;
+            return \praccomm\PatientEmailType::PRESCRIPTION;
         case "REMINDER":
-          return \praccomm\PatientEmailType::REMINDER;
+            return \praccomm\PatientEmailType::REMINDER;
         case "RESCHEDULE":
-          return \praccomm\PatientEmailType::RESCHEDULE;
+            return \praccomm\PatientEmailType::RESCHEDULE;
         case "TREATMENT":
-          return \praccomm\PatientEmailType::TREATMENT;
+            return \praccomm\PatientEmailType::TREATMENT;
         case "TREATMENTPLAN":
-          return \praccomm\PatientEmailType::TREATMENTPLAN;
+            return \praccomm\PatientEmailType::TREATMENTPLAN;
+        case "INVOICE":
+            return \praccomm\PatientEmailType::INVOICE;
+        case "PAYMENT":
+            return \praccomm\PatientEmailType::PAYMENT;
+        case "TIMELINE":
+            return \praccomm\PatientEmailType::TIMELINE;
+        case "FILE":
+            return \praccomm\PatientEmailType::FILE;
         default:
-          throw new Exception("Invalid message type");
+            throw new Exception("Invalid message type");
         }
     }
 }

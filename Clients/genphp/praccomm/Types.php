@@ -64,6 +64,10 @@ final class PatientEmailType {
   const RESCHEDULE = 10;
   const TREATMENT = 11;
   const TREATMENTPLAN = 12;
+  const INVOICE = 13;
+  const PAYMENT = 14;
+  const TIMELINE = 15;
+  const FILE = 16;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -78,6 +82,10 @@ final class PatientEmailType {
     10 => 'RESCHEDULE',
     11 => 'TREATMENT',
     12 => 'TREATMENTPLAN',
+    13 => 'INVOICE',
+    14 => 'PAYMENT',
+    15 => 'TIMELINE',
+    16 => 'FILE',
   );
 }
 
