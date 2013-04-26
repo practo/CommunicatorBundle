@@ -42,6 +42,8 @@ class SmsPatient
         $job->patient_contact_id = $contactId;
         $job->name = $name;
         $job->mobile = $to;
+        $job->secondary_mobile = $secondaryMobile;
+        $job->expiry_time = $expiryTime;
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
         $job->app_name = $this->_appName;

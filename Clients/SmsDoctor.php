@@ -40,6 +40,8 @@ class SmsDoctor
         $job->doctor_profile_id = $doctorProfileId;
         $job->name = $name;
         $job->mobile = $to;
+        $job->secondary_mobile = $secondaryMobile;
+        $job->expiry_time = $expiryTime;
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
         $job->app_name = $this->_appName;
@@ -76,12 +78,12 @@ class SmsDoctor
         $this->pheanstalk->useTube($queueName)->put($jsonifiedJob);
     }
 
-    public function searchSmsByPracticeId($pid, $sendDate)
+    public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->search_by_practice_id($pid, $sendDate);
+        $result = $client->search_by_practice_id($pid, $sendDate, $smsTypes);
         $transport->close();
         return $result;
     }

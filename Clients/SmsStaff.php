@@ -38,6 +38,8 @@ class SmsStaff
         $job->practice_id = $practice_id;
         $job->name = $name;
         $job->mobile = $to;
+        $job->secondary_mobile = $secondaryMobile;
+        $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->message_type = $this->getSMSType($type);
         $job->app_name = $this->_appName;
@@ -74,7 +76,7 @@ class SmsStaff
         $this->pheanstalk->useTube($queueName)->put($jsonifiedJob);
     }
 
-    public function searchSmsByPracticeId($pid, $sendDate)
+    public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
