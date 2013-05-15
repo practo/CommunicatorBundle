@@ -35,7 +35,7 @@ class MailPatient
     public function sendMail($contactId, $practiceId, $fromName,
                              $fromMail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo)
+                             $files, $hash, $plaintext = "", $replyTo = null)
     {
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
@@ -84,6 +84,7 @@ class MailPatient
         $jsonified_job = json_encode($job);
         $queueName = $this->_sendMailQueue;
         $id = $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        var_dump($id);
     }
 
     public function updateMail($hash, $status, $messageId,

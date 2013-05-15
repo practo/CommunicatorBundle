@@ -34,7 +34,7 @@ class MailDoctor
     public function sendMail($practice_id, $doctorProfileId, $from_name,
                              $from_mail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo)
+                             $hash, $plaintext = "", $replyTo=null)
     {
         $job = new praccomm\DoctorMail();
         $job->practice_id = $practice_id;
