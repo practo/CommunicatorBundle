@@ -33,8 +33,8 @@ class MailDoctor
 
     public function sendMail($practice_id, $doctorProfileId, $from_name,
                              $from_mail, $to_name = "", $to, $cc = "",
-                             $bcc = "", $subject, $body, $type, $file_id,
-                             $hash, $plaintext = "")
+                             $bcc = "", $subject, $body, $type, $files,
+                             $hash, $plaintext = "", $replyTo)
     {
         $job = new praccomm\DoctorMail();
         $job->practice_id = $practice_id;
@@ -65,7 +65,19 @@ class MailDoctor
         $job->app_name = $this->_appName;
         $job->date = time();
         $job->email_type = $this->getMailType($type);
-        $job->attachments = $file_id;
+        $job->reply_to = $replyTo;
+
+        $i = 0;
+        $attachments = array();
+        foreach ($files as $fname=>$loc) {
+            $att = new praccomm\Attachment();
+            $att->name = $fname;
+            $att->location = $loc;
+            $attachments[$i] = $att;
+            $i = $i + 1;
+        }
+
+        $job->attachments = $attachments;
         $job->hash = $hash;
         $job->mail_type = 'doctor';
         $jsonified_job = json_encode($job);

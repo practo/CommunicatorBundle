@@ -17,13 +17,13 @@ use Thrift\Exception\TApplicationException;
 
 interface DoctorSMSServiceIf {
   public function update($sms_id, \praccomm\DoctorSMS $doctor_sms);
-  public function search_by_practice_id($pid, $send_date);
+  public function search_by_practice_id($pid, $send_date, $sms_types);
   public function get_messages_in_date_range($pid, $start_date, $end_date);
   public function get_messages_by_delivery_status($pid, $start_date, $end_date, $sms_types, $status);
   public function get_messages_by_failure_reason($pid, $start_date, $end_date, $sms_types);
   public function get_messages_by_application($start_date, $end_date);
   public function get_messages_by_app_for_pid($pid, $start_date, $end_date);
-  public function send(\praccomm\DoctorSMS $doctor_sms, $reduce_credit);
+  public function send(\praccomm\DoctorSMS $doctor_sms);
 }
 
 class DoctorSMSServiceClient implements \praccomm\DoctorSMSServiceIf {
@@ -89,17 +89,18 @@ class DoctorSMSServiceClient implements \praccomm\DoctorSMSServiceIf {
     throw new \Exception("update failed: unknown result");
   }
 
-  public function search_by_practice_id($pid, $send_date)
+  public function search_by_practice_id($pid, $send_date, $sms_types)
   {
-    $this->send_search_by_practice_id($pid, $send_date);
+    $this->send_search_by_practice_id($pid, $send_date, $sms_types);
     return $this->recv_search_by_practice_id();
   }
 
-  public function send_search_by_practice_id($pid, $send_date)
+  public function send_search_by_practice_id($pid, $send_date, $sms_types)
   {
     $args = new \praccomm\DoctorSMSService_search_by_practice_id_args();
     $args->pid = $pid;
     $args->send_date = $send_date;
+    $args->sms_types = $sms_types;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -408,17 +409,16 @@ class DoctorSMSServiceClient implements \praccomm\DoctorSMSServiceIf {
     throw new \Exception("get_messages_by_app_for_pid failed: unknown result");
   }
 
-  public function send(\praccomm\DoctorSMS $doctor_sms, $reduce_credit)
+  public function send(\praccomm\DoctorSMS $doctor_sms)
   {
-    $this->send_send($doctor_sms, $reduce_credit);
+    $this->send_send($doctor_sms);
     return $this->recv_send();
   }
 
-  public function send_send(\praccomm\DoctorSMS $doctor_sms, $reduce_credit)
+  public function send_send(\praccomm\DoctorSMS $doctor_sms)
   {
     $args = new \praccomm\DoctorSMSService_send_args();
     $args->doctor_sms = $doctor_sms;
-    $args->reduce_credit = $reduce_credit;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -638,17 +638,26 @@ class DoctorSMSService_search_by_practice_id_args {
 
   public $pid = null;
   public $send_date = null;
+  public $sms_types = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'send_date',
           'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'sms_types',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
           ),
         );
     }
@@ -658,6 +667,9 @@ class DoctorSMSService_search_by_practice_id_args {
       }
       if (isset($vals['send_date'])) {
         $this->send_date = $vals['send_date'];
+      }
+      if (isset($vals['sms_types'])) {
+        $this->sms_types = $vals['sms_types'];
       }
     }
   }
@@ -682,8 +694,8 @@ class DoctorSMSService_search_by_practice_id_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -691,6 +703,23 @@ class DoctorSMSService_search_by_practice_id_args {
         case 2:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->send_date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::LST) {
+            $this->sms_types = array();
+            $_size161 = 0;
+            $_etype164 = 0;
+            $xfer += $input->readListBegin($_etype164, $_size161);
+            for ($_i165 = 0; $_i165 < $_size161; ++$_i165)
+            {
+              $elem166 = null;
+              $xfer += $input->readString($elem166);
+              $this->sms_types []= $elem166;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -709,13 +738,30 @@ class DoctorSMSService_search_by_practice_id_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('DoctorSMSService_search_by_practice_id_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->send_date !== null) {
       $xfer += $output->writeFieldBegin('send_date', TType::STRING, 2);
       $xfer += $output->writeString($this->send_date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->sms_types !== null) {
+      if (!is_array($this->sms_types)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('sms_types', TType::LST, 3);
+      {
+        $output->writeListBegin(TType::STRING, count($this->sms_types));
+        {
+          foreach ($this->sms_types as $iter167)
+          {
+            $xfer += $output->writeString($iter167);
+          }
+        }
+        $output->writeListEnd();
+      }
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -809,7 +855,7 @@ class DoctorSMSService_get_messages_in_date_range_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -854,8 +900,8 @@ class DoctorSMSService_get_messages_in_date_range_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -888,8 +934,8 @@ class DoctorSMSService_get_messages_in_date_range_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('DoctorSMSService_get_messages_in_date_range_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -995,7 +1041,7 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1062,8 +1108,8 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1085,14 +1131,14 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size140 = 0;
-            $_etype143 = 0;
-            $xfer += $input->readListBegin($_etype143, $_size140);
-            for ($_i144 = 0; $_i144 < $_size140; ++$_i144)
+            $_size168 = 0;
+            $_etype171 = 0;
+            $xfer += $input->readListBegin($_etype171, $_size168);
+            for ($_i172 = 0; $_i172 < $_size168; ++$_i172)
             {
-              $elem145 = null;
-              $xfer += $input->readString($elem145);
-              $this->sms_types []= $elem145;
+              $elem173 = null;
+              $xfer += $input->readString($elem173);
+              $this->sms_types []= $elem173;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1102,14 +1148,14 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
         case 5:
           if ($ftype == TType::LST) {
             $this->status = array();
-            $_size146 = 0;
-            $_etype149 = 0;
-            $xfer += $input->readListBegin($_etype149, $_size146);
-            for ($_i150 = 0; $_i150 < $_size146; ++$_i150)
+            $_size174 = 0;
+            $_etype177 = 0;
+            $xfer += $input->readListBegin($_etype177, $_size174);
+            for ($_i178 = 0; $_i178 < $_size174; ++$_i178)
             {
-              $elem151 = null;
-              $xfer += $input->readString($elem151);
-              $this->status []= $elem151;
+              $elem179 = null;
+              $xfer += $input->readString($elem179);
+              $this->status []= $elem179;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1130,8 +1176,8 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('DoctorSMSService_get_messages_by_delivery_status_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1152,9 +1198,9 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter152)
+          foreach ($this->sms_types as $iter180)
           {
-            $xfer += $output->writeString($iter152);
+            $xfer += $output->writeString($iter180);
           }
         }
         $output->writeListEnd();
@@ -1169,9 +1215,9 @@ class DoctorSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->status));
         {
-          foreach ($this->status as $iter153)
+          foreach ($this->status as $iter181)
           {
-            $xfer += $output->writeString($iter153);
+            $xfer += $output->writeString($iter181);
           }
         }
         $output->writeListEnd();
@@ -1270,7 +1316,7 @@ class DoctorSMSService_get_messages_by_failure_reason_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1326,8 +1372,8 @@ class DoctorSMSService_get_messages_by_failure_reason_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1349,14 +1395,14 @@ class DoctorSMSService_get_messages_by_failure_reason_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size154 = 0;
-            $_etype157 = 0;
-            $xfer += $input->readListBegin($_etype157, $_size154);
-            for ($_i158 = 0; $_i158 < $_size154; ++$_i158)
+            $_size182 = 0;
+            $_etype185 = 0;
+            $xfer += $input->readListBegin($_etype185, $_size182);
+            for ($_i186 = 0; $_i186 < $_size182; ++$_i186)
             {
-              $elem159 = null;
-              $xfer += $input->readString($elem159);
-              $this->sms_types []= $elem159;
+              $elem187 = null;
+              $xfer += $input->readString($elem187);
+              $this->sms_types []= $elem187;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1377,8 +1423,8 @@ class DoctorSMSService_get_messages_by_failure_reason_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('DoctorSMSService_get_messages_by_failure_reason_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1399,9 +1445,9 @@ class DoctorSMSService_get_messages_by_failure_reason_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter160)
+          foreach ($this->sms_types as $iter188)
           {
-            $xfer += $output->writeString($iter160);
+            $xfer += $output->writeString($iter188);
           }
         }
         $output->writeListEnd();
@@ -1663,7 +1709,7 @@ class DoctorSMSService_get_messages_by_app_for_pid_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1708,8 +1754,8 @@ class DoctorSMSService_get_messages_by_app_for_pid_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1742,8 +1788,8 @@ class DoctorSMSService_get_messages_by_app_for_pid_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('DoctorSMSService_get_messages_by_app_for_pid_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1839,7 +1885,6 @@ class DoctorSMSService_send_args {
   static $_TSPEC;
 
   public $doctor_sms = null;
-  public $reduce_credit = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1849,18 +1894,11 @@ class DoctorSMSService_send_args {
           'type' => TType::STRUCT,
           'class' => '\praccomm\DoctorSMS',
           ),
-        2 => array(
-          'var' => 'reduce_credit',
-          'type' => TType::BOOL,
-          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['doctor_sms'])) {
         $this->doctor_sms = $vals['doctor_sms'];
-      }
-      if (isset($vals['reduce_credit'])) {
-        $this->reduce_credit = $vals['reduce_credit'];
       }
     }
   }
@@ -1892,13 +1930,6 @@ class DoctorSMSService_send_args {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
-          if ($ftype == TType::BOOL) {
-            $xfer += $input->readBool($this->reduce_credit);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1918,11 +1949,6 @@ class DoctorSMSService_send_args {
       }
       $xfer += $output->writeFieldBegin('doctor_sms', TType::STRUCT, 1);
       $xfer += $this->doctor_sms->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->reduce_credit !== null) {
-      $xfer += $output->writeFieldBegin('reduce_credit', TType::BOOL, 2);
-      $xfer += $output->writeBool($this->reduce_credit);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

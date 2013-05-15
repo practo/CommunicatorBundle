@@ -222,6 +222,109 @@ final class StaffSMSType {
   );
 }
 
+final class Currency {
+  const INR = 1;
+  const USD = 2;
+  const SGD = 3;
+  static public $__names = array(
+    1 => 'INR',
+    2 => 'USD',
+    3 => 'SGD',
+  );
+}
+
+class Attachment {
+  static $_TSPEC;
+
+  public $name = null;
+  public $location = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'name',
+          'type' => TType::STRING,
+          ),
+        2 => array(
+          'var' => 'location',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['location'])) {
+        $this->location = $vals['location'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'Attachment';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->location);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('Attachment');
+    if ($this->name !== null) {
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 1);
+      $xfer += $output->writeString($this->name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->location !== null) {
+      $xfer += $output->writeFieldBegin('location', TType::STRING, 2);
+      $xfer += $output->writeString($this->location);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 class DoctorMail {
   static $_TSPEC;
 
@@ -256,6 +359,7 @@ class DoctorMail {
   public $mail_type = null;
   public $attempt = null;
   public $doctor_profile_id = null;
+  public $reply_to = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -314,7 +418,12 @@ class DoctorMail {
           ),
         12 => array(
           'var' => 'attachments',
-          'type' => TType::STRING,
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
           ),
         13 => array(
           'var' => 'created_by',
@@ -391,6 +500,10 @@ class DoctorMail {
         31 => array(
           'var' => 'doctor_profile_id',
           'type' => TType::I64,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
           ),
         );
     }
@@ -487,6 +600,9 @@ class DoctorMail {
       }
       if (isset($vals['doctor_profile_id'])) {
         $this->doctor_profile_id = $vals['doctor_profile_id'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
       }
     }
   }
@@ -608,8 +724,19 @@ class DoctorMail {
           }
           break;
         case 12:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->attachments);
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size12 = 0;
+            $_etype15 = 0;
+            $xfer += $input->readListBegin($_etype15, $_size12);
+            for ($_i16 = 0; $_i16 < $_size12; ++$_i16)
+            {
+              $elem17 = null;
+              $elem17 = new \praccomm\Attachment();
+              $xfer += $elem17->read($input);
+              $this->attachments []= $elem17;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -747,6 +874,13 @@ class DoctorMail {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -793,9 +927,9 @@ class DoctorMail {
       {
         $output->writeListBegin(TType::STRING, count($this->cc));
         {
-          foreach ($this->cc as $iter12)
+          foreach ($this->cc as $iter18)
           {
-            $xfer += $output->writeString($iter12);
+            $xfer += $output->writeString($iter18);
           }
         }
         $output->writeListEnd();
@@ -810,9 +944,9 @@ class DoctorMail {
       {
         $output->writeListBegin(TType::STRING, count($this->bcc));
         {
-          foreach ($this->bcc as $iter13)
+          foreach ($this->bcc as $iter19)
           {
-            $xfer += $output->writeString($iter13);
+            $xfer += $output->writeString($iter19);
           }
         }
         $output->writeListEnd();
@@ -840,8 +974,20 @@ class DoctorMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
-      $xfer += $output->writeFieldBegin('attachments', TType::STRING, 12);
-      $xfer += $output->writeString($this->attachments);
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 12);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter20)
+          {
+            $xfer += $iter20->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
       $xfer += $output->writeFieldEnd();
     }
     if ($this->created_by !== null) {
@@ -939,6 +1085,11 @@ class DoctorMail {
       $xfer += $output->writeI64($this->doctor_profile_id);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -994,15 +1145,15 @@ class DoctorEmails {
         case 1:
           if ($ftype == TType::LST) {
             $this->mails = array();
-            $_size14 = 0;
-            $_etype17 = 0;
-            $xfer += $input->readListBegin($_etype17, $_size14);
-            for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
+            $_size21 = 0;
+            $_etype24 = 0;
+            $xfer += $input->readListBegin($_etype24, $_size21);
+            for ($_i25 = 0; $_i25 < $_size21; ++$_i25)
             {
-              $elem19 = null;
-              $elem19 = new \praccomm\DoctorMail();
-              $xfer += $elem19->read($input);
-              $this->mails []= $elem19;
+              $elem26 = null;
+              $elem26 = new \praccomm\DoctorMail();
+              $xfer += $elem26->read($input);
+              $this->mails []= $elem26;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1030,9 +1181,9 @@ class DoctorEmails {
       {
         $output->writeListBegin(TType::STRUCT, count($this->mails));
         {
-          foreach ($this->mails as $iter20)
+          foreach ($this->mails as $iter27)
           {
-            $xfer += $iter20->write($output);
+            $xfer += $iter27->write($output);
           }
         }
         $output->writeListEnd();
@@ -1080,6 +1231,7 @@ class PatientMail {
   public $to_name = null;
   public $mail_type = null;
   public $attempt = null;
+  public $reply_to = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1138,7 +1290,12 @@ class PatientMail {
           ),
         12 => array(
           'var' => 'attachments',
-          'type' => TType::STRING,
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
           ),
         13 => array(
           'var' => 'created_by',
@@ -1215,6 +1372,10 @@ class PatientMail {
         31 => array(
           'var' => 'attempt',
           'type' => TType::I32,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
           ),
         );
     }
@@ -1312,6 +1473,9 @@ class PatientMail {
       if (isset($vals['attempt'])) {
         $this->attempt = $vals['attempt'];
       }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
     }
   }
 
@@ -1372,14 +1536,14 @@ class PatientMail {
         case 6:
           if ($ftype == TType::LST) {
             $this->cc = array();
-            $_size21 = 0;
-            $_etype24 = 0;
-            $xfer += $input->readListBegin($_etype24, $_size21);
-            for ($_i25 = 0; $_i25 < $_size21; ++$_i25)
+            $_size28 = 0;
+            $_etype31 = 0;
+            $xfer += $input->readListBegin($_etype31, $_size28);
+            for ($_i32 = 0; $_i32 < $_size28; ++$_i32)
             {
-              $elem26 = null;
-              $xfer += $input->readString($elem26);
-              $this->cc []= $elem26;
+              $elem33 = null;
+              $xfer += $input->readString($elem33);
+              $this->cc []= $elem33;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1389,14 +1553,14 @@ class PatientMail {
         case 7:
           if ($ftype == TType::LST) {
             $this->bcc = array();
-            $_size27 = 0;
-            $_etype30 = 0;
-            $xfer += $input->readListBegin($_etype30, $_size27);
-            for ($_i31 = 0; $_i31 < $_size27; ++$_i31)
+            $_size34 = 0;
+            $_etype37 = 0;
+            $xfer += $input->readListBegin($_etype37, $_size34);
+            for ($_i38 = 0; $_i38 < $_size34; ++$_i38)
             {
-              $elem32 = null;
-              $xfer += $input->readString($elem32);
-              $this->bcc []= $elem32;
+              $elem39 = null;
+              $xfer += $input->readString($elem39);
+              $this->bcc []= $elem39;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1432,8 +1596,19 @@ class PatientMail {
           }
           break;
         case 12:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->attachments);
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size40 = 0;
+            $_etype43 = 0;
+            $xfer += $input->readListBegin($_etype43, $_size40);
+            for ($_i44 = 0; $_i44 < $_size40; ++$_i44)
+            {
+              $elem45 = null;
+              $elem45 = new \praccomm\Attachment();
+              $xfer += $elem45->read($input);
+              $this->attachments []= $elem45;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1571,6 +1746,13 @@ class PatientMail {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1617,9 +1799,9 @@ class PatientMail {
       {
         $output->writeListBegin(TType::STRING, count($this->cc));
         {
-          foreach ($this->cc as $iter33)
+          foreach ($this->cc as $iter46)
           {
-            $xfer += $output->writeString($iter33);
+            $xfer += $output->writeString($iter46);
           }
         }
         $output->writeListEnd();
@@ -1634,9 +1816,9 @@ class PatientMail {
       {
         $output->writeListBegin(TType::STRING, count($this->bcc));
         {
-          foreach ($this->bcc as $iter34)
+          foreach ($this->bcc as $iter47)
           {
-            $xfer += $output->writeString($iter34);
+            $xfer += $output->writeString($iter47);
           }
         }
         $output->writeListEnd();
@@ -1664,8 +1846,20 @@ class PatientMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
-      $xfer += $output->writeFieldBegin('attachments', TType::STRING, 12);
-      $xfer += $output->writeString($this->attachments);
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 12);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter48)
+          {
+            $xfer += $iter48->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
       $xfer += $output->writeFieldEnd();
     }
     if ($this->created_by !== null) {
@@ -1763,6 +1957,11 @@ class PatientMail {
       $xfer += $output->writeI32($this->attempt);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -1818,15 +2017,15 @@ class PatientEmails {
         case 1:
           if ($ftype == TType::LST) {
             $this->mails = array();
-            $_size35 = 0;
-            $_etype38 = 0;
-            $xfer += $input->readListBegin($_etype38, $_size35);
-            for ($_i39 = 0; $_i39 < $_size35; ++$_i39)
+            $_size49 = 0;
+            $_etype52 = 0;
+            $xfer += $input->readListBegin($_etype52, $_size49);
+            for ($_i53 = 0; $_i53 < $_size49; ++$_i53)
             {
-              $elem40 = null;
-              $elem40 = new \praccomm\PatientMail();
-              $xfer += $elem40->read($input);
-              $this->mails []= $elem40;
+              $elem54 = null;
+              $elem54 = new \praccomm\PatientMail();
+              $xfer += $elem54->read($input);
+              $this->mails []= $elem54;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1854,9 +2053,9 @@ class PatientEmails {
       {
         $output->writeListBegin(TType::STRUCT, count($this->mails));
         {
-          foreach ($this->mails as $iter41)
+          foreach ($this->mails as $iter55)
           {
-            $xfer += $iter41->write($output);
+            $xfer += $iter55->write($output);
           }
         }
         $output->writeListEnd();
@@ -1904,6 +2103,7 @@ class StaffMail {
   public $mail_type = null;
   public $staff_profile_id = null;
   public $attempt = null;
+  public $reply_to = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1958,7 +2158,12 @@ class StaffMail {
           ),
         11 => array(
           'var' => 'attachments',
-          'type' => TType::STRING,
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
           ),
         12 => array(
           'var' => 'created_by',
@@ -2039,6 +2244,10 @@ class StaffMail {
         31 => array(
           'var' => 'attempt',
           'type' => TType::I32,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
           ),
         );
     }
@@ -2136,6 +2345,9 @@ class StaffMail {
       if (isset($vals['attempt'])) {
         $this->attempt = $vals['attempt'];
       }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
     }
   }
 
@@ -2189,14 +2401,14 @@ class StaffMail {
         case 5:
           if ($ftype == TType::LST) {
             $this->cc = array();
-            $_size42 = 0;
-            $_etype45 = 0;
-            $xfer += $input->readListBegin($_etype45, $_size42);
-            for ($_i46 = 0; $_i46 < $_size42; ++$_i46)
+            $_size56 = 0;
+            $_etype59 = 0;
+            $xfer += $input->readListBegin($_etype59, $_size56);
+            for ($_i60 = 0; $_i60 < $_size56; ++$_i60)
             {
-              $elem47 = null;
-              $xfer += $input->readString($elem47);
-              $this->cc []= $elem47;
+              $elem61 = null;
+              $xfer += $input->readString($elem61);
+              $this->cc []= $elem61;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -2206,14 +2418,14 @@ class StaffMail {
         case 6:
           if ($ftype == TType::LST) {
             $this->bcc = array();
-            $_size48 = 0;
-            $_etype51 = 0;
-            $xfer += $input->readListBegin($_etype51, $_size48);
-            for ($_i52 = 0; $_i52 < $_size48; ++$_i52)
+            $_size62 = 0;
+            $_etype65 = 0;
+            $xfer += $input->readListBegin($_etype65, $_size62);
+            for ($_i66 = 0; $_i66 < $_size62; ++$_i66)
             {
-              $elem53 = null;
-              $xfer += $input->readString($elem53);
-              $this->bcc []= $elem53;
+              $elem67 = null;
+              $xfer += $input->readString($elem67);
+              $this->bcc []= $elem67;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -2249,8 +2461,19 @@ class StaffMail {
           }
           break;
         case 11:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->attachments);
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size68 = 0;
+            $_etype71 = 0;
+            $xfer += $input->readListBegin($_etype71, $_size68);
+            for ($_i72 = 0; $_i72 < $_size68; ++$_i72)
+            {
+              $elem73 = null;
+              $elem73 = new \praccomm\Attachment();
+              $xfer += $elem73->read($input);
+              $this->attachments []= $elem73;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -2395,6 +2618,13 @@ class StaffMail {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -2436,9 +2666,9 @@ class StaffMail {
       {
         $output->writeListBegin(TType::STRING, count($this->cc));
         {
-          foreach ($this->cc as $iter54)
+          foreach ($this->cc as $iter74)
           {
-            $xfer += $output->writeString($iter54);
+            $xfer += $output->writeString($iter74);
           }
         }
         $output->writeListEnd();
@@ -2453,9 +2683,9 @@ class StaffMail {
       {
         $output->writeListBegin(TType::STRING, count($this->bcc));
         {
-          foreach ($this->bcc as $iter55)
+          foreach ($this->bcc as $iter75)
           {
-            $xfer += $output->writeString($iter55);
+            $xfer += $output->writeString($iter75);
           }
         }
         $output->writeListEnd();
@@ -2483,8 +2713,20 @@ class StaffMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
-      $xfer += $output->writeFieldBegin('attachments', TType::STRING, 11);
-      $xfer += $output->writeString($this->attachments);
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 11);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter76)
+          {
+            $xfer += $iter76->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
       $xfer += $output->writeFieldEnd();
     }
     if ($this->created_by !== null) {
@@ -2587,6 +2829,11 @@ class StaffMail {
       $xfer += $output->writeI32($this->attempt);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -2642,15 +2889,15 @@ class StaffEmails {
         case 1:
           if ($ftype == TType::LST) {
             $this->mails = array();
-            $_size56 = 0;
-            $_etype59 = 0;
-            $xfer += $input->readListBegin($_etype59, $_size56);
-            for ($_i60 = 0; $_i60 < $_size56; ++$_i60)
+            $_size77 = 0;
+            $_etype80 = 0;
+            $xfer += $input->readListBegin($_etype80, $_size77);
+            for ($_i81 = 0; $_i81 < $_size77; ++$_i81)
             {
-              $elem61 = null;
-              $elem61 = new \praccomm\StaffMail();
-              $xfer += $elem61->read($input);
-              $this->mails []= $elem61;
+              $elem82 = null;
+              $elem82 = new \praccomm\StaffMail();
+              $xfer += $elem82->read($input);
+              $this->mails []= $elem82;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -2678,9 +2925,9 @@ class StaffEmails {
       {
         $output->writeListBegin(TType::STRUCT, count($this->mails));
         {
-          foreach ($this->mails as $iter62)
+          foreach ($this->mails as $iter83)
           {
-            $xfer += $iter62->write($output);
+            $xfer += $iter83->write($output);
           }
         }
         $output->writeListEnd();
@@ -2720,6 +2967,8 @@ class DoctorSMS {
   public $doctor_profile_id = null;
   public $currency = null;
   public $cost = null;
+  public $secondary_mobile = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -2816,6 +3065,14 @@ class DoctorSMS {
           'var' => 'cost',
           'type' => TType::DOUBLE,
           ),
+        24 => array(
+          'var' => 'secondary_mobile',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -2887,6 +3144,12 @@ class DoctorSMS {
       }
       if (isset($vals['cost'])) {
         $this->cost = $vals['cost'];
+      }
+      if (isset($vals['secondary_mobile'])) {
+        $this->secondary_mobile = $vals['secondary_mobile'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
       }
     }
   }
@@ -3071,6 +3334,20 @@ class DoctorSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->secondary_mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -3199,6 +3476,16 @@ class DoctorSMS {
       $xfer += $output->writeDouble($this->cost);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->secondary_mobile !== null) {
+      $xfer += $output->writeFieldBegin('secondary_mobile', TType::STRING, 24);
+      $xfer += $output->writeString($this->secondary_mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 25);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -3254,15 +3541,15 @@ class DoctorMessages {
         case 1:
           if ($ftype == TType::LST) {
             $this->messages = array();
-            $_size63 = 0;
-            $_etype66 = 0;
-            $xfer += $input->readListBegin($_etype66, $_size63);
-            for ($_i67 = 0; $_i67 < $_size63; ++$_i67)
+            $_size84 = 0;
+            $_etype87 = 0;
+            $xfer += $input->readListBegin($_etype87, $_size84);
+            for ($_i88 = 0; $_i88 < $_size84; ++$_i88)
             {
-              $elem68 = null;
-              $elem68 = new \praccomm\DoctorSMS();
-              $xfer += $elem68->read($input);
-              $this->messages []= $elem68;
+              $elem89 = null;
+              $elem89 = new \praccomm\DoctorSMS();
+              $xfer += $elem89->read($input);
+              $this->messages []= $elem89;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -3290,9 +3577,9 @@ class DoctorMessages {
       {
         $output->writeListBegin(TType::STRUCT, count($this->messages));
         {
-          foreach ($this->messages as $iter69)
+          foreach ($this->messages as $iter90)
           {
-            $xfer += $iter69->write($output);
+            $xfer += $iter90->write($output);
           }
         }
         $output->writeListEnd();
@@ -3332,6 +3619,8 @@ class PatientSMS {
   public $sms_type = null;
   public $currency = null;
   public $cost = null;
+  public $secondary_mobile = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3428,6 +3717,14 @@ class PatientSMS {
           'var' => 'cost',
           'type' => TType::DOUBLE,
           ),
+        24 => array(
+          'var' => 'secondary_mobile',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -3499,6 +3796,12 @@ class PatientSMS {
       }
       if (isset($vals['cost'])) {
         $this->cost = $vals['cost'];
+      }
+      if (isset($vals['secondary_mobile'])) {
+        $this->secondary_mobile = $vals['secondary_mobile'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
       }
     }
   }
@@ -3683,6 +3986,20 @@ class PatientSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->secondary_mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -3811,6 +4128,16 @@ class PatientSMS {
       $xfer += $output->writeDouble($this->cost);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->secondary_mobile !== null) {
+      $xfer += $output->writeFieldBegin('secondary_mobile', TType::STRING, 24);
+      $xfer += $output->writeString($this->secondary_mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 25);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -3866,15 +4193,15 @@ class PatientMessages {
         case 1:
           if ($ftype == TType::LST) {
             $this->messages = array();
-            $_size70 = 0;
-            $_etype73 = 0;
-            $xfer += $input->readListBegin($_etype73, $_size70);
-            for ($_i74 = 0; $_i74 < $_size70; ++$_i74)
+            $_size91 = 0;
+            $_etype94 = 0;
+            $xfer += $input->readListBegin($_etype94, $_size91);
+            for ($_i95 = 0; $_i95 < $_size91; ++$_i95)
             {
-              $elem75 = null;
-              $elem75 = new \praccomm\PatientSMS();
-              $xfer += $elem75->read($input);
-              $this->messages []= $elem75;
+              $elem96 = null;
+              $elem96 = new \praccomm\PatientSMS();
+              $xfer += $elem96->read($input);
+              $this->messages []= $elem96;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -3902,9 +4229,9 @@ class PatientMessages {
       {
         $output->writeListBegin(TType::STRUCT, count($this->messages));
         {
-          foreach ($this->messages as $iter76)
+          foreach ($this->messages as $iter97)
           {
-            $xfer += $iter76->write($output);
+            $xfer += $iter97->write($output);
           }
         }
         $output->writeListEnd();
@@ -3944,6 +4271,8 @@ class StaffSMS {
   public $staff_profile_id = null;
   public $currency = null;
   public $cost = null;
+  public $secondary_mobile = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -4040,6 +4369,14 @@ class StaffSMS {
           'var' => 'cost',
           'type' => TType::DOUBLE,
           ),
+        24 => array(
+          'var' => 'secondary_mobile',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -4111,6 +4448,12 @@ class StaffSMS {
       }
       if (isset($vals['cost'])) {
         $this->cost = $vals['cost'];
+      }
+      if (isset($vals['secondary_mobile'])) {
+        $this->secondary_mobile = $vals['secondary_mobile'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
       }
     }
   }
@@ -4295,6 +4638,20 @@ class StaffSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->secondary_mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -4423,6 +4780,16 @@ class StaffSMS {
       $xfer += $output->writeDouble($this->cost);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->secondary_mobile !== null) {
+      $xfer += $output->writeFieldBegin('secondary_mobile', TType::STRING, 24);
+      $xfer += $output->writeString($this->secondary_mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 25);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -4478,15 +4845,15 @@ class StaffMessages {
         case 1:
           if ($ftype == TType::LST) {
             $this->messages = array();
-            $_size77 = 0;
-            $_etype80 = 0;
-            $xfer += $input->readListBegin($_etype80, $_size77);
-            for ($_i81 = 0; $_i81 < $_size77; ++$_i81)
+            $_size98 = 0;
+            $_etype101 = 0;
+            $xfer += $input->readListBegin($_etype101, $_size98);
+            for ($_i102 = 0; $_i102 < $_size98; ++$_i102)
             {
-              $elem82 = null;
-              $elem82 = new \praccomm\StaffSMS();
-              $xfer += $elem82->read($input);
-              $this->messages []= $elem82;
+              $elem103 = null;
+              $elem103 = new \praccomm\StaffSMS();
+              $xfer += $elem103->read($input);
+              $this->messages []= $elem103;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -4514,9 +4881,9 @@ class StaffMessages {
       {
         $output->writeListBegin(TType::STRUCT, count($this->messages));
         {
-          foreach ($this->messages as $iter83)
+          foreach ($this->messages as $iter104)
           {
-            $xfer += $iter83->write($output);
+            $xfer += $iter104->write($output);
           }
         }
         $output->writeListEnd();
@@ -4733,106 +5100,6 @@ class SmsCredit {
     if ($this->pricing_plan_id !== null) {
       $xfer += $output->writeFieldBegin('pricing_plan_id', TType::STRING, 9);
       $xfer += $output->writeString($this->pricing_plan_id);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class SmsCreditList {
-  static $_TSPEC;
-
-  public $credits = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'credits',
-          'type' => TType::LST,
-          'etype' => TType::STRUCT,
-          'elem' => array(
-            'type' => TType::STRUCT,
-            'class' => '\praccomm\SmsCredit',
-            ),
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['credits'])) {
-        $this->credits = $vals['credits'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'SmsCreditList';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::LST) {
-            $this->credits = array();
-            $_size84 = 0;
-            $_etype87 = 0;
-            $xfer += $input->readListBegin($_etype87, $_size84);
-            for ($_i88 = 0; $_i88 < $_size84; ++$_i88)
-            {
-              $elem89 = null;
-              $elem89 = new \praccomm\SmsCredit();
-              $xfer += $elem89->read($input);
-              $this->credits []= $elem89;
-            }
-            $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('SmsCreditList');
-    if ($this->credits !== null) {
-      if (!is_array($this->credits)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('credits', TType::LST, 1);
-      {
-        $output->writeListBegin(TType::STRUCT, count($this->credits));
-        {
-          foreach ($this->credits as $iter90)
-          {
-            $xfer += $iter90->write($output);
-          }
-        }
-        $output->writeListEnd();
-      }
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

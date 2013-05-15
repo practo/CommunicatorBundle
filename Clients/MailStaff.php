@@ -31,13 +31,14 @@ class MailStaff
         $this->_pheanstalk = $pheanstalk;
     }
 
-    public function sendMail($practiceId, $fromName, $fromMail,
+    public function sendMail($practiceId, $staffProfileId, $fromName, $fromMail,
                              $to_name = "", $to, $cc = "", $bcc = "",
-                             $subject, $body, $type, $fileId,
-                             $hash, $plaintext = "")
+                             $subject, $body, $type, $files,
+                             $hash, $plaintext = "", $replyTo)
     {
         $job = new praccomm\StaffMail();
         $job->practice_id = $practiceId;
+        $job->staff_profile_id = $staffProfileId;
         $job->from_name = $fromName;
         $job->from_address = $fromMail;
         $job->to_name = $to_name;
@@ -64,7 +65,19 @@ class MailStaff
         $job->app_name = $this->_appName;
         $job->date = time();
         $job->email_type = $this->getMailType($type);
-        $job->attachments = $fileId;
+        $job->reply_to = $replyTo;
+
+        $i = 0;
+        $attachments = array();
+        foreach ($files as $fname=>$loc) {
+        	$att = new praccomm\Attachment();
+        	$att->name = $fname;
+        	$att->location = $loc;
+        	$attachments[$i] = $att;
+        	$i = $i + 1;
+        }
+
+        $job->attachments = $attachments;
         $job->hash = $hash;
         $job->mail_type = 'staff';
         $jsonified_job = json_encode($job);

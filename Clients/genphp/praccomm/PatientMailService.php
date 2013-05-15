@@ -673,7 +673,7 @@ class PatientMailService_search_by_practice_id_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'send_date',
@@ -711,8 +711,8 @@ class PatientMailService_search_by_practice_id_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -738,8 +738,8 @@ class PatientMailService_search_by_practice_id_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientMailService_search_by_practice_id_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->send_date !== null) {
@@ -838,7 +838,7 @@ class PatientMailService_get_mails_by_status_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -883,8 +883,8 @@ class PatientMailService_get_mails_by_status_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -917,8 +917,8 @@ class PatientMailService_get_mails_by_status_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientMailService_get_mails_by_status_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1167,7 +1167,7 @@ class PatientMailService_get_mails_by_contact_id_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'cid',
@@ -1219,8 +1219,8 @@ class PatientMailService_get_mails_by_contact_id_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1260,8 +1260,8 @@ class PatientMailService_get_mails_by_contact_id_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientMailService_get_mails_by_contact_id_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cid !== null) {
@@ -1534,7 +1534,7 @@ class PatientMailService_get_mails_by_app_for_pid_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1579,8 +1579,8 @@ class PatientMailService_get_mails_by_app_for_pid_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1613,8 +1613,8 @@ class PatientMailService_get_mails_by_app_for_pid_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientMailService_get_mails_by_app_for_pid_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1719,7 +1719,7 @@ class PatientMailService_get_mails_by_app_for_cid_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'cid',
@@ -1771,8 +1771,8 @@ class PatientMailService_get_mails_by_app_for_cid_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1812,8 +1812,8 @@ class PatientMailService_get_mails_by_app_for_cid_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientMailService_get_mails_by_app_for_cid_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cid !== null) {

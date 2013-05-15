@@ -17,13 +17,13 @@ use Thrift\Exception\TApplicationException;
 
 interface StaffSMSServiceIf {
   public function update($sms_id, \praccomm\StaffSMS $doctor_sms);
-  public function search_by_practice_id($pid, $send_date);
+  public function search_by_practice_id($pid, $send_date, $sms_types);
   public function get_messages_in_date_range($pid, $start_date, $end_date);
   public function get_messages_by_delivery_status($pid, $start_date, $end_date, $sms_types, $status);
   public function get_messages_by_failure_reason($pid, $start_date, $end_date, $sms_types);
   public function get_messages_by_application($start_date, $end_date);
   public function get_messages_by_app_for_pid($pid, $start_date, $end_date);
-  public function send(\praccomm\StaffSMS $staff_sms, $reduce_credit);
+  public function send(\praccomm\StaffSMS $staff_sms);
 }
 
 class StaffSMSServiceClient implements \praccomm\StaffSMSServiceIf {
@@ -89,17 +89,18 @@ class StaffSMSServiceClient implements \praccomm\StaffSMSServiceIf {
     throw new \Exception("update failed: unknown result");
   }
 
-  public function search_by_practice_id($pid, $send_date)
+  public function search_by_practice_id($pid, $send_date, $sms_types)
   {
-    $this->send_search_by_practice_id($pid, $send_date);
+    $this->send_search_by_practice_id($pid, $send_date, $sms_types);
     return $this->recv_search_by_practice_id();
   }
 
-  public function send_search_by_practice_id($pid, $send_date)
+  public function send_search_by_practice_id($pid, $send_date, $sms_types)
   {
     $args = new \praccomm\StaffSMSService_search_by_practice_id_args();
     $args->pid = $pid;
     $args->send_date = $send_date;
+    $args->sms_types = $sms_types;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -408,17 +409,16 @@ class StaffSMSServiceClient implements \praccomm\StaffSMSServiceIf {
     throw new \Exception("get_messages_by_app_for_pid failed: unknown result");
   }
 
-  public function send(\praccomm\StaffSMS $staff_sms, $reduce_credit)
+  public function send(\praccomm\StaffSMS $staff_sms)
   {
-    $this->send_send($staff_sms, $reduce_credit);
+    $this->send_send($staff_sms);
     return $this->recv_send();
   }
 
-  public function send_send(\praccomm\StaffSMS $staff_sms, $reduce_credit)
+  public function send_send(\praccomm\StaffSMS $staff_sms)
   {
     $args = new \praccomm\StaffSMSService_send_args();
     $args->staff_sms = $staff_sms;
-    $args->reduce_credit = $reduce_credit;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -638,17 +638,26 @@ class StaffSMSService_search_by_practice_id_args {
 
   public $pid = null;
   public $send_date = null;
+  public $sms_types = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'send_date',
           'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'sms_types',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
           ),
         );
     }
@@ -658,6 +667,9 @@ class StaffSMSService_search_by_practice_id_args {
       }
       if (isset($vals['send_date'])) {
         $this->send_date = $vals['send_date'];
+      }
+      if (isset($vals['sms_types'])) {
+        $this->sms_types = $vals['sms_types'];
       }
     }
   }
@@ -682,8 +694,8 @@ class StaffSMSService_search_by_practice_id_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -691,6 +703,23 @@ class StaffSMSService_search_by_practice_id_args {
         case 2:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->send_date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::LST) {
+            $this->sms_types = array();
+            $_size105 = 0;
+            $_etype108 = 0;
+            $xfer += $input->readListBegin($_etype108, $_size105);
+            for ($_i109 = 0; $_i109 < $_size105; ++$_i109)
+            {
+              $elem110 = null;
+              $xfer += $input->readString($elem110);
+              $this->sms_types []= $elem110;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -709,13 +738,30 @@ class StaffSMSService_search_by_practice_id_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_search_by_practice_id_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->send_date !== null) {
       $xfer += $output->writeFieldBegin('send_date', TType::STRING, 2);
       $xfer += $output->writeString($this->send_date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->sms_types !== null) {
+      if (!is_array($this->sms_types)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('sms_types', TType::LST, 3);
+      {
+        $output->writeListBegin(TType::STRING, count($this->sms_types));
+        {
+          foreach ($this->sms_types as $iter111)
+          {
+            $xfer += $output->writeString($iter111);
+          }
+        }
+        $output->writeListEnd();
+      }
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -809,7 +855,7 @@ class StaffSMSService_get_messages_in_date_range_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -854,8 +900,8 @@ class StaffSMSService_get_messages_in_date_range_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -888,8 +934,8 @@ class StaffSMSService_get_messages_in_date_range_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_get_messages_in_date_range_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -995,7 +1041,7 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1062,8 +1108,8 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1085,14 +1131,14 @@ class StaffSMSService_get_messages_by_delivery_status_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size91 = 0;
-            $_etype94 = 0;
-            $xfer += $input->readListBegin($_etype94, $_size91);
-            for ($_i95 = 0; $_i95 < $_size91; ++$_i95)
+            $_size112 = 0;
+            $_etype115 = 0;
+            $xfer += $input->readListBegin($_etype115, $_size112);
+            for ($_i116 = 0; $_i116 < $_size112; ++$_i116)
             {
-              $elem96 = null;
-              $xfer += $input->readString($elem96);
-              $this->sms_types []= $elem96;
+              $elem117 = null;
+              $xfer += $input->readString($elem117);
+              $this->sms_types []= $elem117;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1102,14 +1148,14 @@ class StaffSMSService_get_messages_by_delivery_status_args {
         case 5:
           if ($ftype == TType::LST) {
             $this->status = array();
-            $_size97 = 0;
-            $_etype100 = 0;
-            $xfer += $input->readListBegin($_etype100, $_size97);
-            for ($_i101 = 0; $_i101 < $_size97; ++$_i101)
+            $_size118 = 0;
+            $_etype121 = 0;
+            $xfer += $input->readListBegin($_etype121, $_size118);
+            for ($_i122 = 0; $_i122 < $_size118; ++$_i122)
             {
-              $elem102 = null;
-              $xfer += $input->readString($elem102);
-              $this->status []= $elem102;
+              $elem123 = null;
+              $xfer += $input->readString($elem123);
+              $this->status []= $elem123;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1130,8 +1176,8 @@ class StaffSMSService_get_messages_by_delivery_status_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_get_messages_by_delivery_status_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1152,9 +1198,9 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter103)
+          foreach ($this->sms_types as $iter124)
           {
-            $xfer += $output->writeString($iter103);
+            $xfer += $output->writeString($iter124);
           }
         }
         $output->writeListEnd();
@@ -1169,9 +1215,9 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->status));
         {
-          foreach ($this->status as $iter104)
+          foreach ($this->status as $iter125)
           {
-            $xfer += $output->writeString($iter104);
+            $xfer += $output->writeString($iter125);
           }
         }
         $output->writeListEnd();
@@ -1270,7 +1316,7 @@ class StaffSMSService_get_messages_by_failure_reason_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1326,8 +1372,8 @@ class StaffSMSService_get_messages_by_failure_reason_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1349,14 +1395,14 @@ class StaffSMSService_get_messages_by_failure_reason_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size105 = 0;
-            $_etype108 = 0;
-            $xfer += $input->readListBegin($_etype108, $_size105);
-            for ($_i109 = 0; $_i109 < $_size105; ++$_i109)
+            $_size126 = 0;
+            $_etype129 = 0;
+            $xfer += $input->readListBegin($_etype129, $_size126);
+            for ($_i130 = 0; $_i130 < $_size126; ++$_i130)
             {
-              $elem110 = null;
-              $xfer += $input->readString($elem110);
-              $this->sms_types []= $elem110;
+              $elem131 = null;
+              $xfer += $input->readString($elem131);
+              $this->sms_types []= $elem131;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1377,8 +1423,8 @@ class StaffSMSService_get_messages_by_failure_reason_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_get_messages_by_failure_reason_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1399,9 +1445,9 @@ class StaffSMSService_get_messages_by_failure_reason_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter111)
+          foreach ($this->sms_types as $iter132)
           {
-            $xfer += $output->writeString($iter111);
+            $xfer += $output->writeString($iter132);
           }
         }
         $output->writeListEnd();
@@ -1663,7 +1709,7 @@ class StaffSMSService_get_messages_by_app_for_pid_args {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'pid',
-          'type' => TType::STRING,
+          'type' => TType::I64,
           ),
         2 => array(
           'var' => 'start_date',
@@ -1708,8 +1754,8 @@ class StaffSMSService_get_messages_by_app_for_pid_args {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->pid);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1742,8 +1788,8 @@ class StaffSMSService_get_messages_by_app_for_pid_args {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_get_messages_by_app_for_pid_args');
     if ($this->pid !== null) {
-      $xfer += $output->writeFieldBegin('pid', TType::STRING, 1);
-      $xfer += $output->writeString($this->pid);
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->start_date !== null) {
@@ -1839,7 +1885,6 @@ class StaffSMSService_send_args {
   static $_TSPEC;
 
   public $staff_sms = null;
-  public $reduce_credit = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1849,18 +1894,11 @@ class StaffSMSService_send_args {
           'type' => TType::STRUCT,
           'class' => '\praccomm\StaffSMS',
           ),
-        2 => array(
-          'var' => 'reduce_credit',
-          'type' => TType::BOOL,
-          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['staff_sms'])) {
         $this->staff_sms = $vals['staff_sms'];
-      }
-      if (isset($vals['reduce_credit'])) {
-        $this->reduce_credit = $vals['reduce_credit'];
       }
     }
   }
@@ -1892,13 +1930,6 @@ class StaffSMSService_send_args {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
-          if ($ftype == TType::BOOL) {
-            $xfer += $input->readBool($this->reduce_credit);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1918,11 +1949,6 @@ class StaffSMSService_send_args {
       }
       $xfer += $output->writeFieldBegin('staff_sms', TType::STRUCT, 1);
       $xfer += $this->staff_sms->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->reduce_credit !== null) {
-      $xfer += $output->writeFieldBegin('reduce_credit', TType::BOOL, 2);
-      $xfer += $output->writeBool($this->reduce_credit);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

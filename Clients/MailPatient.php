@@ -35,7 +35,7 @@ class MailPatient
     public function sendMail($contactId, $practiceId, $fromName,
                              $fromMail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type,
-                             $fileId, $hash, $plaintext = "")
+                             $files, $hash, $plaintext = "", $replyTo)
     {
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
@@ -66,12 +66,24 @@ class MailPatient
         $job->app_name = $this->_appName;
         $job->date = time();
         $job->email_type = $this->getMailType($type);
-        $job->attachments = $fileId;
+        $job->reply_to = $replyTo;
+
+        $i = 0;
+        $attachments = array();
+        foreach ($files as $fname=>$loc) {
+        	$att = new praccomm\Attachment();
+        	$att->name = $fname;
+        	$att->location = $loc;
+        	$attachments[$i] = $att;
+        	$i = $i + 1;
+        }
+
+        $job->attachments = $attachments;
         $job->hash = $hash;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
         $queueName = $this->_sendMailQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        $id = $this->pheanstalk->useTube($queueName)->put($jsonified_job);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -203,6 +215,7 @@ class MailPatient
 
     private function getMailType($type)
     {
+      var_dump($type);
       switch($type)
         {
         case "ACCOUNT_INVITE":
