@@ -70,12 +70,16 @@ class MailPatient
 
         $i = 0;
         $attachments = array();
-        foreach ($files as $fname=>$loc) {
-        	$att = new praccomm\Attachment();
-        	$att->name = $fname;
-        	$att->location = $loc;
-        	$attachments[$i] = $att;
-        	$i = $i + 1;
+        if ($files)
+        {
+            foreach($files as $fname=>$loc)
+            {
+                $att = new praccomm\Attachment();
+                $att->name = $fname;
+                $att->location = $loc;
+                $attachments[$i] = $att;
+                $i = $i + 1;
+            }
         }
 
         $job->attachments = $attachments;

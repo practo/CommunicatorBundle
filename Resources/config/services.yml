@@ -34,7 +34,7 @@ services:
   practo_communicator.mail_patient:
     class: %practo_communicator.mail_patient.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_mail_queue%
       - %communicator.update_mail_queue%
       - %communicator.mail_patient.host%
@@ -43,7 +43,7 @@ services:
   practo_communicator.mail_doctor:
     class: %practo_communicator.mail_doctor.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_mail_queue%
       - %communicator.update_mail_queue%
       - %communicator.mail_doctor.host%
@@ -52,7 +52,7 @@ services:
   practo_communicator.mail_staff:
     class: %practo_communicator.mail_staff.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_mail_queue%
       - %communicator.update_mail_queue%
       - %communicator.mail_staff.host%
@@ -61,7 +61,7 @@ services:
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_sms_queue%
       - %communicator.update_sms_queue%
       - %communicator.sms_patient.host%
@@ -70,7 +70,7 @@ services:
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_sms_queue%
       - %communicator.update_sms_queue%
       - %communicator.sms_doctor.host%
@@ -79,7 +79,7 @@ services:
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:
-      - @leezy.pheanstalk
+      - @leezy.pheanstalk.communicator
       - %communicator.send_sms_queue%
       - %communicator.update_sms_queue%
       - %communicator.mail_staff.host%
