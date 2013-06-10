@@ -162,8 +162,11 @@ class MailStaff
     {
         $socket = new Thrift\Transport\TSocket($this->_mailServer,
                                                $this->_mailPort);
+        $socket->setRecvTimeout(20 * 1000);
+        $socket->setSendTimeout(20 * 1000);
+
         $transport =
-          new Thrift\Transport\TBufferedTransport($socket, 1024, 1024);
+          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
         return $transport;
     }
 
@@ -194,6 +197,8 @@ class MailStaff
           return \praccomm\StaffEmailType::SUMMARY_FOLLOWUPBIRTHDAY;
         case "ACCOUNT_DELETE":
           return \praccomm\StaffEmailType::ACCOUNT_DELETE;
+        case "BILLS_REPORT":
+              return \praccomm\DoctorEmailType::BILLS_REPORT;
         default:
           throw new Exception("Invalid message type");
       }

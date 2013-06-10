@@ -162,8 +162,11 @@ class MailDoctor
     {
         $socket = new Thrift\Transport\TSocket($this->_mailServer,
                                                $this->_mailPort);
+        $socket->setRecvTimeout(20 * 1000);
+        $socket->setSendTimeout(20 * 1000);
+
         $transport =
-          new Thrift\Transport\TBufferedTransport($socket, 1024, 1024);
+          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
         return $transport;
     }
 
@@ -190,6 +193,8 @@ class MailDoctor
               return \praccomm\DoctorEmailType::REMINDER;
             case "RESCHEDULE":
               return \praccomm\DoctorEmailType::RESCHEDULE;
+            case "BILLS_REPORT":
+              return \praccomm\DoctorEmailType::BILLS_REPORT;
             default:
               throw new Exception("Invalid message type");
         }
