@@ -229,6 +229,7 @@ class MailPatient
         case "ACCOUNT_INVITE":
             return \praccomm\PatientEmailType::ACCOUNT_INVITE;
         case "AMOUNT_DUE":
+        case "PATIENT_AMOUNT_DUE":
             return \praccomm\PatientEmailType::AMOUNT_DUE;
         case "BILL":
             return \praccomm\PatientEmailType::BILL;
@@ -261,7 +262,7 @@ class MailPatient
         case "FILE":
             return \praccomm\PatientEmailType::FILE;
         default:
-            throw new Exception("Invalid message type");
+            throw new \Exception("Invalid message type");
         }
     }
 }
