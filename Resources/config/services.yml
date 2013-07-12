@@ -15,19 +15,21 @@ parameters:
     communicator.error_sms_queue: sms_sender_error
     communicator.update_error_sms_queue: sms_updater_error
 
+    communicator.host: 127.0.0.1
+
     #mails
-    communicator.mail_patient.host: 54.251.27.31
+    communicator.mail_patient.host: %communicator.host%
     communicator.mail_patient.port: 2020
-    communicator.mail_doctor.host: 54.251.27.31
+    communicator.mail_doctor.host: %communicator.host%
     communicator.mail_doctor.port: 1010
-    communicator.mail_staff.host: 54.251.27.31
+    communicator.mail_staff.host: %communicator.host%
     communicator.mail_staff.port: 3030
     #sms
-    communicator.sms_patient.host: 54.251.27.31
+    communicator.sms_patient.host: %communicator.host%
     communicator.sms_patient.port: 6060
-    communicator.sms_doctor.host: 54.251.27.31
+    communicator.sms_doctor.host: %communicator.host%
     communicator.sms_doctor.port: 5050
-    communicator.sms_staff.host: 54.251.27.31
+    communicator.sms_staff.host: %communicator.host%
     communicator.sms_staff.port: 7070
 
 services:
