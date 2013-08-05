@@ -28,41 +28,63 @@ class SmsCredit
         $this->pheanstalk = $pheanstalk;
     }
 
-    public function insertSmsCredit($practiceId, $credit, $currency, $planId)
+    public function insertCredit($practiceId, $credit, $currency, $planId, $helloPlan, $walletCredit)
     {
         $job = new praccomm\SmsCredit();
         $job->practice_id = $practiceId;
-        $job->app_name = getValidAppName($appName);
         $job->credit = $credit;
-        $job->service_type = $serviceType;
+        $job->currency = $this->getCurrency($currency);
+        $job->pricing_plan_id = $planId;
         $job->action = 'insert';
-        $jsonified_job = json_encode($job);
+        $job->hello_plan = $helloPlan;
+        $job->wallet_credit = $walletCredit;
+        $jsonifiedJob = json_encode($job);
         $queueName = $this->_insertCreditQueue;
         $this->pheanstalk->useTube($queueName)->put($jsonified_job);
     }
 
-    public function increaseSmsCredit($practiceId, $credit, $currency)
+    public function insertPractoCredit($practiceId, $credit)
     {
-        $job = new praccomm\SmsCredit();
-        $job->practice_id = $practiceId;
-        $job->credit = $credit;
-        $job->currency = $currency;
-        $job->action = 'update';
-        $jsonified_job = json_encode($job);
-        $queueName = $this->_updateCreditQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->insert_practo_credit($practiceId, $credit);
+        $transport->close();
+
+        return $result;
     }
 
-    public function decreaseSmsCredit($practiceId, $credit, $currency)
+    public function addWalletCredit($practiceId, $credit)
     {
-        $job = new praccomm\SmsCredit();
-        $job->practice_id = $practiceId;
-        $job->credit = $credit;
-        $job->currency = $currency;
-        $job->action = 'update';
-        $jsonified_job = json_encode($job);
-        $queueName = $this->_updateCreditQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->add_wallet_credit($practiceId, $credit);
+        $transport->close();
+
+        return $result;
+    }
+
+    public function deductCredit($practiceId, $credit)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->deduct_credit($practiceId, $credit);
+        $transport->close();
+
+        return $result;
+    }
+
+    public function deductWalletCredit($practiceId, $credit)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->deduct_wallet_credit($practiceId, $credit);
+        $transport->close();
+
+        return $result; 
     }
 
     public function getCredits($pid)
@@ -94,5 +116,19 @@ class SmsCredit
         return $client;
     }
 
+    private function getCurrency($curr)
+    {
+        switch($curr)
+        {
+            case "INR":
+              return praccomm\Currency::INR;
+            case "USD":
+              return praccomm\Currency::USD;
+            case "SGD":
+              return praccomm\Currency::SGD;
+            default:
+              throw new Exception("Invalid currency");
+        }
+    }
 }
 ?>
