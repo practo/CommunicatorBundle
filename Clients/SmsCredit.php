@@ -15,17 +15,14 @@ class SmsCredit
     private $_smsCreditServer;
     private $_smsCreditPort;
     private $_insertCreditQueue;
-    private $_updateCreditQueue;
 
     private $pheanstalk;
 
-    public function __construct($pheanstalk, $queuePort, $insertCreditQueue,
-                                $updateCreditQueue, $serviceHost, $servicePort)
+    public function __construct($pheanstalk, $insertCreditQueue, $serviceHost, $servicePort)
     {
         $this->_smsCreditServer = $serviceHost;
         $this->_smsCreditPort = $servicePort;
         $this->_insertCreditQueue = $insertCreditQueue;
-        $this->_updateCreditQueue = $updateCreditQueue;
         $this->pheanstalk = $pheanstalk;
     }
 

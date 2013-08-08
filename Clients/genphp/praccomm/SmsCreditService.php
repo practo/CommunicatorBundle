@@ -13,6 +13,7 @@ use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
 use Thrift\Protocol\TProtocol;
 use Thrift\Exception\TApplicationException;
+require_once __DIR__.'/Types.php';
 
 
 interface SmsCreditServiceIf {
@@ -1541,7 +1542,8 @@ class SmsCreditService_deduct_hello_call_cost_result {
       self::$_TSPEC = array(
         0 => array(
           'var' => 'success',
-          'type' => TType::BOOL,
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\HelloCallCost', 
           ),
         1 => array(
           'var' => 'expt',
@@ -1580,8 +1582,9 @@ class SmsCreditService_deduct_hello_call_cost_result {
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::BOOL) {
-            $xfer += $input->readBool($this->success);
+          if ($ftype == TType::STRUCT) { 
+            $this->success = new \praccomm\HelloCallCost();
+            $xfer += $this->success->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1608,9 +1611,12 @@ class SmsCreditService_deduct_hello_call_cost_result {
     $xfer = 0;
     $xfer += $output->writeStructBegin('SmsCreditService_deduct_hello_call_cost_result');
     if ($this->success !== null) {
-      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
-      $xfer += $output->writeBool($this->success);
-      $xfer += $output->writeFieldEnd();
+    	if (!is_object($this->success)) {
+    		throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+    	}
+    	$xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);
+    	$xfer += $this->success->write($output);
+        $xfer += $output->writeFieldEnd();
     }
     if ($this->expt !== null) {
       $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
