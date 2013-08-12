@@ -13,11 +13,16 @@ use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
 use Thrift\Protocol\TProtocol;
 use Thrift\Exception\TApplicationException;
+require_once __DIR__.'/Types.php';
 
 
 interface SmsCreditServiceIf {
-  public function insert_credit($pid, $credit, $currency, $plan_id);
-  public function update_credit($pid, $credit, $currency);
+  public function insert_credit($pid, $credit, $user_credit, $currency, $plan_id, $hello_plan);
+  public function insert_practo_credit($pid, $credit);
+  public function add_wallet_credit($pid, $wallet_credit);
+  public function deduct_credit($pid, $amount);
+  public function deduct_wallet_credit($pid, $amount);
+  public function deduct_hello_call_cost($pid, $call_duration_mins);
   public function get_credit($practice_id);
 }
 
@@ -32,19 +37,21 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     $this->output_ = $output ? $output : $input;
   }
 
-  public function insert_credit($pid, $credit, $currency, $plan_id)
+  public function insert_credit($pid, $credit, $user_credit, $currency, $plan_id, $hello_plan)
   {
-    $this->send_insert_credit($pid, $credit, $currency, $plan_id);
+    $this->send_insert_credit($pid, $credit, $user_credit, $currency, $plan_id, $hello_plan);
     return $this->recv_insert_credit();
   }
 
-  public function send_insert_credit($pid, $credit, $currency, $plan_id)
+  public function send_insert_credit($pid, $credit, $user_credit, $currency, $plan_id, $hello_plan)
   {
     $args = new \praccomm\SmsCreditService_insert_credit_args();
     $args->pid = $pid;
     $args->credit = $credit;
+    $args->user_credit = $user_credit;
     $args->currency = $currency;
     $args->plan_id = $plan_id;
+    $args->hello_plan = $hello_plan;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -83,39 +90,41 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     if ($result->success !== null) {
       return $result->success;
     }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
     throw new \Exception("insert_credit failed: unknown result");
   }
 
-  public function update_credit($pid, $credit, $currency)
+  public function insert_practo_credit($pid, $credit)
   {
-    $this->send_update_credit($pid, $credit, $currency);
-    return $this->recv_update_credit();
+    $this->send_insert_practo_credit($pid, $credit);
+    return $this->recv_insert_practo_credit();
   }
 
-  public function send_update_credit($pid, $credit, $currency)
+  public function send_insert_practo_credit($pid, $credit)
   {
-    $args = new \praccomm\SmsCreditService_update_credit_args();
+    $args = new \praccomm\SmsCreditService_insert_practo_credit_args();
     $args->pid = $pid;
     $args->credit = $credit;
-    $args->currency = $currency;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
-      thrift_protocol_write_binary($this->output_, 'update_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+      thrift_protocol_write_binary($this->output_, 'insert_practo_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
     }
     else
     {
-      $this->output_->writeMessageBegin('update_credit', TMessageType::CALL, $this->seqid_);
+      $this->output_->writeMessageBegin('insert_practo_credit', TMessageType::CALL, $this->seqid_);
       $args->write($this->output_);
       $this->output_->writeMessageEnd();
       $this->output_->getTransport()->flush();
     }
   }
 
-  public function recv_update_credit()
+  public function recv_insert_practo_credit()
   {
     $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_update_credit_result', $this->input_->isStrictRead());
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_insert_practo_credit_result', $this->input_->isStrictRead());
     else
     {
       $rseqid = 0;
@@ -129,14 +138,237 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
         $this->input_->readMessageEnd();
         throw $x;
       }
-      $result = new \praccomm\SmsCreditService_update_credit_result();
+      $result = new \praccomm\SmsCreditService_insert_practo_credit_result();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
     if ($result->success !== null) {
       return $result->success;
     }
-    throw new \Exception("update_credit failed: unknown result");
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
+    throw new \Exception("insert_practo_credit failed: unknown result");
+  }
+
+  public function add_wallet_credit($pid, $wallet_credit)
+  {
+    $this->send_add_wallet_credit($pid, $wallet_credit);
+    return $this->recv_add_wallet_credit();
+  }
+
+  public function send_add_wallet_credit($pid, $wallet_credit)
+  {
+    $args = new \praccomm\SmsCreditService_add_wallet_credit_args();
+    $args->pid = $pid;
+    $args->wallet_credit = $wallet_credit;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'add_wallet_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('add_wallet_credit', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_add_wallet_credit()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_add_wallet_credit_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\SmsCreditService_add_wallet_credit_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
+    throw new \Exception("add_wallet_credit failed: unknown result");
+  }
+
+  public function deduct_credit($pid, $amount)
+  {
+    $this->send_deduct_credit($pid, $amount);
+    return $this->recv_deduct_credit();
+  }
+
+  public function send_deduct_credit($pid, $amount)
+  {
+    $args = new \praccomm\SmsCreditService_deduct_credit_args();
+    $args->pid = $pid;
+    $args->amount = $amount;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'deduct_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('deduct_credit', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_deduct_credit()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_deduct_credit_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\SmsCreditService_deduct_credit_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
+    throw new \Exception("deduct_credit failed: unknown result");
+  }
+
+  public function deduct_wallet_credit($pid, $amount)
+  {
+    $this->send_deduct_wallet_credit($pid, $amount);
+    return $this->recv_deduct_wallet_credit();
+  }
+
+  public function send_deduct_wallet_credit($pid, $amount)
+  {
+    $args = new \praccomm\SmsCreditService_deduct_wallet_credit_args();
+    $args->pid = $pid;
+    $args->amount = $amount;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'deduct_wallet_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('deduct_wallet_credit', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_deduct_wallet_credit()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_deduct_wallet_credit_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\SmsCreditService_deduct_wallet_credit_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
+    throw new \Exception("deduct_wallet_credit failed: unknown result");
+  }
+
+  public function deduct_hello_call_cost($pid, $call_duration_mins)
+  {
+    $this->send_deduct_hello_call_cost($pid, $call_duration_mins);
+    return $this->recv_deduct_hello_call_cost();
+  }
+
+  public function send_deduct_hello_call_cost($pid, $call_duration_mins)
+  {
+    $args = new \praccomm\SmsCreditService_deduct_hello_call_cost_args();
+    $args->pid = $pid;
+    $args->call_duration_mins = $call_duration_mins;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'deduct_hello_call_cost', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('deduct_hello_call_cost', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_deduct_hello_call_cost()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_deduct_hello_call_cost_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\SmsCreditService_deduct_hello_call_cost_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
+    throw new \Exception("deduct_hello_call_cost failed: unknown result");
   }
 
   public function get_credit($practice_id)
@@ -187,6 +419,9 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     if ($result->success !== null) {
       return $result->success;
     }
+    if ($result->expt !== null) {
+      throw $result->expt;
+    }
     throw new \Exception("get_credit failed: unknown result");
   }
 
@@ -199,8 +434,10 @@ class SmsCreditService_insert_credit_args {
 
   public $pid = null;
   public $credit = null;
+  public $user_credit = null;
   public $currency = null;
   public $plan_id = null;
+  public $hello_plan = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -214,12 +451,20 @@ class SmsCreditService_insert_credit_args {
           'type' => TType::DOUBLE,
           ),
         3 => array(
+          'var' => 'user_credit',
+          'type' => TType::DOUBLE,
+          ),
+        4 => array(
           'var' => 'currency',
           'type' => TType::I32,
           ),
-        4 => array(
+        5 => array(
           'var' => 'plan_id',
           'type' => TType::STRING,
+          ),
+        6 => array(
+          'var' => 'hello_plan',
+          'type' => TType::I32,
           ),
         );
     }
@@ -230,11 +475,17 @@ class SmsCreditService_insert_credit_args {
       if (isset($vals['credit'])) {
         $this->credit = $vals['credit'];
       }
+      if (isset($vals['user_credit'])) {
+        $this->user_credit = $vals['user_credit'];
+      }
       if (isset($vals['currency'])) {
         $this->currency = $vals['currency'];
       }
       if (isset($vals['plan_id'])) {
         $this->plan_id = $vals['plan_id'];
+      }
+      if (isset($vals['hello_plan'])) {
+        $this->hello_plan = $vals['hello_plan'];
       }
     }
   }
@@ -273,15 +524,29 @@ class SmsCreditService_insert_credit_args {
           }
           break;
         case 3:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->user_credit);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->currency);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 4:
+        case 5:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->plan_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->hello_plan);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -309,14 +574,24 @@ class SmsCreditService_insert_credit_args {
       $xfer += $output->writeDouble($this->credit);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->user_credit !== null) {
+      $xfer += $output->writeFieldBegin('user_credit', TType::DOUBLE, 3);
+      $xfer += $output->writeDouble($this->user_credit);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->currency !== null) {
-      $xfer += $output->writeFieldBegin('currency', TType::I32, 3);
+      $xfer += $output->writeFieldBegin('currency', TType::I32, 4);
       $xfer += $output->writeI32($this->currency);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->plan_id !== null) {
-      $xfer += $output->writeFieldBegin('plan_id', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('plan_id', TType::STRING, 5);
       $xfer += $output->writeString($this->plan_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->hello_plan !== null) {
+      $xfer += $output->writeFieldBegin('hello_plan', TType::I32, 6);
+      $xfer += $output->writeI32($this->hello_plan);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -330,6 +605,7 @@ class SmsCreditService_insert_credit_result {
   static $_TSPEC;
 
   public $success = null;
+  public $expt = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -338,11 +614,19 @@ class SmsCreditService_insert_credit_result {
           'var' => 'success',
           'type' => TType::BOOL,
           ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['success'])) {
         $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
       }
     }
   }
@@ -373,6 +657,14 @@ class SmsCreditService_insert_credit_result {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -391,6 +683,11 @@ class SmsCreditService_insert_credit_result {
       $xfer += $output->writeBool($this->success);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -398,12 +695,11 @@ class SmsCreditService_insert_credit_result {
 
 }
 
-class SmsCreditService_update_credit_args {
+class SmsCreditService_insert_practo_credit_args {
   static $_TSPEC;
 
   public $pid = null;
   public $credit = null;
-  public $currency = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -416,10 +712,6 @@ class SmsCreditService_update_credit_args {
           'var' => 'credit',
           'type' => TType::DOUBLE,
           ),
-        3 => array(
-          'var' => 'currency',
-          'type' => TType::I32,
-          ),
         );
     }
     if (is_array($vals)) {
@@ -429,14 +721,11 @@ class SmsCreditService_update_credit_args {
       if (isset($vals['credit'])) {
         $this->credit = $vals['credit'];
       }
-      if (isset($vals['currency'])) {
-        $this->currency = $vals['currency'];
-      }
     }
   }
 
   public function getName() {
-    return 'SmsCreditService_update_credit_args';
+    return 'SmsCreditService_insert_practo_credit_args';
   }
 
   public function read($input)
@@ -468,13 +757,6 @@ class SmsCreditService_update_credit_args {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 3:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->currency);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -487,7 +769,7 @@ class SmsCreditService_update_credit_args {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('SmsCreditService_update_credit_args');
+    $xfer += $output->writeStructBegin('SmsCreditService_insert_practo_credit_args');
     if ($this->pid !== null) {
       $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
       $xfer += $output->writeI64($this->pid);
@@ -498,11 +780,6 @@ class SmsCreditService_update_credit_args {
       $xfer += $output->writeDouble($this->credit);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->currency !== null) {
-      $xfer += $output->writeFieldBegin('currency', TType::I32, 3);
-      $xfer += $output->writeI32($this->currency);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -510,10 +787,11 @@ class SmsCreditService_update_credit_args {
 
 }
 
-class SmsCreditService_update_credit_result {
+class SmsCreditService_insert_practo_credit_result {
   static $_TSPEC;
 
   public $success = null;
+  public $expt = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -522,17 +800,25 @@ class SmsCreditService_update_credit_result {
           'var' => 'success',
           'type' => TType::BOOL,
           ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['success'])) {
         $this->success = $vals['success'];
       }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
+      }
     }
   }
 
   public function getName() {
-    return 'SmsCreditService_update_credit_result';
+    return 'SmsCreditService_insert_practo_credit_result';
   }
 
   public function read($input)
@@ -557,6 +843,14 @@ class SmsCreditService_update_credit_result {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -569,10 +863,764 @@ class SmsCreditService_update_credit_result {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('SmsCreditService_update_credit_result');
+    $xfer += $output->writeStructBegin('SmsCreditService_insert_practo_credit_result');
     if ($this->success !== null) {
       $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
       $xfer += $output->writeBool($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_add_wallet_credit_args {
+  static $_TSPEC;
+
+  public $pid = null;
+  public $wallet_credit = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'pid',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'wallet_credit',
+          'type' => TType::DOUBLE,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['pid'])) {
+        $this->pid = $vals['pid'];
+      }
+      if (isset($vals['wallet_credit'])) {
+        $this->wallet_credit = $vals['wallet_credit'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_add_wallet_credit_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->wallet_credit);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_add_wallet_credit_args');
+    if ($this->pid !== null) {
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->wallet_credit !== null) {
+      $xfer += $output->writeFieldBegin('wallet_credit', TType::DOUBLE, 2);
+      $xfer += $output->writeDouble($this->wallet_credit);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_add_wallet_credit_result {
+  static $_TSPEC;
+
+  public $success = null;
+  public $expt = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::BOOL,
+          ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_add_wallet_credit_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_add_wallet_credit_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeBool($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_credit_args {
+  static $_TSPEC;
+
+  public $pid = null;
+  public $amount = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'pid',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'amount',
+          'type' => TType::DOUBLE,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['pid'])) {
+        $this->pid = $vals['pid'];
+      }
+      if (isset($vals['amount'])) {
+        $this->amount = $vals['amount'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_credit_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->amount);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_credit_args');
+    if ($this->pid !== null) {
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->amount !== null) {
+      $xfer += $output->writeFieldBegin('amount', TType::DOUBLE, 2);
+      $xfer += $output->writeDouble($this->amount);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_credit_result {
+  static $_TSPEC;
+
+  public $success = null;
+  public $expt = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::BOOL,
+          ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_credit_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_credit_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeBool($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_wallet_credit_args {
+  static $_TSPEC;
+
+  public $pid = null;
+  public $amount = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'pid',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'amount',
+          'type' => TType::DOUBLE,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['pid'])) {
+        $this->pid = $vals['pid'];
+      }
+      if (isset($vals['amount'])) {
+        $this->amount = $vals['amount'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_wallet_credit_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->amount);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_wallet_credit_args');
+    if ($this->pid !== null) {
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->amount !== null) {
+      $xfer += $output->writeFieldBegin('amount', TType::DOUBLE, 2);
+      $xfer += $output->writeDouble($this->amount);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_wallet_credit_result {
+  static $_TSPEC;
+
+  public $success = null;
+  public $expt = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::BOOL,
+          ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_wallet_credit_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_wallet_credit_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeBool($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_hello_call_cost_args {
+  static $_TSPEC;
+
+  public $pid = null;
+  public $call_duration_mins = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'pid',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'call_duration_mins',
+          'type' => TType::I32,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['pid'])) {
+        $this->pid = $vals['pid'];
+      }
+      if (isset($vals['call_duration_mins'])) {
+        $this->call_duration_mins = $vals['call_duration_mins'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_hello_call_cost_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->pid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->call_duration_mins);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_hello_call_cost_args');
+    if ($this->pid !== null) {
+      $xfer += $output->writeFieldBegin('pid', TType::I64, 1);
+      $xfer += $output->writeI64($this->pid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->call_duration_mins !== null) {
+      $xfer += $output->writeFieldBegin('call_duration_mins', TType::I32, 2);
+      $xfer += $output->writeI32($this->call_duration_mins);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class SmsCreditService_deduct_hello_call_cost_result {
+  static $_TSPEC;
+
+  public $success = null;
+  public $expt = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\HelloCallCost', 
+          ),
+        1 => array(
+          'var' => 'expt',
+          'type' => TType::STRUCT,
+          'class' => '\praccomm\ApplicationException',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'SmsCreditService_deduct_hello_call_cost_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRUCT) { 
+            $this->success = new \praccomm\HelloCallCost();
+            $xfer += $this->success->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('SmsCreditService_deduct_hello_call_cost_result');
+    if ($this->success !== null) {
+    	if (!is_object($this->success)) {
+    		throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+    	}
+    	$xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);
+    	$xfer += $this->success->write($output);
+        $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -658,20 +1706,28 @@ class SmsCreditService_get_credit_result {
   static $_TSPEC;
 
   public $success = null;
+  public $expt = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         0 => array(
           'var' => 'success',
+          'type' => TType::STRING,
+          ),
+        1 => array(
+          'var' => 'expt',
           'type' => TType::STRUCT,
-          'class' => '\praccomm\SmsCredit',
+          'class' => '\praccomm\ApplicationException',
           ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['success'])) {
         $this->success = $vals['success'];
+      }
+      if (isset($vals['expt'])) {
+        $this->expt = $vals['expt'];
       }
     }
   }
@@ -696,9 +1752,16 @@ class SmsCreditService_get_credit_result {
       switch ($fid)
       {
         case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 1:
           if ($ftype == TType::STRUCT) {
-            $this->success = new \praccomm\SmsCredit();
-            $xfer += $this->success->read($input);
+            $this->expt = new \praccomm\ApplicationException();
+            $xfer += $this->expt->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -717,11 +1780,13 @@ class SmsCreditService_get_credit_result {
     $xfer = 0;
     $xfer += $output->writeStructBegin('SmsCreditService_get_credit_result');
     if ($this->success !== null) {
-      if (!is_object($this->success)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);
-      $xfer += $this->success->write($output);
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expt !== null) {
+      $xfer += $output->writeFieldBegin('expt', TType::STRUCT, 1);
+      $xfer += $this->expt->write($output);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
