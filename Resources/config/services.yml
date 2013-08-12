@@ -5,6 +5,7 @@ parameters:
     practo_communicator.sms_doctor.class: Practo\CommunicatorBundle\Clients\SmsDoctor
     practo_communicator.sms_patient.class: Practo\CommunicatorBundle\Clients\SmsPatient
     practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
+    practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -14,6 +15,7 @@ parameters:
     communicator.update_sms_queue: sms_updater
     communicator.error_sms_queue: sms_sender_error
     communicator.update_error_sms_queue: sms_updater_error
+    communicator.sms_credit: dev_credit_handler
 
     communicator.host: 127.0.0.1
 
@@ -31,6 +33,9 @@ parameters:
     communicator.sms_doctor.port: 5050
     communicator.sms_staff.host: %communicator.host%
     communicator.sms_staff.port: 7070
+    #credits
+    communicator.sms_credit.host: %communicator.host%
+    communicator.sms_credit.port: 4040
 
 services:
   practo_communicator.mail_patient:
@@ -87,3 +92,10 @@ services:
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
+  practo_communicator.sms_credit:
+    class: %practo_communicator.sms_credit.class%
+    arguments:
+      - @leezy.pheanstalk.communicator
+      - %communicator.sms_credit%
+      - %communicator.sms_credit.host%
+      - %communicator.sms_credit.port%
