@@ -40,6 +40,7 @@ final class DoctorEmailType {
   const ONLINE_APPOINTMENT = 4;
   const REMINDER = 5;
   const RESCHEDULE = 6;
+  const BILLS_REPORT = 7;
   static public $__names = array(
     1 => 'CANCELLATION',
     2 => 'CONFIRMATION',
@@ -47,6 +48,7 @@ final class DoctorEmailType {
     4 => 'ONLINE_APPOINTMENT',
     5 => 'REMINDER',
     6 => 'RESCHEDULE',
+    7 => 'BILLS_REPORT',
   );
 }
 
@@ -68,6 +70,7 @@ final class PatientEmailType {
   const PAYMENT = 14;
   const TIMELINE = 15;
   const FILE = 16;
+  const BILLS_REPORT = 17;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -86,6 +89,7 @@ final class PatientEmailType {
     14 => 'PAYMENT',
     15 => 'TIMELINE',
     16 => 'FILE',
+    17 => 'BILLS_REPORT',
   );
 }
 
@@ -98,6 +102,7 @@ final class StaffEmailType {
   const REMINDER = 6;
   const SUMMARY_FOLLOWUPBIRTHDAY = 7;
   const ACCOUNT_DELETE = 8;
+  const BILLS_REPORT = 9;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -107,6 +112,7 @@ final class StaffEmailType {
     6 => 'REMINDER',
     7 => 'SUMMARY_FOLLOWUPBIRTHDAY',
     8 => 'ACCOUNT_DELETE',
+    9 => 'BILLS_REPORT',
   );
 }
 
@@ -219,6 +225,15 @@ final class StaffSMSType {
     9 => 'PVR_EMERGENCY',
     10 => 'PVR_VOICEMAIL',
     11 => 'PVR_CALL',
+  );
+}
+
+final class HelloPlan {
+  const HELLO_LEGACY = 1;
+  const HELLO = 2;
+  static public $__names = array(
+    1 => 'HELLO_LEGACY',
+    2 => 'HELLO',
   );
 }
 
@@ -2969,6 +2984,7 @@ class DoctorSMS {
   public $cost = null;
   public $secondary_mobile = null;
   public $expiry_time = null;
+  public $cost_deducted_from = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3073,6 +3089,10 @@ class DoctorSMS {
           'var' => 'expiry_time',
           'type' => TType::STRING,
           ),
+        26 => array(
+          'var' => 'cost_deducted_from',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -3150,6 +3170,9 @@ class DoctorSMS {
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['cost_deducted_from'])) {
+        $this->cost_deducted_from = $vals['cost_deducted_from'];
       }
     }
   }
@@ -3348,6 +3371,13 @@ class DoctorSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 26:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->cost_deducted_from);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -3486,6 +3516,11 @@ class DoctorSMS {
       $xfer += $output->writeString($this->expiry_time);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->cost_deducted_from !== null) {
+      $xfer += $output->writeFieldBegin('cost_deducted_from', TType::STRING, 26);
+      $xfer += $output->writeString($this->cost_deducted_from);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -3621,6 +3656,7 @@ class PatientSMS {
   public $cost = null;
   public $secondary_mobile = null;
   public $expiry_time = null;
+  public $cost_deducted_from = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3725,6 +3761,10 @@ class PatientSMS {
           'var' => 'expiry_time',
           'type' => TType::STRING,
           ),
+        26 => array(
+          'var' => 'cost_deducted_from',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -3802,6 +3842,9 @@ class PatientSMS {
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['cost_deducted_from'])) {
+        $this->cost_deducted_from = $vals['cost_deducted_from'];
       }
     }
   }
@@ -4000,6 +4043,13 @@ class PatientSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 26:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->cost_deducted_from);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -4138,6 +4188,11 @@ class PatientSMS {
       $xfer += $output->writeString($this->expiry_time);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->cost_deducted_from !== null) {
+      $xfer += $output->writeFieldBegin('cost_deducted_from', TType::STRING, 26);
+      $xfer += $output->writeString($this->cost_deducted_from);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -4273,6 +4328,7 @@ class StaffSMS {
   public $cost = null;
   public $secondary_mobile = null;
   public $expiry_time = null;
+  public $cost_deducted_from = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -4377,6 +4433,10 @@ class StaffSMS {
           'var' => 'expiry_time',
           'type' => TType::STRING,
           ),
+        26 => array(
+          'var' => 'cost_deducted_from',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -4454,6 +4514,9 @@ class StaffSMS {
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['cost_deducted_from'])) {
+        $this->cost_deducted_from = $vals['cost_deducted_from'];
       }
     }
   }
@@ -4652,6 +4715,13 @@ class StaffSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 26:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->cost_deducted_from);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -4790,6 +4860,11 @@ class StaffSMS {
       $xfer += $output->writeString($this->expiry_time);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->cost_deducted_from !== null) {
+      $xfer += $output->writeFieldBegin('cost_deducted_from', TType::STRING, 26);
+      $xfer += $output->writeString($this->cost_deducted_from);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -4908,6 +4983,8 @@ class SmsCredit {
   public $action = null;
   public $attempt = null;
   public $pricing_plan_id = null;
+  public $hello_plan = null;
+  public $wallet_credit = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -4944,6 +5021,14 @@ class SmsCredit {
           'var' => 'pricing_plan_id',
           'type' => TType::STRING,
           ),
+        10 => array(
+          'var' => 'hello_plan',
+          'type' => TType::I32,
+          ),
+        11 => array(
+          'var' => 'wallet_credit',
+          'type' => TType::DOUBLE,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -4970,6 +5055,12 @@ class SmsCredit {
       }
       if (isset($vals['pricing_plan_id'])) {
         $this->pricing_plan_id = $vals['pricing_plan_id'];
+      }
+      if (isset($vals['hello_plan'])) {
+        $this->hello_plan = $vals['hello_plan'];
+      }
+      if (isset($vals['wallet_credit'])) {
+        $this->wallet_credit = $vals['wallet_credit'];
       }
     }
   }
@@ -5049,6 +5140,20 @@ class SmsCredit {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 10:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->hello_plan);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->wallet_credit);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -5102,6 +5207,16 @@ class SmsCredit {
       $xfer += $output->writeString($this->pricing_plan_id);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->hello_plan !== null) {
+      $xfer += $output->writeFieldBegin('hello_plan', TType::I32, 10);
+      $xfer += $output->writeI32($this->hello_plan);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->wallet_credit !== null) {
+      $xfer += $output->writeFieldBegin('wallet_credit', TType::DOUBLE, 11);
+      $xfer += $output->writeDouble($this->wallet_credit);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -5109,4 +5224,186 @@ class SmsCredit {
 
 }
 
+class Cost {
+  static $_TSPEC;
 
+  public $amount = null;
+  public $currency = null;
+  public $deducted_from = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'amount',
+          'type' => TType::DOUBLE,
+          ),
+        2 => array(
+          'var' => 'currency',
+          'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'deducted_from',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['amount'])) {
+        $this->amount = $vals['amount'];
+      }
+      if (isset($vals['currency'])) {
+        $this->currency = $vals['currency'];
+      }
+      if (isset($vals['deducted_from'])) {
+        $this->deducted_from = $vals['deducted_from'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'Cost';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->amount);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->currency);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->deducted_from);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('Cost');
+    if ($this->amount !== null) {
+      $xfer += $output->writeFieldBegin('amount', TType::DOUBLE, 1);
+      $xfer += $output->writeDouble($this->amount);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->currency !== null) {
+      $xfer += $output->writeFieldBegin('currency', TType::STRING, 2);
+      $xfer += $output->writeString($this->currency);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->deducted_from !== null) {
+      $xfer += $output->writeFieldBegin('deducted_from', TType::STRING, 3);
+      $xfer += $output->writeString($this->deducted_from);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class ApplicationException extends TException {
+  static $_TSPEC;
+
+  public $message = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'message',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['message'])) {
+        $this->message = $vals['message'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'ApplicationException';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ApplicationException');
+    if ($this->message !== null) {
+      $xfer += $output->writeFieldBegin('message', TType::STRING, 1);
+      $xfer += $output->writeString($this->message);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
