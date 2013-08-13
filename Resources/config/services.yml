@@ -15,7 +15,7 @@ parameters:
     communicator.update_sms_queue: sms_updater
     communicator.error_sms_queue: sms_sender_error
     communicator.update_error_sms_queue: sms_updater_error
-    communicator.sms_credit: dev_credit_handler
+    communicator.sms_credit: credit_handler
 
     communicator.host: 127.0.0.1
 
