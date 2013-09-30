@@ -71,6 +71,7 @@ final class PatientEmailType {
   const TIMELINE = 15;
   const FILE = 16;
   const BILLS_REPORT = 17;
+  const MEDICAL_LEAVE = 18;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -90,6 +91,7 @@ final class PatientEmailType {
     15 => 'TIMELINE',
     16 => 'FILE',
     17 => 'BILLS_REPORT',
+    18 => 'MEDICAL_LEAVE',
   );
 }
 
@@ -103,6 +105,7 @@ final class StaffEmailType {
   const SUMMARY_FOLLOWUPBIRTHDAY = 7;
   const ACCOUNT_DELETE = 8;
   const BILLS_REPORT = 9;
+  const LOW_STOCK = 10;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -113,6 +116,7 @@ final class StaffEmailType {
     7 => 'SUMMARY_FOLLOWUPBIRTHDAY',
     8 => 'ACCOUNT_DELETE',
     9 => 'BILLS_REPORT',
+    10 => 'LOW_STOCK',
   );
 }
 
@@ -2985,6 +2989,7 @@ class DoctorSMS {
   public $secondary_mobile = null;
   public $expiry_time = null;
   public $cost_deducted_from = null;
+  public $retry_for = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3093,6 +3098,10 @@ class DoctorSMS {
           'var' => 'cost_deducted_from',
           'type' => TType::STRING,
           ),
+        27 => array(
+          'var' => 'retry_for',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -3173,6 +3182,9 @@ class DoctorSMS {
       }
       if (isset($vals['cost_deducted_from'])) {
         $this->cost_deducted_from = $vals['cost_deducted_from'];
+      }
+      if (isset($vals['retry_for'])) {
+        $this->retry_for = $vals['retry_for'];
       }
     }
   }
@@ -3378,6 +3390,13 @@ class DoctorSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->retry_for);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -3521,6 +3540,11 @@ class DoctorSMS {
       $xfer += $output->writeString($this->cost_deducted_from);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->retry_for !== null) {
+      $xfer += $output->writeFieldBegin('retry_for', TType::STRING, 27);
+      $xfer += $output->writeString($this->retry_for);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -3657,6 +3681,7 @@ class PatientSMS {
   public $secondary_mobile = null;
   public $expiry_time = null;
   public $cost_deducted_from = null;
+  public $retry_for = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3765,6 +3790,10 @@ class PatientSMS {
           'var' => 'cost_deducted_from',
           'type' => TType::STRING,
           ),
+        27 => array(
+          'var' => 'retry_for',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -3845,6 +3874,9 @@ class PatientSMS {
       }
       if (isset($vals['cost_deducted_from'])) {
         $this->cost_deducted_from = $vals['cost_deducted_from'];
+      }
+      if (isset($vals['retry_for'])) {
+        $this->retry_for = $vals['retry_for'];
       }
     }
   }
@@ -4050,6 +4082,13 @@ class PatientSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->retry_for);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -4193,6 +4232,11 @@ class PatientSMS {
       $xfer += $output->writeString($this->cost_deducted_from);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->retry_for !== null) {
+      $xfer += $output->writeFieldBegin('retry_for', TType::STRING, 27);
+      $xfer += $output->writeString($this->retry_for);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -4329,6 +4373,7 @@ class StaffSMS {
   public $secondary_mobile = null;
   public $expiry_time = null;
   public $cost_deducted_from = null;
+  public $retry_for = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -4437,6 +4482,10 @@ class StaffSMS {
           'var' => 'cost_deducted_from',
           'type' => TType::STRING,
           ),
+        27 => array(
+          'var' => 'retry_for',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -4517,6 +4566,9 @@ class StaffSMS {
       }
       if (isset($vals['cost_deducted_from'])) {
         $this->cost_deducted_from = $vals['cost_deducted_from'];
+      }
+      if (isset($vals['retry_for'])) {
+        $this->retry_for = $vals['retry_for'];
       }
     }
   }
@@ -4722,6 +4774,13 @@ class StaffSMS {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->retry_for);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -4863,6 +4922,11 @@ class StaffSMS {
     if ($this->cost_deducted_from !== null) {
       $xfer += $output->writeFieldBegin('cost_deducted_from', TType::STRING, 26);
       $xfer += $output->writeString($this->cost_deducted_from);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->retry_for !== null) {
+      $xfer += $output->writeFieldBegin('retry_for', TType::STRING, 27);
+      $xfer += $output->writeString($this->retry_for);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

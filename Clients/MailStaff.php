@@ -198,7 +198,9 @@ class MailStaff
         case "ACCOUNT_DELETE":
           return \praccomm\StaffEmailType::ACCOUNT_DELETE;
         case "BILLS_REPORT":
-              return \praccomm\DoctorEmailType::BILLS_REPORT;
+          return \praccomm\StaffEmailType::BILLS_REPORT;
+        case "LOW_STOCK":
+          return \praccomm\StaffEmailType::LOW_STOCK;
         default:
           throw new Exception("Invalid message type");
       }

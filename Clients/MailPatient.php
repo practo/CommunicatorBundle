@@ -261,6 +261,10 @@ class MailPatient
             return \praccomm\PatientEmailType::TIMELINE;
         case "FILE":
             return \praccomm\PatientEmailType::FILE;
+        case "BILLS_REPORT":
+            return \praccomm\PatientEmailType::BILLS_REPORT;
+        case "MEDICAL_LEAVE":
+            return \praccomm\PatientEmailType::MEDICAL_LEAVE;
         default:
             throw new \Exception("Invalid message type");
         }
