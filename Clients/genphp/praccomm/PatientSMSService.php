@@ -25,6 +25,7 @@ interface PatientSMSServiceIf {
   public function get_messages_by_application($start_date, $end_date);
   public function get_messages_by_app_for_pid($pid, $start_date, $end_date);
   public function get_messages_by_app_for_cid($pid, $cid, $start_date, $end_date);
+  public function get_retried_messages_for_smsid($sms_id);
   public function send(\praccomm\PatientSMS $patient_sms);
 }
 
@@ -519,6 +520,57 @@ class PatientSMSServiceClient implements \praccomm\PatientSMSServiceIf {
     throw new \Exception("get_messages_by_app_for_cid failed: unknown result");
   }
 
+  public function get_retried_messages_for_smsid($sms_id)
+  {
+    $this->send_get_retried_messages_for_smsid($sms_id);
+    return $this->recv_get_retried_messages_for_smsid();
+  }
+
+  public function send_get_retried_messages_for_smsid($sms_id)
+  {
+    $args = new \praccomm\PatientSMSService_get_retried_messages_for_smsid_args();
+    $args->sms_id = $sms_id;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'get_retried_messages_for_smsid', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('get_retried_messages_for_smsid', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_get_retried_messages_for_smsid()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\PatientSMSService_get_retried_messages_for_smsid_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\PatientSMSService_get_retried_messages_for_smsid_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("get_retried_messages_for_smsid failed: unknown result");
+  }
+
   public function send(\praccomm\PatientSMS $patient_sms)
   {
     $this->send_send($patient_sms);
@@ -820,14 +872,14 @@ class PatientSMSService_search_by_practice_id_args {
         case 3:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size133 = 0;
-            $_etype136 = 0;
-            $xfer += $input->readListBegin($_etype136, $_size133);
-            for ($_i137 = 0; $_i137 < $_size133; ++$_i137)
+            $_size196 = 0;
+            $_etype199 = 0;
+            $xfer += $input->readListBegin($_etype199, $_size196);
+            for ($_i200 = 0; $_i200 < $_size196; ++$_i200)
             {
-              $elem138 = null;
-              $xfer += $input->readString($elem138);
-              $this->sms_types []= $elem138;
+              $elem201 = null;
+              $xfer += $input->readString($elem201);
+              $this->sms_types []= $elem201;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -865,9 +917,9 @@ class PatientSMSService_search_by_practice_id_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter139)
+          foreach ($this->sms_types as $iter202)
           {
-            $xfer += $output->writeString($iter139);
+            $xfer += $output->writeString($iter202);
           }
         }
         $output->writeListEnd();
@@ -1241,14 +1293,14 @@ class PatientSMSService_get_messages_by_delivery_status_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size140 = 0;
-            $_etype143 = 0;
-            $xfer += $input->readListBegin($_etype143, $_size140);
-            for ($_i144 = 0; $_i144 < $_size140; ++$_i144)
+            $_size203 = 0;
+            $_etype206 = 0;
+            $xfer += $input->readListBegin($_etype206, $_size203);
+            for ($_i207 = 0; $_i207 < $_size203; ++$_i207)
             {
-              $elem145 = null;
-              $xfer += $input->readString($elem145);
-              $this->sms_types []= $elem145;
+              $elem208 = null;
+              $xfer += $input->readString($elem208);
+              $this->sms_types []= $elem208;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1258,14 +1310,14 @@ class PatientSMSService_get_messages_by_delivery_status_args {
         case 5:
           if ($ftype == TType::LST) {
             $this->status = array();
-            $_size146 = 0;
-            $_etype149 = 0;
-            $xfer += $input->readListBegin($_etype149, $_size146);
-            for ($_i150 = 0; $_i150 < $_size146; ++$_i150)
+            $_size209 = 0;
+            $_etype212 = 0;
+            $xfer += $input->readListBegin($_etype212, $_size209);
+            for ($_i213 = 0; $_i213 < $_size209; ++$_i213)
             {
-              $elem151 = null;
-              $xfer += $input->readString($elem151);
-              $this->status []= $elem151;
+              $elem214 = null;
+              $xfer += $input->readString($elem214);
+              $this->status []= $elem214;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1308,9 +1360,9 @@ class PatientSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter152)
+          foreach ($this->sms_types as $iter215)
           {
-            $xfer += $output->writeString($iter152);
+            $xfer += $output->writeString($iter215);
           }
         }
         $output->writeListEnd();
@@ -1325,9 +1377,9 @@ class PatientSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->status));
         {
-          foreach ($this->status as $iter153)
+          foreach ($this->status as $iter216)
           {
-            $xfer += $output->writeString($iter153);
+            $xfer += $output->writeString($iter216);
           }
         }
         $output->writeListEnd();
@@ -1505,14 +1557,14 @@ class PatientSMSService_get_messages_by_failure_reason_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size154 = 0;
-            $_etype157 = 0;
-            $xfer += $input->readListBegin($_etype157, $_size154);
-            for ($_i158 = 0; $_i158 < $_size154; ++$_i158)
+            $_size217 = 0;
+            $_etype220 = 0;
+            $xfer += $input->readListBegin($_etype220, $_size217);
+            for ($_i221 = 0; $_i221 < $_size217; ++$_i221)
             {
-              $elem159 = null;
-              $xfer += $input->readString($elem159);
-              $this->sms_types []= $elem159;
+              $elem222 = null;
+              $xfer += $input->readString($elem222);
+              $this->sms_types []= $elem222;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1555,9 +1607,9 @@ class PatientSMSService_get_messages_by_failure_reason_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter160)
+          foreach ($this->sms_types as $iter223)
           {
-            $xfer += $output->writeString($iter160);
+            $xfer += $output->writeString($iter223);
           }
         }
         $output->writeListEnd();
@@ -2387,6 +2439,150 @@ class PatientSMSService_get_messages_by_app_for_cid_result {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('PatientSMSService_get_messages_by_app_for_cid_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class PatientSMSService_get_retried_messages_for_smsid_args {
+  static $_TSPEC;
+
+  public $sms_id = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'sms_id',
+          'type' => TType::I64,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['sms_id'])) {
+        $this->sms_id = $vals['sms_id'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'PatientSMSService_get_retried_messages_for_smsid_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->sms_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('PatientSMSService_get_retried_messages_for_smsid_args');
+    if ($this->sms_id !== null) {
+      $xfer += $output->writeFieldBegin('sms_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->sms_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class PatientSMSService_get_retried_messages_for_smsid_result {
+  static $_TSPEC;
+
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'PatientSMSService_get_retried_messages_for_smsid_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('PatientSMSService_get_retried_messages_for_smsid_result');
     if ($this->success !== null) {
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
       $xfer += $output->writeString($this->success);

@@ -166,6 +166,21 @@ final class SMSDeliveryStatus {
   );
 }
 
+final class CreditAction {
+  const ADD_PRACTO_CREDIT = 1;
+  const ADD_WALLET_CREDIT = 2;
+  const DEDUCT_PRACTO_CREDIT = 3;
+  const DEDUCT_WALLET_CREDIT = 4;
+  const INSERT_CREDIT = 5;
+  static public $__names = array(
+    1 => 'ADD_PRACTO_CREDIT',
+    2 => 'ADD_WALLET_CREDIT',
+    3 => 'DEDUCT_PRACTO_CREDIT',
+    4 => 'DEDUCT_WALLET_CREDIT',
+    5 => 'INSERT_CREDIT',
+  );
+}
+
 final class PatientSMSType {
   const BIRTHDAY = 1;
   const BULK = 2;
@@ -184,6 +199,7 @@ final class PatientSMSType {
   const PVR_EMERGENCY = 15;
   const PVR_VOICEMAIL = 16;
   const PVR_CALL = 17;
+  const AMOUNT_DUE = 18;
   static public $__names = array(
     1 => 'BIRTHDAY',
     2 => 'BULK',
@@ -202,6 +218,7 @@ final class PatientSMSType {
     15 => 'PVR_EMERGENCY',
     16 => 'PVR_VOICEMAIL',
     17 => 'PVR_CALL',
+    18 => 'AMOUNT_DUE',
   );
 }
 
@@ -229,6 +246,87 @@ final class StaffSMSType {
     9 => 'PVR_EMERGENCY',
     10 => 'PVR_VOICEMAIL',
     11 => 'PVR_CALL',
+  );
+}
+
+final class PersonType {
+  const PATIENT = 1;
+  const STAFF = 2;
+  const DOCTOR = 3;
+  static public $__names = array(
+    1 => 'PATIENT',
+    2 => 'STAFF',
+    3 => 'DOCTOR',
+  );
+}
+
+final class AppointmentSMSType {
+  const VERIFICATION = 1;
+  const REQUEST = 2;
+  const CONFIRMATION = 3;
+  const CANCELLATION = 4;
+  const RESCHEDULE = 5;
+  const TEST = 6;
+  const PASSED_ON = 7;
+  static public $__names = array(
+    1 => 'VERIFICATION',
+    2 => 'REQUEST',
+    3 => 'CONFIRMATION',
+    4 => 'CANCELLATION',
+    5 => 'RESCHEDULE',
+    6 => 'TEST',
+    7 => 'PASSED_ON',
+  );
+}
+
+final class GroupSMSType {
+  const INVITE = 1;
+  const NEW_EVENT = 2;
+  const EVENT_CANCELLATION = 3;
+  const EVENT_CONFIRMATION = 4;
+  static public $__names = array(
+    1 => 'INVITE',
+    2 => 'NEW_EVENT',
+    3 => 'EVENT_CANCELLATION',
+    4 => 'EVENT_CONFIRMATION',
+  );
+}
+
+final class AppointmentMailType {
+  const VERIFICATION = 1;
+  const REQUEST = 2;
+  const CONFIRMATION = 3;
+  const CANCELLATION = 4;
+  const RESCHEDULE = 5;
+  const TEST = 6;
+  const PASSED_ON = 7;
+  const CUSTOM = 8;
+  static public $__names = array(
+    1 => 'VERIFICATION',
+    2 => 'REQUEST',
+    3 => 'CONFIRMATION',
+    4 => 'CANCELLATION',
+    5 => 'RESCHEDULE',
+    6 => 'TEST',
+    7 => 'PASSED_ON',
+    8 => 'CUSTOM',
+  );
+}
+
+final class GroupMailType {
+  const INVITE = 1;
+  const NEW_EVENT = 2;
+  const EVENT_CANCELLATION = 3;
+  const EVENT_CONFIRMATION = 4;
+  const EVENT_ATTENDANCE_CANCELLATION = 5;
+  const EVENT_ATTENDANCE_CONFIRMATION = 6;
+  static public $__names = array(
+    1 => 'INVITE',
+    2 => 'NEW_EVENT',
+    3 => 'EVENT_CANCELLATION',
+    4 => 'EVENT_CONFIRMATION',
+    5 => 'EVENT_ATTENDANCE_CANCELLATION',
+    6 => 'EVENT_ATTENDANCE_CONFIRMATION',
   );
 }
 
@@ -5036,6 +5134,3266 @@ class StaffMessages {
 
 }
 
+class AppointmentSMS {
+  static $_TSPEC;
+
+  public $appointment_sms_id = null;
+  public $appointment_id = null;
+  public $name = null;
+  public $mobile = null;
+  public $person_type = null;
+  public $message_text = null;
+  public $message_type = null;
+  public $delivery_time = null;
+  public $status = null;
+  public $failure_reason = null;
+  public $attempt = null;
+  public $operator = null;
+  public $operator_reply = null;
+  public $operator_code = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $app_name = null;
+  public $currency = null;
+  public $cost = null;
+  public $expiry_time = null;
+  public $notes = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'appointment_sms_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'appointment_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'name',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'mobile',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'person_type',
+          'type' => TType::I32,
+          ),
+        6 => array(
+          'var' => 'message_text',
+          'type' => TType::STRING,
+          ),
+        7 => array(
+          'var' => 'message_type',
+          'type' => TType::I32,
+          ),
+        8 => array(
+          'var' => 'delivery_time',
+          'type' => TType::I64,
+          ),
+        9 => array(
+          'var' => 'status',
+          'type' => TType::I32,
+          ),
+        10 => array(
+          'var' => 'failure_reason',
+          'type' => TType::STRING,
+          ),
+        11 => array(
+          'var' => 'attempt',
+          'type' => TType::I64,
+          ),
+        12 => array(
+          'var' => 'operator',
+          'type' => TType::STRING,
+          ),
+        13 => array(
+          'var' => 'operator_reply',
+          'type' => TType::STRING,
+          ),
+        14 => array(
+          'var' => 'operator_code',
+          'type' => TType::STRING,
+          ),
+        15 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        18 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        19 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'currency',
+          'type' => TType::STRING,
+          ),
+        21 => array(
+          'var' => 'cost',
+          'type' => TType::DOUBLE,
+          ),
+        22 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
+        23 => array(
+          'var' => 'notes',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['appointment_sms_id'])) {
+        $this->appointment_sms_id = $vals['appointment_sms_id'];
+      }
+      if (isset($vals['appointment_id'])) {
+        $this->appointment_id = $vals['appointment_id'];
+      }
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['person_type'])) {
+        $this->person_type = $vals['person_type'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['delivery_time'])) {
+        $this->delivery_time = $vals['delivery_time'];
+      }
+      if (isset($vals['status'])) {
+        $this->status = $vals['status'];
+      }
+      if (isset($vals['failure_reason'])) {
+        $this->failure_reason = $vals['failure_reason'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['operator'])) {
+        $this->operator = $vals['operator'];
+      }
+      if (isset($vals['operator_reply'])) {
+        $this->operator_reply = $vals['operator_reply'];
+      }
+      if (isset($vals['operator_code'])) {
+        $this->operator_code = $vals['operator_code'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['currency'])) {
+        $this->currency = $vals['currency'];
+      }
+      if (isset($vals['cost'])) {
+        $this->cost = $vals['cost'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['notes'])) {
+        $this->notes = $vals['notes'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'AppointmentSMS';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->appointment_sms_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->appointment_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->person_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_text);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->message_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->delivery_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->failure_reason);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_code);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->currency);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->cost);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 23:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->notes);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('AppointmentSMS');
+    if ($this->appointment_sms_id !== null) {
+      $xfer += $output->writeFieldBegin('appointment_sms_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->appointment_sms_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->appointment_id !== null) {
+      $xfer += $output->writeFieldBegin('appointment_id', TType::I64, 2);
+      $xfer += $output->writeI64($this->appointment_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->name !== null) {
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 3);
+      $xfer += $output->writeString($this->name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mobile !== null) {
+      $xfer += $output->writeFieldBegin('mobile', TType::STRING, 4);
+      $xfer += $output->writeString($this->mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->person_type !== null) {
+      $xfer += $output->writeFieldBegin('person_type', TType::I32, 5);
+      $xfer += $output->writeI32($this->person_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_text !== null) {
+      $xfer += $output->writeFieldBegin('message_text', TType::STRING, 6);
+      $xfer += $output->writeString($this->message_text);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_type !== null) {
+      $xfer += $output->writeFieldBegin('message_type', TType::I32, 7);
+      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_time !== null) {
+      $xfer += $output->writeFieldBegin('delivery_time', TType::I64, 8);
+      $xfer += $output->writeI64($this->delivery_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->status !== null) {
+      $xfer += $output->writeFieldBegin('status', TType::I32, 9);
+      $xfer += $output->writeI32($this->status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->failure_reason !== null) {
+      $xfer += $output->writeFieldBegin('failure_reason', TType::STRING, 10);
+      $xfer += $output->writeString($this->failure_reason);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I64, 11);
+      $xfer += $output->writeI64($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator !== null) {
+      $xfer += $output->writeFieldBegin('operator', TType::STRING, 12);
+      $xfer += $output->writeString($this->operator);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_reply !== null) {
+      $xfer += $output->writeFieldBegin('operator_reply', TType::STRING, 13);
+      $xfer += $output->writeString($this->operator_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_code !== null) {
+      $xfer += $output->writeFieldBegin('operator_code', TType::STRING, 14);
+      $xfer += $output->writeString($this->operator_code);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 15);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 16);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 17);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 18);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 19);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->currency !== null) {
+      $xfer += $output->writeFieldBegin('currency', TType::STRING, 20);
+      $xfer += $output->writeString($this->currency);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cost !== null) {
+      $xfer += $output->writeFieldBegin('cost', TType::DOUBLE, 21);
+      $xfer += $output->writeDouble($this->cost);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 22);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->notes !== null) {
+      $xfer += $output->writeFieldBegin('notes', TType::STRING, 23);
+      $xfer += $output->writeString($this->notes);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class GroupSMS {
+  static $_TSPEC;
+
+  public $group_sms_id = null;
+  public $group_id = null;
+  public $name = null;
+  public $mobile = null;
+  public $event_id = null;
+  public $message_text = null;
+  public $message_type = null;
+  public $delivery_time = null;
+  public $status = null;
+  public $failure_reason = null;
+  public $attempt = null;
+  public $operator = null;
+  public $operator_reply = null;
+  public $operator_code = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $app_name = null;
+  public $currency = null;
+  public $cost = null;
+  public $expiry_time = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'group_sms_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'group_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'name',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'mobile',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'event_id',
+          'type' => TType::I64,
+          ),
+        6 => array(
+          'var' => 'message_text',
+          'type' => TType::STRING,
+          ),
+        7 => array(
+          'var' => 'message_type',
+          'type' => TType::I32,
+          ),
+        8 => array(
+          'var' => 'delivery_time',
+          'type' => TType::I64,
+          ),
+        9 => array(
+          'var' => 'status',
+          'type' => TType::I32,
+          ),
+        10 => array(
+          'var' => 'failure_reason',
+          'type' => TType::STRING,
+          ),
+        11 => array(
+          'var' => 'attempt',
+          'type' => TType::I64,
+          ),
+        12 => array(
+          'var' => 'operator',
+          'type' => TType::STRING,
+          ),
+        13 => array(
+          'var' => 'operator_reply',
+          'type' => TType::STRING,
+          ),
+        14 => array(
+          'var' => 'operator_code',
+          'type' => TType::STRING,
+          ),
+        15 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        18 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        19 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'currency',
+          'type' => TType::STRING,
+          ),
+        21 => array(
+          'var' => 'cost',
+          'type' => TType::DOUBLE,
+          ),
+        22 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['group_sms_id'])) {
+        $this->group_sms_id = $vals['group_sms_id'];
+      }
+      if (isset($vals['group_id'])) {
+        $this->group_id = $vals['group_id'];
+      }
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['event_id'])) {
+        $this->event_id = $vals['event_id'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['delivery_time'])) {
+        $this->delivery_time = $vals['delivery_time'];
+      }
+      if (isset($vals['status'])) {
+        $this->status = $vals['status'];
+      }
+      if (isset($vals['failure_reason'])) {
+        $this->failure_reason = $vals['failure_reason'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['operator'])) {
+        $this->operator = $vals['operator'];
+      }
+      if (isset($vals['operator_reply'])) {
+        $this->operator_reply = $vals['operator_reply'];
+      }
+      if (isset($vals['operator_code'])) {
+        $this->operator_code = $vals['operator_code'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['currency'])) {
+        $this->currency = $vals['currency'];
+      }
+      if (isset($vals['cost'])) {
+        $this->cost = $vals['cost'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GroupSMS';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->group_sms_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->group_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->event_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_text);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->message_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->delivery_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->failure_reason);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_code);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->currency);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->cost);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('GroupSMS');
+    if ($this->group_sms_id !== null) {
+      $xfer += $output->writeFieldBegin('group_sms_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->group_sms_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->group_id !== null) {
+      $xfer += $output->writeFieldBegin('group_id', TType::I64, 2);
+      $xfer += $output->writeI64($this->group_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->name !== null) {
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 3);
+      $xfer += $output->writeString($this->name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mobile !== null) {
+      $xfer += $output->writeFieldBegin('mobile', TType::STRING, 4);
+      $xfer += $output->writeString($this->mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->event_id !== null) {
+      $xfer += $output->writeFieldBegin('event_id', TType::I64, 5);
+      $xfer += $output->writeI64($this->event_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_text !== null) {
+      $xfer += $output->writeFieldBegin('message_text', TType::STRING, 6);
+      $xfer += $output->writeString($this->message_text);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_type !== null) {
+      $xfer += $output->writeFieldBegin('message_type', TType::I32, 7);
+      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_time !== null) {
+      $xfer += $output->writeFieldBegin('delivery_time', TType::I64, 8);
+      $xfer += $output->writeI64($this->delivery_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->status !== null) {
+      $xfer += $output->writeFieldBegin('status', TType::I32, 9);
+      $xfer += $output->writeI32($this->status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->failure_reason !== null) {
+      $xfer += $output->writeFieldBegin('failure_reason', TType::STRING, 10);
+      $xfer += $output->writeString($this->failure_reason);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I64, 11);
+      $xfer += $output->writeI64($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator !== null) {
+      $xfer += $output->writeFieldBegin('operator', TType::STRING, 12);
+      $xfer += $output->writeString($this->operator);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_reply !== null) {
+      $xfer += $output->writeFieldBegin('operator_reply', TType::STRING, 13);
+      $xfer += $output->writeString($this->operator_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_code !== null) {
+      $xfer += $output->writeFieldBegin('operator_code', TType::STRING, 14);
+      $xfer += $output->writeString($this->operator_code);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 15);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 16);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 17);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 18);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 19);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->currency !== null) {
+      $xfer += $output->writeFieldBegin('currency', TType::STRING, 20);
+      $xfer += $output->writeString($this->currency);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cost !== null) {
+      $xfer += $output->writeFieldBegin('cost', TType::DOUBLE, 21);
+      $xfer += $output->writeDouble($this->cost);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 22);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class AppointmentMail {
+  static $_TSPEC;
+
+  public $appointment_mail_id = null;
+  public $appointment_id = null;
+  public $from_name = null;
+  public $from_address = null;
+  public $to_address = null;
+  public $cc = null;
+  public $bcc = null;
+  public $subject = null;
+  public $body = null;
+  public $date = null;
+  public $email_type = null;
+  public $attachments = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $delivery_status = null;
+  public $email_provider = null;
+  public $message_id = null;
+  public $smtp_reply = null;
+  public $open_time = null;
+  public $open_bounce_data = null;
+  public $unsubscribe_data = null;
+  public $spam_data = null;
+  public $hash = null;
+  public $plaintext = null;
+  public $app_name = null;
+  public $to_name = null;
+  public $mail_type = null;
+  public $attempt = null;
+  public $reply_to = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'appointment_mail_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'appointment_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'from_name',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'from_address',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'to_address',
+          'type' => TType::STRING,
+          ),
+        6 => array(
+          'var' => 'cc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        7 => array(
+          'var' => 'bcc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        8 => array(
+          'var' => 'subject',
+          'type' => TType::STRING,
+          ),
+        9 => array(
+          'var' => 'body',
+          'type' => TType::STRING,
+          ),
+        10 => array(
+          'var' => 'date',
+          'type' => TType::I64,
+          ),
+        11 => array(
+          'var' => 'email_type',
+          'type' => TType::I32,
+          ),
+        12 => array(
+          'var' => 'attachments',
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
+          ),
+        13 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        14 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        15 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'delivery_status',
+          'type' => TType::I32,
+          ),
+        18 => array(
+          'var' => 'email_provider',
+          'type' => TType::STRING,
+          ),
+        19 => array(
+          'var' => 'message_id',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'smtp_reply',
+          'type' => TType::STRING,
+          ),
+        21 => array(
+          'var' => 'open_time',
+          'type' => TType::STRING,
+          ),
+        22 => array(
+          'var' => 'open_bounce_data',
+          'type' => TType::STRING,
+          ),
+        23 => array(
+          'var' => 'unsubscribe_data',
+          'type' => TType::STRING,
+          ),
+        24 => array(
+          'var' => 'spam_data',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'hash',
+          'type' => TType::STRING,
+          ),
+        27 => array(
+          'var' => 'plaintext',
+          'type' => TType::STRING,
+          ),
+        28 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        29 => array(
+          'var' => 'to_name',
+          'type' => TType::STRING,
+          ),
+        30 => array(
+          'var' => 'mail_type',
+          'type' => TType::STRING,
+          ),
+        31 => array(
+          'var' => 'attempt',
+          'type' => TType::I32,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['appointment_mail_id'])) {
+        $this->appointment_mail_id = $vals['appointment_mail_id'];
+      }
+      if (isset($vals['appointment_id'])) {
+        $this->appointment_id = $vals['appointment_id'];
+      }
+      if (isset($vals['from_name'])) {
+        $this->from_name = $vals['from_name'];
+      }
+      if (isset($vals['from_address'])) {
+        $this->from_address = $vals['from_address'];
+      }
+      if (isset($vals['to_address'])) {
+        $this->to_address = $vals['to_address'];
+      }
+      if (isset($vals['cc'])) {
+        $this->cc = $vals['cc'];
+      }
+      if (isset($vals['bcc'])) {
+        $this->bcc = $vals['bcc'];
+      }
+      if (isset($vals['subject'])) {
+        $this->subject = $vals['subject'];
+      }
+      if (isset($vals['body'])) {
+        $this->body = $vals['body'];
+      }
+      if (isset($vals['date'])) {
+        $this->date = $vals['date'];
+      }
+      if (isset($vals['email_type'])) {
+        $this->email_type = $vals['email_type'];
+      }
+      if (isset($vals['attachments'])) {
+        $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['delivery_status'])) {
+        $this->delivery_status = $vals['delivery_status'];
+      }
+      if (isset($vals['email_provider'])) {
+        $this->email_provider = $vals['email_provider'];
+      }
+      if (isset($vals['message_id'])) {
+        $this->message_id = $vals['message_id'];
+      }
+      if (isset($vals['smtp_reply'])) {
+        $this->smtp_reply = $vals['smtp_reply'];
+      }
+      if (isset($vals['open_time'])) {
+        $this->open_time = $vals['open_time'];
+      }
+      if (isset($vals['open_bounce_data'])) {
+        $this->open_bounce_data = $vals['open_bounce_data'];
+      }
+      if (isset($vals['unsubscribe_data'])) {
+        $this->unsubscribe_data = $vals['unsubscribe_data'];
+      }
+      if (isset($vals['spam_data'])) {
+        $this->spam_data = $vals['spam_data'];
+      }
+      if (isset($vals['hash'])) {
+        $this->hash = $vals['hash'];
+      }
+      if (isset($vals['plaintext'])) {
+        $this->plaintext = $vals['plaintext'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['to_name'])) {
+        $this->to_name = $vals['to_name'];
+      }
+      if (isset($vals['mail_type'])) {
+        $this->mail_type = $vals['mail_type'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'AppointmentMail';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->appointment_mail_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->appointment_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::LST) {
+            $this->cc = array();
+            $_size105 = 0;
+            $_etype108 = 0;
+            $xfer += $input->readListBegin($_etype108, $_size105);
+            for ($_i109 = 0; $_i109 < $_size105; ++$_i109)
+            {
+              $elem110 = null;
+              $xfer += $input->readString($elem110);
+              $this->cc []= $elem110;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::LST) {
+            $this->bcc = array();
+            $_size111 = 0;
+            $_etype114 = 0;
+            $xfer += $input->readListBegin($_etype114, $_size111);
+            for ($_i115 = 0; $_i115 < $_size111; ++$_i115)
+            {
+              $elem116 = null;
+              $xfer += $input->readString($elem116);
+              $this->bcc []= $elem116;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->subject);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->body);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->email_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size117 = 0;
+            $_etype120 = 0;
+            $xfer += $input->readListBegin($_etype120, $_size117);
+            for ($_i121 = 0; $_i121 < $_size117; ++$_i121)
+            {
+              $elem122 = null;
+              $elem122 = new \praccomm\Attachment();
+              $xfer += $elem122->read($input);
+              $this->attachments []= $elem122;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->delivery_status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_provider);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->smtp_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_bounce_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 23:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->unsubscribe_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->spam_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->hash);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->plaintext);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 28:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 29:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 30:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mail_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 31:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('AppointmentMail');
+    if ($this->appointment_mail_id !== null) {
+      $xfer += $output->writeFieldBegin('appointment_mail_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->appointment_mail_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->appointment_id !== null) {
+      $xfer += $output->writeFieldBegin('appointment_id', TType::I64, 2);
+      $xfer += $output->writeI64($this->appointment_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_name !== null) {
+      $xfer += $output->writeFieldBegin('from_name', TType::STRING, 3);
+      $xfer += $output->writeString($this->from_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_address !== null) {
+      $xfer += $output->writeFieldBegin('from_address', TType::STRING, 4);
+      $xfer += $output->writeString($this->from_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_address !== null) {
+      $xfer += $output->writeFieldBegin('to_address', TType::STRING, 5);
+      $xfer += $output->writeString($this->to_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cc !== null) {
+      if (!is_array($this->cc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('cc', TType::LST, 6);
+      {
+        $output->writeListBegin(TType::STRING, count($this->cc));
+        {
+          foreach ($this->cc as $iter123)
+          {
+            $xfer += $output->writeString($iter123);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->bcc !== null) {
+      if (!is_array($this->bcc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('bcc', TType::LST, 7);
+      {
+        $output->writeListBegin(TType::STRING, count($this->bcc));
+        {
+          foreach ($this->bcc as $iter124)
+          {
+            $xfer += $output->writeString($iter124);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->subject !== null) {
+      $xfer += $output->writeFieldBegin('subject', TType::STRING, 8);
+      $xfer += $output->writeString($this->subject);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->body !== null) {
+      $xfer += $output->writeFieldBegin('body', TType::STRING, 9);
+      $xfer += $output->writeString($this->body);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->date !== null) {
+      $xfer += $output->writeFieldBegin('date', TType::I64, 10);
+      $xfer += $output->writeI64($this->date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_type !== null) {
+      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
+      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attachments !== null) {
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 12);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter125)
+          {
+            $xfer += $iter125->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 13);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 14);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 15);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 16);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_status !== null) {
+      $xfer += $output->writeFieldBegin('delivery_status', TType::I32, 17);
+      $xfer += $output->writeI32($this->delivery_status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_provider !== null) {
+      $xfer += $output->writeFieldBegin('email_provider', TType::STRING, 18);
+      $xfer += $output->writeString($this->email_provider);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_id !== null) {
+      $xfer += $output->writeFieldBegin('message_id', TType::STRING, 19);
+      $xfer += $output->writeString($this->message_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->smtp_reply !== null) {
+      $xfer += $output->writeFieldBegin('smtp_reply', TType::STRING, 20);
+      $xfer += $output->writeString($this->smtp_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_time !== null) {
+      $xfer += $output->writeFieldBegin('open_time', TType::STRING, 21);
+      $xfer += $output->writeString($this->open_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_bounce_data !== null) {
+      $xfer += $output->writeFieldBegin('open_bounce_data', TType::STRING, 22);
+      $xfer += $output->writeString($this->open_bounce_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->unsubscribe_data !== null) {
+      $xfer += $output->writeFieldBegin('unsubscribe_data', TType::STRING, 23);
+      $xfer += $output->writeString($this->unsubscribe_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->spam_data !== null) {
+      $xfer += $output->writeFieldBegin('spam_data', TType::STRING, 24);
+      $xfer += $output->writeString($this->spam_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->hash !== null) {
+      $xfer += $output->writeFieldBegin('hash', TType::STRING, 25);
+      $xfer += $output->writeString($this->hash);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->plaintext !== null) {
+      $xfer += $output->writeFieldBegin('plaintext', TType::STRING, 27);
+      $xfer += $output->writeString($this->plaintext);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 28);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_name !== null) {
+      $xfer += $output->writeFieldBegin('to_name', TType::STRING, 29);
+      $xfer += $output->writeString($this->to_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mail_type !== null) {
+      $xfer += $output->writeFieldBegin('mail_type', TType::STRING, 30);
+      $xfer += $output->writeString($this->mail_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I32, 31);
+      $xfer += $output->writeI32($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class GroupMail {
+  static $_TSPEC;
+
+  public $group_mail_id = null;
+  public $group_id = null;
+  public $from_name = null;
+  public $from_address = null;
+  public $to_address = null;
+  public $cc = null;
+  public $bcc = null;
+  public $subject = null;
+  public $body = null;
+  public $date = null;
+  public $email_type = null;
+  public $attachments = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $delivery_status = null;
+  public $email_provider = null;
+  public $message_id = null;
+  public $smtp_reply = null;
+  public $open_time = null;
+  public $open_bounce_data = null;
+  public $unsubscribe_data = null;
+  public $spam_data = null;
+  public $hash = null;
+  public $plaintext = null;
+  public $app_name = null;
+  public $to_name = null;
+  public $mail_type = null;
+  public $attempt = null;
+  public $reply_to = null;
+  public $event_id = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'group_mail_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'group_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'from_name',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'from_address',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'to_address',
+          'type' => TType::STRING,
+          ),
+        6 => array(
+          'var' => 'cc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        7 => array(
+          'var' => 'bcc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        8 => array(
+          'var' => 'subject',
+          'type' => TType::STRING,
+          ),
+        9 => array(
+          'var' => 'body',
+          'type' => TType::STRING,
+          ),
+        10 => array(
+          'var' => 'date',
+          'type' => TType::I64,
+          ),
+        11 => array(
+          'var' => 'email_type',
+          'type' => TType::I32,
+          ),
+        12 => array(
+          'var' => 'attachments',
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
+          ),
+        13 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        14 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        15 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'delivery_status',
+          'type' => TType::I32,
+          ),
+        18 => array(
+          'var' => 'email_provider',
+          'type' => TType::STRING,
+          ),
+        19 => array(
+          'var' => 'message_id',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'smtp_reply',
+          'type' => TType::STRING,
+          ),
+        21 => array(
+          'var' => 'open_time',
+          'type' => TType::STRING,
+          ),
+        22 => array(
+          'var' => 'open_bounce_data',
+          'type' => TType::STRING,
+          ),
+        23 => array(
+          'var' => 'unsubscribe_data',
+          'type' => TType::STRING,
+          ),
+        24 => array(
+          'var' => 'spam_data',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'hash',
+          'type' => TType::STRING,
+          ),
+        27 => array(
+          'var' => 'plaintext',
+          'type' => TType::STRING,
+          ),
+        28 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        29 => array(
+          'var' => 'to_name',
+          'type' => TType::STRING,
+          ),
+        30 => array(
+          'var' => 'mail_type',
+          'type' => TType::STRING,
+          ),
+        31 => array(
+          'var' => 'attempt',
+          'type' => TType::I32,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
+          ),
+        33 => array(
+          'var' => 'event_id',
+          'type' => TType::I64,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['group_mail_id'])) {
+        $this->group_mail_id = $vals['group_mail_id'];
+      }
+      if (isset($vals['group_id'])) {
+        $this->group_id = $vals['group_id'];
+      }
+      if (isset($vals['from_name'])) {
+        $this->from_name = $vals['from_name'];
+      }
+      if (isset($vals['from_address'])) {
+        $this->from_address = $vals['from_address'];
+      }
+      if (isset($vals['to_address'])) {
+        $this->to_address = $vals['to_address'];
+      }
+      if (isset($vals['cc'])) {
+        $this->cc = $vals['cc'];
+      }
+      if (isset($vals['bcc'])) {
+        $this->bcc = $vals['bcc'];
+      }
+      if (isset($vals['subject'])) {
+        $this->subject = $vals['subject'];
+      }
+      if (isset($vals['body'])) {
+        $this->body = $vals['body'];
+      }
+      if (isset($vals['date'])) {
+        $this->date = $vals['date'];
+      }
+      if (isset($vals['email_type'])) {
+        $this->email_type = $vals['email_type'];
+      }
+      if (isset($vals['attachments'])) {
+        $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['delivery_status'])) {
+        $this->delivery_status = $vals['delivery_status'];
+      }
+      if (isset($vals['email_provider'])) {
+        $this->email_provider = $vals['email_provider'];
+      }
+      if (isset($vals['message_id'])) {
+        $this->message_id = $vals['message_id'];
+      }
+      if (isset($vals['smtp_reply'])) {
+        $this->smtp_reply = $vals['smtp_reply'];
+      }
+      if (isset($vals['open_time'])) {
+        $this->open_time = $vals['open_time'];
+      }
+      if (isset($vals['open_bounce_data'])) {
+        $this->open_bounce_data = $vals['open_bounce_data'];
+      }
+      if (isset($vals['unsubscribe_data'])) {
+        $this->unsubscribe_data = $vals['unsubscribe_data'];
+      }
+      if (isset($vals['spam_data'])) {
+        $this->spam_data = $vals['spam_data'];
+      }
+      if (isset($vals['hash'])) {
+        $this->hash = $vals['hash'];
+      }
+      if (isset($vals['plaintext'])) {
+        $this->plaintext = $vals['plaintext'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['to_name'])) {
+        $this->to_name = $vals['to_name'];
+      }
+      if (isset($vals['mail_type'])) {
+        $this->mail_type = $vals['mail_type'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
+      if (isset($vals['event_id'])) {
+        $this->event_id = $vals['event_id'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GroupMail';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->group_mail_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->group_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::LST) {
+            $this->cc = array();
+            $_size126 = 0;
+            $_etype129 = 0;
+            $xfer += $input->readListBegin($_etype129, $_size126);
+            for ($_i130 = 0; $_i130 < $_size126; ++$_i130)
+            {
+              $elem131 = null;
+              $xfer += $input->readString($elem131);
+              $this->cc []= $elem131;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::LST) {
+            $this->bcc = array();
+            $_size132 = 0;
+            $_etype135 = 0;
+            $xfer += $input->readListBegin($_etype135, $_size132);
+            for ($_i136 = 0; $_i136 < $_size132; ++$_i136)
+            {
+              $elem137 = null;
+              $xfer += $input->readString($elem137);
+              $this->bcc []= $elem137;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->subject);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->body);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->email_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size138 = 0;
+            $_etype141 = 0;
+            $xfer += $input->readListBegin($_etype141, $_size138);
+            for ($_i142 = 0; $_i142 < $_size138; ++$_i142)
+            {
+              $elem143 = null;
+              $elem143 = new \praccomm\Attachment();
+              $xfer += $elem143->read($input);
+              $this->attachments []= $elem143;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->delivery_status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_provider);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->smtp_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_bounce_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 23:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->unsubscribe_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->spam_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->hash);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->plaintext);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 28:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 29:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 30:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mail_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 31:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 33:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->event_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('GroupMail');
+    if ($this->group_mail_id !== null) {
+      $xfer += $output->writeFieldBegin('group_mail_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->group_mail_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->group_id !== null) {
+      $xfer += $output->writeFieldBegin('group_id', TType::I64, 2);
+      $xfer += $output->writeI64($this->group_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_name !== null) {
+      $xfer += $output->writeFieldBegin('from_name', TType::STRING, 3);
+      $xfer += $output->writeString($this->from_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_address !== null) {
+      $xfer += $output->writeFieldBegin('from_address', TType::STRING, 4);
+      $xfer += $output->writeString($this->from_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_address !== null) {
+      $xfer += $output->writeFieldBegin('to_address', TType::STRING, 5);
+      $xfer += $output->writeString($this->to_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cc !== null) {
+      if (!is_array($this->cc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('cc', TType::LST, 6);
+      {
+        $output->writeListBegin(TType::STRING, count($this->cc));
+        {
+          foreach ($this->cc as $iter144)
+          {
+            $xfer += $output->writeString($iter144);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->bcc !== null) {
+      if (!is_array($this->bcc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('bcc', TType::LST, 7);
+      {
+        $output->writeListBegin(TType::STRING, count($this->bcc));
+        {
+          foreach ($this->bcc as $iter145)
+          {
+            $xfer += $output->writeString($iter145);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->subject !== null) {
+      $xfer += $output->writeFieldBegin('subject', TType::STRING, 8);
+      $xfer += $output->writeString($this->subject);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->body !== null) {
+      $xfer += $output->writeFieldBegin('body', TType::STRING, 9);
+      $xfer += $output->writeString($this->body);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->date !== null) {
+      $xfer += $output->writeFieldBegin('date', TType::I64, 10);
+      $xfer += $output->writeI64($this->date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_type !== null) {
+      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
+      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attachments !== null) {
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 12);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter146)
+          {
+            $xfer += $iter146->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 13);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 14);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 15);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 16);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_status !== null) {
+      $xfer += $output->writeFieldBegin('delivery_status', TType::I32, 17);
+      $xfer += $output->writeI32($this->delivery_status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_provider !== null) {
+      $xfer += $output->writeFieldBegin('email_provider', TType::STRING, 18);
+      $xfer += $output->writeString($this->email_provider);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_id !== null) {
+      $xfer += $output->writeFieldBegin('message_id', TType::STRING, 19);
+      $xfer += $output->writeString($this->message_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->smtp_reply !== null) {
+      $xfer += $output->writeFieldBegin('smtp_reply', TType::STRING, 20);
+      $xfer += $output->writeString($this->smtp_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_time !== null) {
+      $xfer += $output->writeFieldBegin('open_time', TType::STRING, 21);
+      $xfer += $output->writeString($this->open_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_bounce_data !== null) {
+      $xfer += $output->writeFieldBegin('open_bounce_data', TType::STRING, 22);
+      $xfer += $output->writeString($this->open_bounce_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->unsubscribe_data !== null) {
+      $xfer += $output->writeFieldBegin('unsubscribe_data', TType::STRING, 23);
+      $xfer += $output->writeString($this->unsubscribe_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->spam_data !== null) {
+      $xfer += $output->writeFieldBegin('spam_data', TType::STRING, 24);
+      $xfer += $output->writeString($this->spam_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->hash !== null) {
+      $xfer += $output->writeFieldBegin('hash', TType::STRING, 25);
+      $xfer += $output->writeString($this->hash);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->plaintext !== null) {
+      $xfer += $output->writeFieldBegin('plaintext', TType::STRING, 27);
+      $xfer += $output->writeString($this->plaintext);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 28);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_name !== null) {
+      $xfer += $output->writeFieldBegin('to_name', TType::STRING, 29);
+      $xfer += $output->writeString($this->to_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mail_type !== null) {
+      $xfer += $output->writeFieldBegin('mail_type', TType::STRING, 30);
+      $xfer += $output->writeString($this->mail_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I32, 31);
+      $xfer += $output->writeI32($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->event_id !== null) {
+      $xfer += $output->writeFieldBegin('event_id', TType::I64, 33);
+      $xfer += $output->writeI64($this->event_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class GenericMail {
+  static $_TSPEC;
+
+  public $generic_mail_id = null;
+  public $generic_id = null;
+  public $from_name = null;
+  public $from_address = null;
+  public $to_address = null;
+  public $cc = null;
+  public $bcc = null;
+  public $subject = null;
+  public $body = null;
+  public $date = null;
+  public $attachments = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $delivery_status = null;
+  public $email_provider = null;
+  public $message_id = null;
+  public $smtp_reply = null;
+  public $open_time = null;
+  public $open_bounce_data = null;
+  public $unsubscribe_data = null;
+  public $spam_data = null;
+  public $hash = null;
+  public $plaintext = null;
+  public $app_name = null;
+  public $to_name = null;
+  public $mail_type = null;
+  public $attempt = null;
+  public $reply_to = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'generic_mail_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'generic_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'from_name',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'from_address',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'to_address',
+          'type' => TType::STRING,
+          ),
+        6 => array(
+          'var' => 'cc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        7 => array(
+          'var' => 'bcc',
+          'type' => TType::LST,
+          'etype' => TType::STRING,
+          'elem' => array(
+            'type' => TType::STRING,
+            ),
+          ),
+        8 => array(
+          'var' => 'subject',
+          'type' => TType::STRING,
+          ),
+        9 => array(
+          'var' => 'body',
+          'type' => TType::STRING,
+          ),
+        10 => array(
+          'var' => 'date',
+          'type' => TType::I64,
+          ),
+        12 => array(
+          'var' => 'attachments',
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\praccomm\Attachment',
+            ),
+          ),
+        13 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        14 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        15 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'delivery_status',
+          'type' => TType::I32,
+          ),
+        18 => array(
+          'var' => 'email_provider',
+          'type' => TType::STRING,
+          ),
+        19 => array(
+          'var' => 'message_id',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'smtp_reply',
+          'type' => TType::STRING,
+          ),
+        21 => array(
+          'var' => 'open_time',
+          'type' => TType::STRING,
+          ),
+        22 => array(
+          'var' => 'open_bounce_data',
+          'type' => TType::STRING,
+          ),
+        23 => array(
+          'var' => 'unsubscribe_data',
+          'type' => TType::STRING,
+          ),
+        24 => array(
+          'var' => 'spam_data',
+          'type' => TType::STRING,
+          ),
+        25 => array(
+          'var' => 'hash',
+          'type' => TType::STRING,
+          ),
+        27 => array(
+          'var' => 'plaintext',
+          'type' => TType::STRING,
+          ),
+        28 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        29 => array(
+          'var' => 'to_name',
+          'type' => TType::STRING,
+          ),
+        30 => array(
+          'var' => 'mail_type',
+          'type' => TType::STRING,
+          ),
+        31 => array(
+          'var' => 'attempt',
+          'type' => TType::I32,
+          ),
+        32 => array(
+          'var' => 'reply_to',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['generic_mail_id'])) {
+        $this->generic_mail_id = $vals['generic_mail_id'];
+      }
+      if (isset($vals['generic_id'])) {
+        $this->generic_id = $vals['generic_id'];
+      }
+      if (isset($vals['from_name'])) {
+        $this->from_name = $vals['from_name'];
+      }
+      if (isset($vals['from_address'])) {
+        $this->from_address = $vals['from_address'];
+      }
+      if (isset($vals['to_address'])) {
+        $this->to_address = $vals['to_address'];
+      }
+      if (isset($vals['cc'])) {
+        $this->cc = $vals['cc'];
+      }
+      if (isset($vals['bcc'])) {
+        $this->bcc = $vals['bcc'];
+      }
+      if (isset($vals['subject'])) {
+        $this->subject = $vals['subject'];
+      }
+      if (isset($vals['body'])) {
+        $this->body = $vals['body'];
+      }
+      if (isset($vals['date'])) {
+        $this->date = $vals['date'];
+      }
+      if (isset($vals['attachments'])) {
+        $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['delivery_status'])) {
+        $this->delivery_status = $vals['delivery_status'];
+      }
+      if (isset($vals['email_provider'])) {
+        $this->email_provider = $vals['email_provider'];
+      }
+      if (isset($vals['message_id'])) {
+        $this->message_id = $vals['message_id'];
+      }
+      if (isset($vals['smtp_reply'])) {
+        $this->smtp_reply = $vals['smtp_reply'];
+      }
+      if (isset($vals['open_time'])) {
+        $this->open_time = $vals['open_time'];
+      }
+      if (isset($vals['open_bounce_data'])) {
+        $this->open_bounce_data = $vals['open_bounce_data'];
+      }
+      if (isset($vals['unsubscribe_data'])) {
+        $this->unsubscribe_data = $vals['unsubscribe_data'];
+      }
+      if (isset($vals['spam_data'])) {
+        $this->spam_data = $vals['spam_data'];
+      }
+      if (isset($vals['hash'])) {
+        $this->hash = $vals['hash'];
+      }
+      if (isset($vals['plaintext'])) {
+        $this->plaintext = $vals['plaintext'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['to_name'])) {
+        $this->to_name = $vals['to_name'];
+      }
+      if (isset($vals['mail_type'])) {
+        $this->mail_type = $vals['mail_type'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericMail';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->generic_mail_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->generic_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->from_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_address);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::LST) {
+            $this->cc = array();
+            $_size147 = 0;
+            $_etype150 = 0;
+            $xfer += $input->readListBegin($_etype150, $_size147);
+            for ($_i151 = 0; $_i151 < $_size147; ++$_i151)
+            {
+              $elem152 = null;
+              $xfer += $input->readString($elem152);
+              $this->cc []= $elem152;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::LST) {
+            $this->bcc = array();
+            $_size153 = 0;
+            $_etype156 = 0;
+            $xfer += $input->readListBegin($_etype156, $_size153);
+            for ($_i157 = 0; $_i157 < $_size153; ++$_i157)
+            {
+              $elem158 = null;
+              $xfer += $input->readString($elem158);
+              $this->bcc []= $elem158;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->subject);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->body);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->date);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::LST) {
+            $this->attachments = array();
+            $_size159 = 0;
+            $_etype162 = 0;
+            $xfer += $input->readListBegin($_etype162, $_size159);
+            for ($_i163 = 0; $_i163 < $_size159; ++$_i163)
+            {
+              $elem164 = null;
+              $elem164 = new \praccomm\Attachment();
+              $xfer += $elem164->read($input);
+              $this->attachments []= $elem164;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->delivery_status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_provider);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->smtp_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->open_bounce_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 23:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->unsubscribe_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 24:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->spam_data);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 25:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->hash);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 27:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->plaintext);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 28:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 29:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->to_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 30:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mail_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 31:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 32:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reply_to);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('GenericMail');
+    if ($this->generic_mail_id !== null) {
+      $xfer += $output->writeFieldBegin('generic_mail_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->generic_mail_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->generic_id !== null) {
+      $xfer += $output->writeFieldBegin('generic_id', TType::I64, 2);
+      $xfer += $output->writeI64($this->generic_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_name !== null) {
+      $xfer += $output->writeFieldBegin('from_name', TType::STRING, 3);
+      $xfer += $output->writeString($this->from_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->from_address !== null) {
+      $xfer += $output->writeFieldBegin('from_address', TType::STRING, 4);
+      $xfer += $output->writeString($this->from_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_address !== null) {
+      $xfer += $output->writeFieldBegin('to_address', TType::STRING, 5);
+      $xfer += $output->writeString($this->to_address);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cc !== null) {
+      if (!is_array($this->cc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('cc', TType::LST, 6);
+      {
+        $output->writeListBegin(TType::STRING, count($this->cc));
+        {
+          foreach ($this->cc as $iter165)
+          {
+            $xfer += $output->writeString($iter165);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->bcc !== null) {
+      if (!is_array($this->bcc)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('bcc', TType::LST, 7);
+      {
+        $output->writeListBegin(TType::STRING, count($this->bcc));
+        {
+          foreach ($this->bcc as $iter166)
+          {
+            $xfer += $output->writeString($iter166);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->subject !== null) {
+      $xfer += $output->writeFieldBegin('subject', TType::STRING, 8);
+      $xfer += $output->writeString($this->subject);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->body !== null) {
+      $xfer += $output->writeFieldBegin('body', TType::STRING, 9);
+      $xfer += $output->writeString($this->body);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->date !== null) {
+      $xfer += $output->writeFieldBegin('date', TType::I64, 10);
+      $xfer += $output->writeI64($this->date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attachments !== null) {
+      if (!is_array($this->attachments)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('attachments', TType::LST, 12);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->attachments));
+        {
+          foreach ($this->attachments as $iter167)
+          {
+            $xfer += $iter167->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 13);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 14);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 15);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 16);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_status !== null) {
+      $xfer += $output->writeFieldBegin('delivery_status', TType::I32, 17);
+      $xfer += $output->writeI32($this->delivery_status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_provider !== null) {
+      $xfer += $output->writeFieldBegin('email_provider', TType::STRING, 18);
+      $xfer += $output->writeString($this->email_provider);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_id !== null) {
+      $xfer += $output->writeFieldBegin('message_id', TType::STRING, 19);
+      $xfer += $output->writeString($this->message_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->smtp_reply !== null) {
+      $xfer += $output->writeFieldBegin('smtp_reply', TType::STRING, 20);
+      $xfer += $output->writeString($this->smtp_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_time !== null) {
+      $xfer += $output->writeFieldBegin('open_time', TType::STRING, 21);
+      $xfer += $output->writeString($this->open_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->open_bounce_data !== null) {
+      $xfer += $output->writeFieldBegin('open_bounce_data', TType::STRING, 22);
+      $xfer += $output->writeString($this->open_bounce_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->unsubscribe_data !== null) {
+      $xfer += $output->writeFieldBegin('unsubscribe_data', TType::STRING, 23);
+      $xfer += $output->writeString($this->unsubscribe_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->spam_data !== null) {
+      $xfer += $output->writeFieldBegin('spam_data', TType::STRING, 24);
+      $xfer += $output->writeString($this->spam_data);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->hash !== null) {
+      $xfer += $output->writeFieldBegin('hash', TType::STRING, 25);
+      $xfer += $output->writeString($this->hash);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->plaintext !== null) {
+      $xfer += $output->writeFieldBegin('plaintext', TType::STRING, 27);
+      $xfer += $output->writeString($this->plaintext);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 28);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->to_name !== null) {
+      $xfer += $output->writeFieldBegin('to_name', TType::STRING, 29);
+      $xfer += $output->writeString($this->to_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mail_type !== null) {
+      $xfer += $output->writeFieldBegin('mail_type', TType::STRING, 30);
+      $xfer += $output->writeString($this->mail_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I32, 31);
+      $xfer += $output->writeI32($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->reply_to !== null) {
+      $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
+      $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 class SmsCredit {
   static $_TSPEC;
 
@@ -5075,7 +8433,7 @@ class SmsCredit {
           ),
         7 => array(
           'var' => 'action',
-          'type' => TType::STRING,
+          'type' => TType::I32,
           ),
         8 => array(
           'var' => 'attempt',
@@ -5184,8 +8542,8 @@ class SmsCredit {
           }
           break;
         case 7:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->action);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->action);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -5257,8 +8615,8 @@ class SmsCredit {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->action !== null) {
-      $xfer += $output->writeFieldBegin('action', TType::STRING, 7);
-      $xfer += $output->writeString($this->action);
+      $xfer += $output->writeFieldBegin('action', TType::I32, 7);
+      $xfer += $output->writeI32($this->action);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attempt !== null) {
@@ -5471,3 +8829,5 @@ class ApplicationException extends TException {
   }
 
 }
+
+

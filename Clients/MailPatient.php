@@ -88,7 +88,6 @@ class MailPatient
         $jsonified_job = json_encode($job);
         $queueName = $this->_sendMailQueue;
         $id = $this->pheanstalk->useTube($queueName)->put($jsonified_job);
-        var_dump($id);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -223,7 +222,6 @@ class MailPatient
 
     private function getMailType($type)
     {
-      var_dump($type);
       switch($type)
         {
         case "ACCOUNT_INVITE":
