@@ -2,11 +2,16 @@ parameters:
     practo_communicator.mail_patient.class: Practo\CommunicatorBundle\Clients\MailPatient
     practo_communicator.mail_doctor.class: Practo\CommunicatorBundle\Clients\MailDoctor
     practo_communicator.mail_staff.class: Practo\CommunicatorBundle\Clients\MailStaff
+    practo_communicator.mail_appointment.class: Practo\CommunicatorBundle\Clients\MailAppointment
+    practo_communicator.mail_group.class: Practo\CommunicatorBundle\Clients\MailGroup
     practo_communicator.sms_doctor.class: Practo\CommunicatorBundle\Clients\SmsDoctor
     practo_communicator.sms_patient.class: Practo\CommunicatorBundle\Clients\SmsPatient
     practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
     practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
+    practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsAppointment
+    practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
 
+    
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
     communicator.error_mail_queue: mail_sender_error
@@ -26,6 +31,10 @@ parameters:
     communicator.mail_doctor.port: 1010
     communicator.mail_staff.host: %communicator.host%
     communicator.mail_staff.port: 3030
+    communicator.mail_appointment.host: %communicator.host%
+    communicator.mail_appointment.port: 1111
+    communicator.mail_group.host: %communicator.host%
+    communicator.mail_group.port: 1113
     #sms
     communicator.sms_patient.host: %communicator.host%
     communicator.sms_patient.port: 6060
@@ -33,6 +42,10 @@ parameters:
     communicator.sms_doctor.port: 5050
     communicator.sms_staff.host: %communicator.host%
     communicator.sms_staff.port: 7070
+    communicator.sms_appointment.host: %communicator.host%
+    communicator.sms_appointment.port: 1112
+    communicator.sms_group.host: %communicator.host%
+    communicator.sms_group.port: 1114
     #credits
     communicator.sms_credit.host: %communicator.host%
     communicator.sms_credit.port: 4040
@@ -65,6 +78,24 @@ services:
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
+  practo_communicator.mail_appointment:
+    class: %practo_communicator.mail_appointment.class%
+    arguments:
+      - @leezy.pheanstalk.communicator
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_appointment.host%
+      - %communicator.mail_appointment.port%
+      - FABRIC
+  practo_communicator.mail_group:
+    class: %practo_communicator.mail_group.class%
+    arguments:
+      - @leezy.pheanstalk.communicator
+      - %communicator.send_mail_queue%
+      - %communicator.update_mail_queue%
+      - %communicator.mail_group.host%
+      - %communicator.mail_group.port%
+      - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
     arguments:
@@ -92,6 +123,24 @@ services:
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
+  practo_communicator.sms_appointment:
+    class: %practo_communicator.sms_appointment.class%
+    arguments:
+      - @leezy.pheanstalk.communicator
+      - %communicator.send_sms_queue%
+      - %communicator.update_sms_queue%
+      - %communicator.mail_appointment.host%
+      - %communicator.mail_appointment.port%
+      - FABRIC
+  practo_communicator.sms_group:
+    class: %practo_communicator.sms_group.class%
+    arguments:
+      - @leezy.pheanstalk.communicator
+      - %communicator.send_sms_queue%
+      - %communicator.update_sms_queue%
+      - %communicator.mail_group.host%
+      - %communicator.mail_group.port%
+      - FABRIC
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:
