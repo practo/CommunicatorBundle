@@ -74,6 +74,14 @@ class SmsCredit
         return $result;
     }
 
+    /**
+     * Deduct wallet credit
+     *
+     * @param integer $practiceId - Practice Id
+     * @param integer $credit     - Credit
+     *
+     * @return array
+     */
     public function deductWalletCredit($practiceId, $credit)
     {
         $transport = $this->getTransport();
@@ -82,20 +90,36 @@ class SmsCredit
         $result = $client->deduct_wallet_credit($practiceId, $credit);
         $transport->close();
 
-        return $result; 
+        return $result;
     }
 
+    /**
+     * Deduct call cost
+     *
+     * @param integer $practiceId         - Practice Id
+     * @param string  $callDurationInMins - Call duration
+     *
+     * @return array
+     */
     public function deductHelloCallCost($practiceId, $callDurationInMins)
     {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result = $client->deduct_hello_call_cost($practiceId,
-                                                  $callDurationInMins);
+            $callDurationInMins);
         $transport->close();
+
         return $result;
     }
 
+    /**
+     * Get credits
+     *
+     * @param integer $pid - Credit Id
+     *
+     * @return array
+     */
     public function getCredits($pid)
     {
         $transport = $this->getTransport();
@@ -103,18 +127,20 @@ class SmsCredit
         $transport->open();
         $result = $client->get_credit($pid);
         $transport->close();
+
         return $result;
     }
 
     private function getTransport()
     {
         $socket = new Thrift\Transport\TSocket($this->_smsCreditServer,
-                                               $this->_smsCreditPort);
+            $this->_smsCreditPort);
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
 
         $transport =
           new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
+
         return $transport;
     }
 
@@ -122,6 +148,7 @@ class SmsCredit
     {
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\SmsCreditServiceClient($protocol);
+
         return $client;
     }
 
@@ -130,14 +157,13 @@ class SmsCredit
         switch($curr)
         {
             case "INR":
-              return praccomm\Currency::INR;
+                return praccomm\Currency::INR;
             case "USD":
-              return praccomm\Currency::USD;
+                return praccomm\Currency::USD;
             case "SGD":
-              return praccomm\Currency::SGD;
+                return praccomm\Currency::SGD;
             default:
-              throw new Exception("Invalid currency");
+                throw new Exception("Invalid currency");
         }
     }
 }
-?>

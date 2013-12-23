@@ -23,6 +23,7 @@ interface StaffSMSServiceIf {
   public function get_messages_by_failure_reason($pid, $start_date, $end_date, $sms_types);
   public function get_messages_by_application($start_date, $end_date);
   public function get_messages_by_app_for_pid($pid, $start_date, $end_date);
+  public function get_retried_messages_for_smsid($sms_id);
   public function send(\praccomm\StaffSMS $staff_sms);
 }
 
@@ -409,6 +410,57 @@ class StaffSMSServiceClient implements \praccomm\StaffSMSServiceIf {
     throw new \Exception("get_messages_by_app_for_pid failed: unknown result");
   }
 
+  public function get_retried_messages_for_smsid($sms_id)
+  {
+    $this->send_get_retried_messages_for_smsid($sms_id);
+    return $this->recv_get_retried_messages_for_smsid();
+  }
+
+  public function send_get_retried_messages_for_smsid($sms_id)
+  {
+    $args = new \praccomm\StaffSMSService_get_retried_messages_for_smsid_args();
+    $args->sms_id = $sms_id;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'get_retried_messages_for_smsid', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('get_retried_messages_for_smsid', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_get_retried_messages_for_smsid()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\StaffSMSService_get_retried_messages_for_smsid_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \praccomm\StaffSMSService_get_retried_messages_for_smsid_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("get_retried_messages_for_smsid failed: unknown result");
+  }
+
   public function send(\praccomm\StaffSMS $staff_sms)
   {
     $this->send_send($staff_sms);
@@ -710,14 +762,14 @@ class StaffSMSService_search_by_practice_id_args {
         case 3:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size105 = 0;
-            $_etype108 = 0;
-            $xfer += $input->readListBegin($_etype108, $_size105);
-            for ($_i109 = 0; $_i109 < $_size105; ++$_i109)
+            $_size168 = 0;
+            $_etype171 = 0;
+            $xfer += $input->readListBegin($_etype171, $_size168);
+            for ($_i172 = 0; $_i172 < $_size168; ++$_i172)
             {
-              $elem110 = null;
-              $xfer += $input->readString($elem110);
-              $this->sms_types []= $elem110;
+              $elem173 = null;
+              $xfer += $input->readString($elem173);
+              $this->sms_types []= $elem173;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -755,9 +807,9 @@ class StaffSMSService_search_by_practice_id_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter111)
+          foreach ($this->sms_types as $iter174)
           {
-            $xfer += $output->writeString($iter111);
+            $xfer += $output->writeString($iter174);
           }
         }
         $output->writeListEnd();
@@ -1131,14 +1183,14 @@ class StaffSMSService_get_messages_by_delivery_status_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size112 = 0;
-            $_etype115 = 0;
-            $xfer += $input->readListBegin($_etype115, $_size112);
-            for ($_i116 = 0; $_i116 < $_size112; ++$_i116)
+            $_size175 = 0;
+            $_etype178 = 0;
+            $xfer += $input->readListBegin($_etype178, $_size175);
+            for ($_i179 = 0; $_i179 < $_size175; ++$_i179)
             {
-              $elem117 = null;
-              $xfer += $input->readString($elem117);
-              $this->sms_types []= $elem117;
+              $elem180 = null;
+              $xfer += $input->readString($elem180);
+              $this->sms_types []= $elem180;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1148,14 +1200,14 @@ class StaffSMSService_get_messages_by_delivery_status_args {
         case 5:
           if ($ftype == TType::LST) {
             $this->status = array();
-            $_size118 = 0;
-            $_etype121 = 0;
-            $xfer += $input->readListBegin($_etype121, $_size118);
-            for ($_i122 = 0; $_i122 < $_size118; ++$_i122)
+            $_size181 = 0;
+            $_etype184 = 0;
+            $xfer += $input->readListBegin($_etype184, $_size181);
+            for ($_i185 = 0; $_i185 < $_size181; ++$_i185)
             {
-              $elem123 = null;
-              $xfer += $input->readString($elem123);
-              $this->status []= $elem123;
+              $elem186 = null;
+              $xfer += $input->readString($elem186);
+              $this->status []= $elem186;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1198,9 +1250,9 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter124)
+          foreach ($this->sms_types as $iter187)
           {
-            $xfer += $output->writeString($iter124);
+            $xfer += $output->writeString($iter187);
           }
         }
         $output->writeListEnd();
@@ -1215,9 +1267,9 @@ class StaffSMSService_get_messages_by_delivery_status_args {
       {
         $output->writeListBegin(TType::STRING, count($this->status));
         {
-          foreach ($this->status as $iter125)
+          foreach ($this->status as $iter188)
           {
-            $xfer += $output->writeString($iter125);
+            $xfer += $output->writeString($iter188);
           }
         }
         $output->writeListEnd();
@@ -1395,14 +1447,14 @@ class StaffSMSService_get_messages_by_failure_reason_args {
         case 4:
           if ($ftype == TType::LST) {
             $this->sms_types = array();
-            $_size126 = 0;
-            $_etype129 = 0;
-            $xfer += $input->readListBegin($_etype129, $_size126);
-            for ($_i130 = 0; $_i130 < $_size126; ++$_i130)
+            $_size189 = 0;
+            $_etype192 = 0;
+            $xfer += $input->readListBegin($_etype192, $_size189);
+            for ($_i193 = 0; $_i193 < $_size189; ++$_i193)
             {
-              $elem131 = null;
-              $xfer += $input->readString($elem131);
-              $this->sms_types []= $elem131;
+              $elem194 = null;
+              $xfer += $input->readString($elem194);
+              $this->sms_types []= $elem194;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1445,9 +1497,9 @@ class StaffSMSService_get_messages_by_failure_reason_args {
       {
         $output->writeListBegin(TType::STRING, count($this->sms_types));
         {
-          foreach ($this->sms_types as $iter132)
+          foreach ($this->sms_types as $iter195)
           {
-            $xfer += $output->writeString($iter132);
+            $xfer += $output->writeString($iter195);
           }
         }
         $output->writeListEnd();
@@ -1869,6 +1921,150 @@ class StaffSMSService_get_messages_by_app_for_pid_result {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('StaffSMSService_get_messages_by_app_for_pid_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class StaffSMSService_get_retried_messages_for_smsid_args {
+  static $_TSPEC;
+
+  public $sms_id = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'sms_id',
+          'type' => TType::I64,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['sms_id'])) {
+        $this->sms_id = $vals['sms_id'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'StaffSMSService_get_retried_messages_for_smsid_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->sms_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('StaffSMSService_get_retried_messages_for_smsid_args');
+    if ($this->sms_id !== null) {
+      $xfer += $output->writeFieldBegin('sms_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->sms_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class StaffSMSService_get_retried_messages_for_smsid_result {
+  static $_TSPEC;
+
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'StaffSMSService_get_retried_messages_for_smsid_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('StaffSMSService_get_retried_messages_for_smsid_result');
     if ($this->success !== null) {
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
       $xfer += $output->writeString($this->success);
