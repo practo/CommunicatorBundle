@@ -3,7 +3,7 @@
 namespace Practo\CommunicatorBundle\Clients;
 
 use Pheanstalk\Pheanstalk;
-use Practo\CommunicatorBundle\Clients\Helperl
+use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 
 /**
@@ -18,7 +18,7 @@ class MailAppointment
     private $_appName;
     private $_pheanstalk;
 
-    private function __construct($pheanstalk, $sendQueue, $updateQueue,
+    public function __construct($pheanstalk, $sendQueue, $updateQueue,
                                  $serviceHost, $servicePort, $appName)
     {
         $this->_mailServer = $serviceHost;
@@ -151,7 +151,7 @@ class MailAppointment
             case "CUSTOM":
               return \praccomm\AppointmentMailType::CUSTOM;
             default:
-              throw new Exception("Invalid mail type");
+              throw new \Exception("Invalid mail type");
         }
     }
 }

@@ -18,7 +18,7 @@ class SmsAppointment
     private $_appName;
     private $_pheanstalk;
 
-    private function __construct($pheanstalk, $sendQueue, $updateQueue,
+    public function __construct($pheanstalk, $sendQueue, $updateQueue,
                                  $serviceHost, $servicePort, $appName)
     {
         $this->_smsServer = $serviceHost;
@@ -44,7 +44,7 @@ class SmsAppointment
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendSmsQueue;
+        $queueName = $this->_sendAppointmentSmsQueue;
         $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
     }
 
