@@ -95,7 +95,7 @@ class SmsAppointment
             case "PASSED_ON":
               return praccomm\AppointmentSMSType::PASSED_ON;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 
@@ -110,7 +110,7 @@ class SmsAppointment
             case "DOCTOR":
               return praccomm\PersonType::DOCTOR;
             default:
-              throw new Exception("Invalid person type");
+              throw new \Exception("Invalid person type");
         }
     }
 }
