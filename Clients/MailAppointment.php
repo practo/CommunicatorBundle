@@ -5,6 +5,8 @@ namespace Practo\CommunicatorBundle\Clients;
 use Pheanstalk\Pheanstalk;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
+require_once __DIR__.'/genphp/praccomm/AppointmentMailService.php';
 
 /**
  * Clinet for sending appointment mails
@@ -81,7 +83,7 @@ class MailAppointment
         $job->mail_type = 'appointment';
         $jsonifiedJob = json_encode($job);
         $queueName = $this->_sendMailQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -107,7 +109,7 @@ class MailAppointment
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_mails_by_appointment_id($apptid, $mailTypes);
+        $result = $client->get_mails_by_appointment_id($apptId, $mailTypes);
         $transport->close();
         return $result;
     }

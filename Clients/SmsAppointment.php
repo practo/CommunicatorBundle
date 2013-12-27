@@ -5,6 +5,8 @@ namespace Practo\CommunicatorBundle\Clients;
 use Pheanstalk\Pheanstalk;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
+require_once __DIR__.'/genphp/praccomm/AppointmentSMSService.php';
 
 /**
  * Clinet for messaging doctors
@@ -53,7 +55,7 @@ class SmsAppointment
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_messages_by_appointment_id($apptid, $smsTypes);
+        $result = $client->get_messages_by_appointment_id($apptId, $smsTypes);
         $transport->close();
         return $result;
     }
@@ -72,7 +74,7 @@ class SmsAppointment
     private function getClient($transport)
     {
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\AppointmentSMSService($protocol);
+        $client = new praccomm\AppointmentSMSServiceClient($protocol);
         return $client;
     }
 
