@@ -10,7 +10,7 @@ parameters:
     practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
     practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsAppointment
     practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
-
+    
     
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -21,7 +21,9 @@ parameters:
     communicator.error_sms_queue: sms_sender_error
     communicator.update_error_sms_queue: sms_updater_error
     communicator.sms_credit: credit_handler
-
+    communicator.send_appointment_sms_queue: appointment_sms_sender
+    communicator.update_appointment_sms_queue: appointment_sms_updater
+    
     communicator.host: 127.0.0.1
 
     #mails
@@ -127,8 +129,8 @@ services:
     class: %practo_communicator.sms_appointment.class%
     arguments:
       - @leezy.pheanstalk.communicator
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
+      - %communicator.send_appointment_sms_queue%
+      - %communicator.update_appointment_sms_queue%
       - %communicator.sms_appointment.host%
       - %communicator.sms_appointment.port%
       - FABRIC
