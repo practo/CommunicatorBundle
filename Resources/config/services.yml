@@ -129,8 +129,8 @@ services:
       - @leezy.pheanstalk.communicator
       - %communicator.send_sms_queue%
       - %communicator.update_sms_queue%
-      - %communicator.mail_appointment.host%
-      - %communicator.mail_appointment.port%
+      - %communicator.sms_appointment.host%
+      - %communicator.sms_appointment.port%
       - FABRIC
   practo_communicator.sms_group:
     class: %practo_communicator.sms_group.class%
