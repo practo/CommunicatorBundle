@@ -152,6 +152,10 @@ class MailAppointment
               return \praccomm\AppointmentMailType::PASSED_ON;
             case "CUSTOM":
               return \praccomm\AppointmentMailType::CUSTOM;
+            case "WALK_IN":
+              return \praccomm\AppointmentMailType::WALK_IN;
+            case "PENDING":
+              return \praccomm\AppointmentMailType::PENDING;
             default:
               throw new \Exception("Invalid mail type");
         }

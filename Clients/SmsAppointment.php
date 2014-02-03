@@ -96,6 +96,10 @@ class SmsAppointment
               return praccomm\AppointmentSMSType::TEST;
             case "PASSED_ON":
               return praccomm\AppointmentSMSType::PASSED_ON;
+            case "WALK_IN":
+              return praccomm\AppointmentSMSType::WALK_IN;
+            case "PENDING":
+              return praccomm\AppointmentSMSType::PENDING;
             default:
               throw new \Exception("Invalid message type");
         }

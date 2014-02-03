@@ -268,6 +268,8 @@ final class AppointmentSMSType {
   const RESCHEDULE = 5;
   const TEST = 6;
   const PASSED_ON = 7;
+  const WALK_IN = 8;
+  const PENDING = 9;
   static public $__names = array(
     1 => 'VERIFICATION',
     2 => 'REQUEST',
@@ -276,6 +278,8 @@ final class AppointmentSMSType {
     5 => 'RESCHEDULE',
     6 => 'TEST',
     7 => 'PASSED_ON',
+    8 => 'WALK_IN',
+    9 => 'PENDING',
   );
 }
 
@@ -301,6 +305,8 @@ final class AppointmentMailType {
   const TEST = 6;
   const PASSED_ON = 7;
   const CUSTOM = 8;
+  const WALK_IN = 9;
+  const PENDING = 10;
   static public $__names = array(
     1 => 'VERIFICATION',
     2 => 'REQUEST',
@@ -310,6 +316,8 @@ final class AppointmentMailType {
     6 => 'TEST',
     7 => 'PASSED_ON',
     8 => 'CUSTOM',
+    9 => 'WALK_IN',
+    10 => 'PENDING',
   );
 }
 

@@ -373,7 +373,9 @@ enum AppointmentSMSType {
     CANCELLATION = 4,
     RESCHEDULE = 5,
     TEST = 6,
-    PASSED_ON = 7
+    PASSED_ON = 7,
+    WALK_IN = 8,
+    PENDING = 9
 }
 
 struct AppointmentSMS {
@@ -443,7 +445,9 @@ enum AppointmentMailType {
     RESCHEDULE = 5,
     TEST = 6,
     PASSED_ON = 7,
-    CUSTOM = 8
+    CUSTOM = 8,
+    WALK_IN = 9,
+    PENDING = 10
 }
 
 struct AppointmentMail {
@@ -688,6 +692,7 @@ service SmsCreditService {
     bool add_practo_credit(1:i64 pid, 2:double credit) throws (1: ApplicationException expt);
     bool add_wallet_credit(1:i64 pid, 2:double wallet_credit) throws (1: ApplicationException expt);
     Cost deduct_credit(1:i64 pid, 2:double amount) throws (1: ApplicationException expt);
+    bool deduct_practo_credit(1:i64 pid, 2:double amount) throws (1: ApplicationException expt);
     bool deduct_wallet_credit(1:i64 pid, 2:double amount) throws (1: ApplicationException expt);
     Cost deduct_hello_call_cost(1:i64 pid, 2:i32 call_duration_mins) throws (1: ApplicationException expt);
     string get_credit(1:i64 practice_id) throws (1: ApplicationException expt);
