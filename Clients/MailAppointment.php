@@ -1,8 +1,7 @@
 <?php
-
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Clients\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
@@ -15,20 +14,15 @@ class MailAppointment
 {
     private $_mailServer;
     private $_mailPort;
-    private $_sendMailQueue;
-    private $_updateMailQueue;
     private $_appName;
-    private $_pheanstalk;
+    private $_queue;
 
-    public function __construct($pheanstalk, $sendQueue, $updateQueue,
-                                 $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $serviceHost, $servicePort, $appName)
     {
         $this->_mailServer = $serviceHost;
         $this->_mailPort = $servicePort;
-        $this->_sendMailQueue = $sendQueue;
-        $this->_updateMailQueue = $updateQueue;
         $this->_appName = Helper::getValidAppName($appName);
-        $this->_pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
     }
 
     public function sendMail($appointmentId, $fromName,
@@ -82,8 +76,9 @@ class MailAppointment
         $job->hash = $hash;
         $job->mail_type = 'appointment';
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendMailQueue;
-        return $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_MAIL_QUEUE)
+                    ->sendMessage(json_encode($jsonifiedJob), 10);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -100,8 +95,9 @@ class MailAppointment
         $job->spam_data = $spam_data;
         $job->mail_type = 'appointment';
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_updateMailQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
+                    ->sendMessage(json_encode($jsonifiedJob), 10);
     }
 
     public function getMailsByAppointmentId($apptId, $mailTypes)

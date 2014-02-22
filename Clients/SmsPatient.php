@@ -2,7 +2,7 @@
 
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Clients\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
@@ -15,22 +15,16 @@ class SmsPatient
 {
     private $_smsServer;
     private $_smsPort;
-    private $_sendSmsQueue;
-    private $_updateSmsQueue;
     private $_appName;
+    private $_queue;
 
-    private $pheanstalk;
-
-    public function __construct($pheanstalk, $sendQueue,
-                                $updateQueue, $serviceHost,
+    public function __construct($queue, $serviceHost,
                                 $servicePort, $appName)
     {
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
-        $this->_sendSmsQueue = $sendQueue;
-        $this->_updateSmsQueue = $updateQueue;
         $this->_appName = Helper::getValidAppName($appName);
-        $this->pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
     }
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
@@ -60,8 +54,9 @@ class SmsPatient
             $job->failure_reason = 'SMSDISABLED';
         }
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendSmsQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_SMS_QUEUE)
+                    ->sendMessage(json_encode($jsonifiedJob), 10);
     }
 
     public function updateSms($key, $status, $deliveryTime,
@@ -76,8 +71,9 @@ class SmsPatient
         $job->operator_code = $opCode;
         $job->sms_type = 'patient';
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_updateSmsQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::UPDATE_SMS_QUEUE)
+                    ->sendMessage(json_encode($jsonifiedJob), 10);
     }
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)

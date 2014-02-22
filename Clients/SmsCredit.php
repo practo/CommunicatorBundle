@@ -1,7 +1,7 @@
 <?php
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Clients\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
@@ -14,16 +14,13 @@ class SmsCredit
 {
     private $_smsCreditServer;
     private $_smsCreditPort;
-    private $_insertCreditQueue;
+    private $_queue;
 
-    private $pheanstalk;
-
-    public function __construct($pheanstalk, $insertCreditQueue, $serviceHost, $servicePort)
+    public function __construct($queue, $serviceHost, $servicePort)
     {
         $this->_smsCreditServer = $serviceHost;
         $this->_smsCreditPort = $servicePort;
-        $this->_insertCreditQueue = $insertCreditQueue;
-        $this->pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
     }
 
     public function insertCredit($practiceId, $credit, $currency, $planId, $helloPlan, $walletCredit)
@@ -37,8 +34,9 @@ class SmsCredit
         $job->hello_plan = $helloPlan;
         $job->wallet_credit = $walletCredit;
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_insertCreditQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        return $this->_queue
+                    ->setQueueName(Queue::SMS_CREDIT_QUEUE)
+                    ->sendMessage(json_encode($jsonifiedJob), 10);
     }
 
     public function insertPractoCredit($practiceId, $credit)
