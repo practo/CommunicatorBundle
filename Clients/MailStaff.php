@@ -81,7 +81,7 @@ class MailStaff
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -100,7 +100,7 @@ class MailStaff
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)

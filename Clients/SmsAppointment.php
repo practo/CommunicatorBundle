@@ -43,8 +43,9 @@ class SmsAppointment
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
+
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {

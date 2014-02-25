@@ -38,7 +38,7 @@ class SmsGroup
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_GROUP_SMS_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function getMessagesByGroupId($groupId, $smsTypes)

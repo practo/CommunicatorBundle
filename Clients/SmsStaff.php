@@ -51,7 +51,7 @@ class SmsStaff
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function updateSms($key, $status, $deliveryTime,
@@ -68,7 +68,7 @@ class SmsStaff
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)

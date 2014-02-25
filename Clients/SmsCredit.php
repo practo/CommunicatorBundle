@@ -36,7 +36,7 @@ class SmsCredit
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SMS_CREDIT_QUEUE)
-                    ->sendMessage(json_encode($jsonifiedJob), 10);
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function insertPractoCredit($practiceId, $credit)
