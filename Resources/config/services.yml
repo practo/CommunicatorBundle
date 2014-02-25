@@ -92,8 +92,6 @@ services:
     class: %practo_communicator.sms_patient.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
       - %communicator.sms_patient.host%
       - %communicator.sms_patient.port%
       - RAY
@@ -101,8 +99,6 @@ services:
     class: %practo_communicator.sms_doctor.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
       - %communicator.sms_doctor.host%
       - %communicator.sms_doctor.port%
       - RAY
@@ -110,8 +106,6 @@ services:
     class: %practo_communicator.sms_staff.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
@@ -119,8 +113,6 @@ services:
     class: %practo_communicator.sms_appointment.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.send_appointment_sms_queue%
-      - %communicator.update_appointment_sms_queue%
       - %communicator.sms_appointment.host%
       - %communicator.sms_appointment.port%
       - FABRIC
@@ -128,8 +120,6 @@ services:
     class: %practo_communicator.sms_group.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
       - %communicator.mail_group.host%
       - %communicator.mail_group.port%
       - FABRIC
@@ -137,7 +127,6 @@ services:
     class: %practo_communicator.sms_credit.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.sms_credit%
       - %communicator.sms_credit.host%
       - %communicator.sms_credit.port%
   practo_communicator.queue_factory:
