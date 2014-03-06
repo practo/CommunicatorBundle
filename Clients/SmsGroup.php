@@ -1,8 +1,7 @@
 <?php
-
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 
@@ -13,19 +12,14 @@ class SmsGroup
 {
     private $_smsServer;
     private $_smsPort;
-    private $_sendGroupSmsQueue;
-    private $_updateGroupSmsQueue;
     private $_appName;
-    private $_pheanstalk;
+    private $_queue;
 
-    private function __construct($pheanstalk, $sendQueue, $updateQueue,
-                                 $serviceHost, $servicePort, $appName)
+    private function __construct($queue, $serviceHost, $servicePort, $appName)
     {
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
-        $this->_sendGroupSmsQueue = $sendQueue;
-        $this->_updateGroupSmsQueue = $updateQueue;
-        $this->_pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
@@ -42,8 +36,9 @@ class SmsGroup
         $job->message_type = $this->getSMSType($messageType);
         $job->app_name = $this->_appName;
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendSmsQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_GROUP_SMS_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function getMessagesByGroupId($groupId, $smsTypes)

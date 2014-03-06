@@ -1,7 +1,7 @@
 <?php
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
@@ -14,22 +14,16 @@ class MailPatient
 {
     private $_mailServer;
     private $_mailPort;
-    private $_sendMailQueue;
-    private $_updateMailQueue;
     private $_appName;
+    private $_queue;
 
-    private $pheanstalk;
-
-    public function __construct($pheanstalk, $sendQueue,
-                                $updateQueue, $serviceHost,
+    public function __construct($queue, $serviceHost,
                                 $servicePort, $appName)
     {
         $this->_mailServer = $serviceHost;
         $this->_mailPort = $servicePort;
-        $this->_sendMailQueue = $sendQueue;
-        $this->_updateMailQueue = $updateQueue;
         $this->_appName = Helper::getValidAppName($appName);
-        $this->pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
     }
 
     public function sendMail($contactId, $practiceId, $fromName,
@@ -86,8 +80,9 @@ class MailPatient
         $job->hash = $hash;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
-        $queueName = $this->_sendMailQueue;
-        $id = $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        $this->_queue
+             ->setQueueName(Queue::SEND_MAIL_QUEUE)
+             ->sendMessage(json_encode($jsonified_job), 10);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -106,8 +101,9 @@ class MailPatient
         $job->spam_data = $spam_data;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
-        $queueName = $this->_updateMailQueue;
-        $this->pheanstalk->useTube($queueName)->put($jsonified_job);
+        $this->_queue
+             ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
+             ->sendMessage(json_encode($jsonified_job), 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)

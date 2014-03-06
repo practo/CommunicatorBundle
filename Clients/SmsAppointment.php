@@ -1,8 +1,7 @@
 <?php
-
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
@@ -15,19 +14,15 @@ class SmsAppointment
 {
     private $_smsServer;
     private $_smsPort;
-    private $_sendAppointmentSmsQueue;
-    private $_updateAppointmentSmsQueue;
     private $_appName;
-    private $_pheanstalk;
+    private $_queue;
 
-    public function __construct($pheanstalk, $sendQueue, $updateQueue,
-                                 $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $serviceHost,
+                                $servicePort, $appName)
     {
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
-        $this->_sendAppointmentSmsQueue = $sendQueue;
-        $this->_updateAppointmentSmsQueue = $updateQueue;
-        $this->_pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
@@ -46,9 +41,11 @@ class SmsAppointment
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendAppointmentSmsQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
     }
+
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {

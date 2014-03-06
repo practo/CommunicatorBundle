@@ -10,8 +10,8 @@ parameters:
     practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
     practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsAppointment
     practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
-    
-    
+
+
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
     communicator.error_mail_queue: mail_sender_error
@@ -23,8 +23,8 @@ parameters:
     communicator.sms_credit: credit_handler
     communicator.send_appointment_sms_queue: appointment_sms_sender
     communicator.update_appointment_sms_queue: appointment_sms_updater
-    
-    communicator.host: 127.0.0.1
+
+    communicator.queue.uri: 'beanstalk://localhost/dev_'
 
     #mails
     communicator.mail_patient.host: %communicator.host%
@@ -56,97 +56,84 @@ services:
   practo_communicator.mail_patient:
     class: %practo_communicator.mail_patient.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - @practo_communicator.queue
       - %communicator.mail_patient.host%
       - %communicator.mail_patient.port%
       - RAY
   practo_communicator.mail_doctor:
     class: %practo_communicator.mail_doctor.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - @practo_communicator.queue
       - %communicator.mail_doctor.host%
       - %communicator.mail_doctor.port%
       - RAY
   practo_communicator.mail_staff:
     class: %practo_communicator.mail_staff.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - @practo_communicator.queue
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
   practo_communicator.mail_appointment:
     class: %practo_communicator.mail_appointment.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - @practo_communicator.queue
       - %communicator.mail_appointment.host%
       - %communicator.mail_appointment.port%
       - FABRIC
   practo_communicator.mail_group:
     class: %practo_communicator.mail_group.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_mail_queue%
-      - %communicator.update_mail_queue%
+      - @practo_communicator.queue
       - %communicator.mail_group.host%
       - %communicator.mail_group.port%
       - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
+      - @practo_communicator.queue
       - %communicator.sms_patient.host%
       - %communicator.sms_patient.port%
       - RAY
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
+      - @practo_communicator.queue
       - %communicator.sms_doctor.host%
       - %communicator.sms_doctor.port%
       - RAY
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
+      - @practo_communicator.queue
       - %communicator.mail_staff.host%
       - %communicator.mail_staff.port%
       - RAY
   practo_communicator.sms_appointment:
     class: %practo_communicator.sms_appointment.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_appointment_sms_queue%
-      - %communicator.update_appointment_sms_queue%
+      - @practo_communicator.queue
       - %communicator.sms_appointment.host%
       - %communicator.sms_appointment.port%
       - FABRIC
   practo_communicator.sms_group:
     class: %practo_communicator.sms_group.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.send_sms_queue%
-      - %communicator.update_sms_queue%
+      - @practo_communicator.queue
       - %communicator.mail_group.host%
       - %communicator.mail_group.port%
       - FABRIC
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:
-      - @leezy.pheanstalk.communicator
-      - %communicator.sms_credit%
+      - @practo_communicator.queue
       - %communicator.sms_credit.host%
       - %communicator.sms_credit.port%
+  practo_communicator.queue_factory:
+    class: Practo\CommunicatorBundle\Queue\QueueFactory
+    calls:
+      - [ setContainer, [ @service_container ]]
+  practo_communicator.queue:
+    class: Practo\CommunicatorBundle\Queue\AbstractQueue
+    factory_service: practo_communicator.queue_factory
+    factory_method: get

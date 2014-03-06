@@ -1,7 +1,7 @@
 <?php
 namespace Practo\CommunicatorBundle\Clients;
 
-use Pheanstalk\Pheanstalk;
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 
@@ -13,22 +13,16 @@ class MailStaff
 {
     private $_mailServer;
     private $_mailPort;
-    private $_sendMailQueue;
-    private $_updateMailQueue;
     private $_appName;
+    private $_queue;
 
-    private $_pheanstalk;
-
-    public function __construct($pheanstalk, $sendQueue,
-                                $updateQueue, $serviceHost,
+    public function __construct($queue, $serviceHost,
                                 $servicePort, $appName)
     {
         $this->_mailServer = $serviceHost;
         $this->_mailPort = $servicePort;
-        $this->_sendMailQueue = $sendQueue;
-        $this->_updateMailQueue = $updateQueue;
         $this->_appName = Helper::getValidAppName($appName);
-        $this->_pheanstalk = $pheanstalk;
+        $this->_queue = $queue;
     }
 
     public function sendMail($practiceId, $staffProfileId, $fromName, $fromMail,
@@ -84,9 +78,10 @@ class MailStaff
         $job->attachments = $attachments;
         $job->hash = $hash;
         $job->mail_type = 'staff';
-        $jsonified_job = json_encode($job);
-        $queueName = $this->_sendMailQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonified_job);
+        $jsonifiedJob = json_encode($job);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_MAIL_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -102,9 +97,10 @@ class MailStaff
         $job->unsubscribe_data = $unsubscribe_data;
         $job->spam_data = $spam_data;
         $job->mail_type = 'staff';
-        $jsonified_job = json_encode($job);
-        $queueName = $this->_updateMailQueue;
-        $this->_pheanstalk->useTube($queueName)->put($jsonified_job);
+        $jsonifiedJob = json_encode($job);
+        return $this->_queue
+                    ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)
