@@ -197,6 +197,10 @@ class MailStaff
           return \praccomm\StaffEmailType::BILLS_REPORT;
         case "LOW_STOCK":
           return \praccomm\StaffEmailType::LOW_STOCK;
+        case "CREDIT_LOW":
+          return \praccomm\StaffEmailType::CREDIT_LOW;
+        case "CREDIT_ZERO":
+          return \praccomm\StaffEmailType::CREDIT_ZERO;
         default:
           throw new Exception("Invalid message type");
       }

@@ -106,6 +106,8 @@ final class StaffEmailType {
   const ACCOUNT_DELETE = 8;
   const BILLS_REPORT = 9;
   const LOW_STOCK = 10;
+  const CREDIT_LOW = 11;
+  const CREDIT_ZERO = 12;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -117,6 +119,8 @@ final class StaffEmailType {
     8 => 'ACCOUNT_DELETE',
     9 => 'BILLS_REPORT',
     10 => 'LOW_STOCK',
+    11 => 'CREDIT_LOW',
+    12 => 'CREDIT_ZERO',
   );
 }
 
