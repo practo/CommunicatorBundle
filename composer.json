@@ -18,7 +18,8 @@
     "autoload": {
       "psr-0": {
         "Practo\\CommunicatorBundle\\": ""
-      }
+      },
+      "classmap": ["Clients/genphp/praccomm/"]
     },
     "target-dir": "Practo/CommunicatorBundle"
 }
