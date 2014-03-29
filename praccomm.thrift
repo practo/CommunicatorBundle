@@ -146,7 +146,11 @@ enum StaffEmailType {
     SUMMARY_FOLLOWUPBIRTHDAY = 7,
     ACCOUNT_DELETE = 8,
     BILLS_REPORT = 9,
-    LOW_STOCK = 10
+    LOW_STOCK = 10,
+    CREDIT_LOW = 11,
+    CREDIT_ZERO = 12,
+    V6_UPGRADE = 13,
+    EXPIRING_BATCHES = 14
 }
 
 
