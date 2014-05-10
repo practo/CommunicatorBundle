@@ -245,7 +245,7 @@ class SmsPatient
             case "PVR_CALL":
               return praccomm\PatientSMSType::PVR_CALL;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 }

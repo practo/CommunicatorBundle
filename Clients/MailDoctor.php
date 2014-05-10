@@ -192,7 +192,7 @@ class MailDoctor
             case "BILLS_REPORT":
               return \praccomm\DoctorEmailType::BILLS_REPORT;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 }

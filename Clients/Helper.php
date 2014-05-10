@@ -1,7 +1,6 @@
 <?php
 
 namespace Practo\CommunicatorBundle\Clients;
-use Exception;
 require_once __DIR__.'/genphp/praccomm/Types.php';
 
 class Helper
@@ -21,7 +20,7 @@ class Helper
             case 'NOVALIDEMAIL':
               return praccomm\DeliveryStatus::NOVALIDEMAIL;
             default:
-              throw new Exception("Invalid delivery status");
+              throw new \Exception("Invalid delivery status");
         }
     }
 
@@ -38,7 +37,7 @@ class Helper
             case 'WAITING':
               return praccomm\DeliveryStatus::WAITING;
             default:
-              throw new Exception("Invalid delivery status");
+              throw new \Exception("Invalid delivery status");
         }
     }
 
@@ -52,7 +51,7 @@ class Helper
         }
         else
         {
-            throw new Exception('Invalid application name. Has to be one of' +
+            throw new \Exception('Invalid application name. Has to be one of' +
                                 ' RAY, HELLO, FABRIC, EPICENTER');
         }
     }

@@ -198,7 +198,7 @@ class MailStaff
         case "LOW_STOCK":
           return \praccomm\StaffEmailType::LOW_STOCK;
         default:
-          throw new Exception("Invalid message type");
+          throw new \Exception("Invalid message type");
       }
     }
 }

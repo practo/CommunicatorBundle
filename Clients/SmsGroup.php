@@ -82,7 +82,7 @@ class SmsGroup
             case "CANCELLATION":
               return praccomm\GroupSMSType::EVENT_CONFIRMATION;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 }

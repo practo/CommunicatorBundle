@@ -185,7 +185,7 @@ class SmsStaff
             case "PVR_CALL":
               return praccomm\StaffSMSType::PVR_CALL;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 }

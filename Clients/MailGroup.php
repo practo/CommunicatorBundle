@@ -155,7 +155,7 @@ class MailGroup
             case "EVENT_ATTENDANCE_CONFIRMATION":
               return \praccomm\GroupMailType::EVENT_ATTENDANCE_CONFIRMATION;
             default:
-              throw new Exception("Invalid mail type");
+              throw new \Exception("Invalid mail type");
         }
     }
 }

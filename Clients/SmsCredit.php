@@ -161,7 +161,7 @@ class SmsCredit
             case "SGD":
                 return praccomm\Currency::SGD;
             default:
-                throw new Exception("Invalid currency");
+                throw new \Exception("Invalid currency");
         }
     }
 }

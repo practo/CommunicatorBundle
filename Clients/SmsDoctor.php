@@ -194,7 +194,7 @@ class SmsDoctor
             case "PVR_CALL":
               return praccomm\DoctorSMSType::PVR_CALL;
             default:
-              throw new Exception("Invalid message type");
+              throw new \Exception("Invalid message type");
         }
     }
 }
