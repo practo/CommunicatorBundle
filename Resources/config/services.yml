@@ -30,7 +30,7 @@ parameters:
     communicator.mail_patient.host: %communicator.host%
     communicator.mail_patient.port: 2020
     communicator.mail_doctor.host: %communicator.host%
-    communicator.mail_doctor.port: 1010
+    communicator.mail_doctor.port: 1030
     communicator.mail_staff.host: %communicator.host%
     communicator.mail_staff.port: 3030
     communicator.mail_appointment.host: %communicator.host%
