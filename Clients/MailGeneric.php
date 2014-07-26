@@ -76,8 +76,9 @@ class GenericMail
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        $queueName = $this->_sendMailQueue;
-        $this->_queue->put($queueName, $jsonifiedJob);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_MAIL_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
     }
 
     public function updateMail($hash, $status, $messageId,
