@@ -5,8 +5,6 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
-require_once __DIR__.'/genphp/praccomm/GenericMailService.php';
 
 /**
  * Clinet for sending generic mails
