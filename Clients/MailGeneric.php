@@ -11,7 +11,7 @@ require_once __DIR__.'/genphp/praccomm/GenericMailService.php';
 /**
  * Clinet for sending generic mails
  */
-class GenericMail
+class MailGeneric
 {
     private $_mailServer;
     private $_mailPort;
