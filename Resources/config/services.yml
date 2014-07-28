@@ -38,6 +38,7 @@ parameters:
     communicator.mail_group.host: %communicator.host%
     communicator.mail_group.port: 1113
     communicator.mail_generic.host: %communicator.host%
+    communicator.mail_generic.port: null
     #sms
     communicator.sms_patient.host: %communicator.host%
     communicator.sms_patient.port: 6060
@@ -94,7 +95,6 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.mail_generic.host%
-      - %communicator.mail_generic.port%
       - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
