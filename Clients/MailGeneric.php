@@ -24,13 +24,11 @@ class MailGeneric
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendMail($genericId, $fromName,
-                             $fromMail, $toName = "", $to, $cc = "",
-                             $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo = NULL)
+    public function sendMail($fromName, $fromMail, $toName = "", $to,
+                             $cc = "", $bcc = "", $subject, $body, $type,
+                             $files, $hash, $plaintext = "", $replyTo = NULL)
     {
         $job = new praccomm\GenericMail();
-        $job->generic_id = $genericId;
         $job->from_name = $fromName;
         $job->from_address = $fromMail;
         $job->to_name = $toName;
@@ -55,6 +53,7 @@ class MailGeneric
         $job->body = $body;
         $job->plaintext = $plaintext;
         $job->app_name = $this->_appName;
+        $job->email_type = $this->getMailType($type);
         $job->date = time();
         $job->reply_to = $replyTo;
         $i = 0;
@@ -120,18 +119,8 @@ class MailGeneric
     {
         switch($type)
         {
-            case "INVITE":
-              return \praccomm\GenericMailType::INVITE;
-            case "NEW_EVENT":
-              return \praccomm\GenericMailType::NEW_EVENT;
-            case "EVENT_CANCELLATION":
-              return \praccomm\GenericMailType::EVENT_CANCELLATION;
-            case "EVENT_CONFIRMATION":
-              return \praccomm\GenericMailType::EVENT_CONFIRMATION;
-            case "EVENT_ATTENDANCE_CANCELLATION":
-              return \praccomm\GenericMailType::EVENT_ATTENDANCE_CANCELLATION;
-            case "EVENT_ATTENDANCE_CONFIRMATION":
-              return \praccomm\GenericMailType::EVENT_ATTENDANCE_CONFIRMATION;
+            case "FABRIC_ROI_REPORT":
+              return \praccomm\GenericMailType::FABRIC_ROI_REPORT;
             default:
               throw new \Exception("Invalid mail type");
         }
