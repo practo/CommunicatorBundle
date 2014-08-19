@@ -38,8 +38,7 @@ parameters:
     communicator.mail_appointment.port: 1111
     communicator.mail_group.host: %communicator.host%
     communicator.mail_group.port: 1113
-    communicator.mail_generic.host: %communicator.host%
-    communicator.mail_generic.port: 
+
     #sms
     communicator.sms_patient.host: %communicator.host%
     communicator.sms_patient.port: 6060
