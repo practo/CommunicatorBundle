@@ -11,15 +11,11 @@ use praccomm;
  */
 class MailGeneric
 {
-    private $_mailServer;
-    private $_mailPort;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $appName)
     {
-        $this->_mailServer = $serviceHost;
-        $this->_mailPort = $servicePort;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
@@ -95,17 +91,6 @@ class MailGeneric
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_mailServer,
-                                               $this->_mailPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
     }
 
     private function getClient($transport)

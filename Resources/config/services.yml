@@ -95,8 +95,6 @@ services:
     class: %practo_communicator.mail_generic.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_generic.host%
-      - %communicator.mail_generic.port%
       - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
