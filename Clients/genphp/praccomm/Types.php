@@ -108,6 +108,10 @@ final class StaffEmailType {
   const ACCOUNT_DELETE = 8;
   const BILLS_REPORT = 9;
   const LOW_STOCK = 10;
+  const CREDIT_LOW = 11;
+  const CREDIT_ZERO = 12;
+  const V6_UPGRADE = 13;
+  const EXPIRING_BATCHES = 14;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -119,6 +123,10 @@ final class StaffEmailType {
     8 => 'ACCOUNT_DELETE',
     9 => 'BILLS_REPORT',
     10 => 'LOW_STOCK',
+    11 => 'CREDIT_LOW',
+    12 => 'CREDIT_ZERO',
+    13 => 'V6_UPGRADE',
+    14 => 'EXPIRING_BATCHES',
   );
 }
 
@@ -337,6 +345,13 @@ final class GroupMailType {
     4 => 'EVENT_CONFIRMATION',
     5 => 'EVENT_ATTENDANCE_CANCELLATION',
     6 => 'EVENT_ATTENDANCE_CONFIRMATION',
+  );
+}
+
+final class GenericMailType {
+  const FABRIC_ROI_REPORT = 1;
+  static public $__names = array(
+    1 => 'FABRIC_ROI_REPORT',
   );
 }
 
@@ -7676,7 +7691,6 @@ class GenericMail {
   static $_TSPEC;
 
   public $generic_mail_id = null;
-  public $generic_id = null;
   public $from_name = null;
   public $from_address = null;
   public $to_address = null;
@@ -7686,6 +7700,7 @@ class GenericMail {
   public $body = null;
   public $date = null;
   public $attachments = null;
+  public $email_type = null;
   public $created_by = null;
   public $created_on = null;
   public $modified_by = null;
@@ -7711,10 +7726,6 @@ class GenericMail {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'generic_mail_id',
-          'type' => TType::I64,
-          ),
-        2 => array(
-          'var' => 'generic_id',
           'type' => TType::I64,
           ),
         3 => array(
@@ -7765,6 +7776,10 @@ class GenericMail {
             'type' => TType::STRUCT,
             'class' => '\praccomm\Attachment',
             ),
+          ),
+        11 => array(
+          'var' => 'email_type',
+          'type' => TType::I32,
           ),
         13 => array(
           'var' => 'created_by',
@@ -7848,9 +7863,6 @@ class GenericMail {
       if (isset($vals['generic_mail_id'])) {
         $this->generic_mail_id = $vals['generic_mail_id'];
       }
-      if (isset($vals['generic_id'])) {
-        $this->generic_id = $vals['generic_id'];
-      }
       if (isset($vals['from_name'])) {
         $this->from_name = $vals['from_name'];
       }
@@ -7877,6 +7889,9 @@ class GenericMail {
       }
       if (isset($vals['attachments'])) {
         $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['email_type'])) {
+        $this->email_type = $vals['email_type'];
       }
       if (isset($vals['created_by'])) {
         $this->created_by = $vals['created_by'];
@@ -7960,13 +7975,6 @@ class GenericMail {
         case 1:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->generic_mail_id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->generic_id);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -8061,6 +8069,13 @@ class GenericMail {
               $this->attachments []= $elem164;
             }
             $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->email_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -8216,11 +8231,6 @@ class GenericMail {
       $xfer += $output->writeI64($this->generic_mail_id);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->generic_id !== null) {
-      $xfer += $output->writeFieldBegin('generic_id', TType::I64, 2);
-      $xfer += $output->writeI64($this->generic_id);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->from_name !== null) {
       $xfer += $output->writeFieldBegin('from_name', TType::STRING, 3);
       $xfer += $output->writeString($this->from_name);
@@ -8283,6 +8293,11 @@ class GenericMail {
     if ($this->date !== null) {
       $xfer += $output->writeFieldBegin('date', TType::I64, 10);
       $xfer += $output->writeI64($this->date);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->email_type !== null) {
+      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
+      $xfer += $output->writeI32($this->email_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
@@ -8839,5 +8854,4 @@ class ApplicationException extends TException {
   }
 
 }
-
 

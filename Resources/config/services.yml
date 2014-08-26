@@ -4,6 +4,7 @@ parameters:
     practo_communicator.mail_staff.class: Practo\CommunicatorBundle\Clients\MailStaff
     practo_communicator.mail_appointment.class: Practo\CommunicatorBundle\Clients\MailAppointment
     practo_communicator.mail_group.class: Practo\CommunicatorBundle\Clients\MailGroup
+    practo_communicator.mail_generic.class: Practo\CommunicatorBundle\Clients\MailGeneric
     practo_communicator.sms_doctor.class: Practo\CommunicatorBundle\Clients\SmsDoctor
     practo_communicator.sms_patient.class: Practo\CommunicatorBundle\Clients\SmsPatient
     practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
@@ -37,6 +38,7 @@ parameters:
     communicator.mail_appointment.port: 1111
     communicator.mail_group.host: %communicator.host%
     communicator.mail_group.port: 1113
+
     #sms
     communicator.sms_patient.host: %communicator.host%
     communicator.sms_patient.port: 6060
@@ -87,6 +89,11 @@ services:
       - @practo_communicator.queue
       - %communicator.mail_group.host%
       - %communicator.mail_group.port%
+      - FABRIC
+  practo_communicator.mail_generic:
+    class: %practo_communicator.mail_generic.class%
+    arguments:
+      - @practo_communicator.queue
       - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
