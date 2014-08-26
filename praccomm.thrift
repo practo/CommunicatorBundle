@@ -92,7 +92,8 @@ enum PatientEmailType {
     TIMELINE = 15,
     FILE = 16,
     BILLS_REPORT = 17,
-    MEDICAL_LEAVE = 18
+    MEDICAL_LEAVE = 18,
+    VITAL_SIGN = 19
 }
 
 

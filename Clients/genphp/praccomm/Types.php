@@ -72,6 +72,7 @@ final class PatientEmailType {
   const FILE = 16;
   const BILLS_REPORT = 17;
   const MEDICAL_LEAVE = 18;
+  const VITAL_SIGN = 19;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -92,6 +93,7 @@ final class PatientEmailType {
     16 => 'FILE',
     17 => 'BILLS_REPORT',
     18 => 'MEDICAL_LEAVE',
+    19 => 'VITAL_SIGN',
   );
 }
 
