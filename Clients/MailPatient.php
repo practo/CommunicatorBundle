@@ -261,8 +261,8 @@ class MailPatient
             return \praccomm\PatientEmailType::MEDICAL_LEAVE;
         case "VITAL_SIGN":
             return \praccomm\PatientEmailType::VITAL_SIGN;
-        case "GROWTH_CHART":
-            return \praccomm\PatientEmailType::GROWTH_CHART;
+        case "PATIENT_GROWTH":
+            return \praccomm\PatientEmailType::PATIENT_GROWTH;
         default:
             throw new \Exception("Invalid message type");
         }

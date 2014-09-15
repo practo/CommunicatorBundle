@@ -73,7 +73,7 @@ final class PatientEmailType {
   const BILLS_REPORT = 17;
   const MEDICAL_LEAVE = 18;
   const VITAL_SIGN = 19;
-  const GROWTH_CHART = 20;
+  const PATIENT_GROWTH = 20;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -95,7 +95,7 @@ final class PatientEmailType {
     17 => 'BILLS_REPORT',
     18 => 'MEDICAL_LEAVE',
     19 => 'VITAL_SIGN',
-    20 => 'GROWTH_CHART',
+    20 => 'PATIENT_GROWTH',
   );
 }
 
