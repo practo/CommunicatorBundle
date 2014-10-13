@@ -106,6 +106,8 @@ class MailGeneric
         {
             case "FABRIC_ROI_REPORT":
               return \praccomm\GenericMailType::FABRIC_ROI_REPORT;
+            case "FABRIC_RENEWAL_ALERT":
+              return \praccomm\GenericMailType::FABRIC_RENEWAL_ALERT;
             default:
               throw new \Exception("Invalid mail type");
         }
