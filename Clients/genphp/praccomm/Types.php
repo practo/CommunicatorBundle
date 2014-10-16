@@ -74,6 +74,8 @@ final class PatientEmailType {
   const MEDICAL_LEAVE = 18;
   const VITAL_SIGN = 19;
   const PATIENT_GROWTH = 20;
+  const IMMUNISATION = 21;
+  const IMMUNISATION_REMINDER = 22;
   static public $__names = array(
     0 => 'ACCOUNT_INVITE',
     1 => 'AMOUNT_DUE',
@@ -96,6 +98,8 @@ final class PatientEmailType {
     18 => 'MEDICAL_LEAVE',
     19 => 'VITAL_SIGN',
     20 => 'PATIENT_GROWTH',
+    21 => 'IMMUNISATION',
+    22 => 'IMMUNISATION_REMINDER',
   );
 }
 
