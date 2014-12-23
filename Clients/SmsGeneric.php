@@ -16,7 +16,7 @@ class SmsGeneric
     private $_appName;
     private $_queue;
 
-    private function __construct($queue, $appName)
+    public function __construct($queue, $appName)
     {
         $this->_queue = $queue;
         $this->_appName = getValidAppName($appName);
@@ -41,7 +41,7 @@ class SmsGeneric
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function getSMSType($type)
+    public function getSMSType($type)
     {
         switch($type)
         {
@@ -52,7 +52,7 @@ class SmsGeneric
         }
     }
 
-    private function getPersonType($type)
+    public function getPersonType($type)
     {
         switch($type)
         {
