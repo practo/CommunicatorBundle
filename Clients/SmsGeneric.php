@@ -11,15 +11,13 @@ use praccomm;
  */
 class SmsGeneric
 {
-    private $_sendGenericSmsQueue;
-    private $_updateGenericSmsQueue;
     private $_appName;
     private $_queue;
 
     public function __construct($queue, $appName)
     {
         $this->_queue = $queue;
-        $this->_appName = getValidAppName($appName);
+        $this->_appName = Helper::getValidAppName($appName);
     }
 
     public function sendSms($name, $to, $personType,
