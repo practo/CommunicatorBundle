@@ -26,8 +26,7 @@ class SmsDoctor
     }
 
     public function sendSms($practiceId, $doctorProfileId, $name, $to, $type,
-                            $body, $expiryTime = null, $secondaryMobile = null,
-                            $unverified = false, $smsDisabled = false,
+                            $body, $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
         $job = new praccomm\DoctorSms();
