@@ -33,6 +33,7 @@ class SmsGeneric
         $job->message_type = $this->getSMSType($messageType);
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
+        $job->sms_type = 'generic';
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
