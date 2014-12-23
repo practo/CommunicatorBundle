@@ -295,6 +295,13 @@ final class AppointmentSMSType {
   );
 }
 
+final class GenericSMSType {
+  const WEEKLY_ROI_SMS = 1;
+  static public $__names = array(
+    1 => 'WEEKLY_ROI_SMS',
+  );
+}
+
 final class GroupSMSType {
   const INVITE = 1;
   const NEW_EVENT = 2;
@@ -5663,6 +5670,498 @@ class AppointmentSMS {
     }
     if ($this->notes !== null) {
       $xfer += $output->writeFieldBegin('notes', TType::STRING, 23);
+      $xfer += $output->writeString($this->notes);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class GenericSMS {
+  static $_TSPEC;
+
+  public $generic_sms_id = null;
+  public $name = null;
+  public $mobile = null;
+  public $person_type = null;
+  public $message_text = null;
+  public $message_type = null;
+  public $delivery_time = null;
+  public $status = null;
+  public $failure_reason = null;
+  public $attempt = null;
+  public $operator = null;
+  public $operator_reply = null;
+  public $operator_code = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $app_name = null;
+  public $currency = null;
+  public $cost = null;
+  public $expiry_time = null;
+  public $notes = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'generic_sms_id',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'name',
+          'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'mobile',
+          'type' => TType::STRING,
+          ),
+        4 => array(
+          'var' => 'person_type',
+          'type' => TType::I32,
+          ),
+        5 => array(
+          'var' => 'message_text',
+          'type' => TType::STRING,
+          ),
+        6 => array(
+          'var' => 'message_type',
+          'type' => TType::I32,
+          ),
+        7 => array(
+          'var' => 'delivery_time',
+          'type' => TType::I64,
+          ),
+        8 => array(
+          'var' => 'status',
+          'type' => TType::I32,
+          ),
+        9 => array(
+          'var' => 'failure_reason',
+          'type' => TType::STRING,
+          ),
+        10 => array(
+          'var' => 'attempt',
+          'type' => TType::I64,
+          ),
+        11 => array(
+          'var' => 'operator',
+          'type' => TType::STRING,
+          ),
+        12 => array(
+          'var' => 'operator_reply',
+          'type' => TType::STRING,
+          ),
+        13 => array(
+          'var' => 'operator_code',
+          'type' => TType::STRING,
+          ),
+        14 => array(
+          'var' => 'created_by',
+          'type' => TType::I64,
+          ),
+        15 => array(
+          'var' => 'created_on',
+          'type' => TType::I64,
+          ),
+        16 => array(
+          'var' => 'modified_by',
+          'type' => TType::I64,
+          ),
+        17 => array(
+          'var' => 'modified_on',
+          'type' => TType::I64,
+          ),
+        18 => array(
+          'var' => 'app_name',
+          'type' => TType::STRING,
+          ),
+        19 => array(
+          'var' => 'currency',
+          'type' => TType::STRING,
+          ),
+        20 => array(
+          'var' => 'cost',
+          'type' => TType::DOUBLE,
+          ),
+        21 => array(
+          'var' => 'expiry_time',
+          'type' => TType::STRING,
+          ),
+        22 => array(
+          'var' => 'notes',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['generic_sms_id'])) {
+        $this->generic_sms_id = $vals['generic_sms_id'];
+      }
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['person_type'])) {
+        $this->person_type = $vals['person_type'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['delivery_time'])) {
+        $this->delivery_time = $vals['delivery_time'];
+      }
+      if (isset($vals['status'])) {
+        $this->status = $vals['status'];
+      }
+      if (isset($vals['failure_reason'])) {
+        $this->failure_reason = $vals['failure_reason'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['operator'])) {
+        $this->operator = $vals['operator'];
+      }
+      if (isset($vals['operator_reply'])) {
+        $this->operator_reply = $vals['operator_reply'];
+      }
+      if (isset($vals['operator_code'])) {
+        $this->operator_code = $vals['operator_code'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['currency'])) {
+        $this->currency = $vals['currency'];
+      }
+      if (isset($vals['cost'])) {
+        $this->cost = $vals['cost'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['notes'])) {
+        $this->notes = $vals['notes'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericSMS';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->generic_sms_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->person_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_text);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 6:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->message_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->delivery_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->status);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->failure_reason);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 10:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->attempt);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 12:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_reply);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 13:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->operator_code);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 14:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 15:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->created_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 16:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_by);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 17:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->modified_on);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 18:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->app_name);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 19:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->currency);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 20:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->cost);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 21:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->expiry_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 22:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->notes);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('GenericSMS');
+    if ($this->generic_sms_id !== null) {
+      $xfer += $output->writeFieldBegin('generic_sms_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->generic_sms_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->name !== null) {
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 2);
+      $xfer += $output->writeString($this->name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mobile !== null) {
+      $xfer += $output->writeFieldBegin('mobile', TType::STRING, 3);
+      $xfer += $output->writeString($this->mobile);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->person_type !== null) {
+      $xfer += $output->writeFieldBegin('person_type', TType::I32, 4);
+      $xfer += $output->writeI32($this->person_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_text !== null) {
+      $xfer += $output->writeFieldBegin('message_text', TType::STRING, 5);
+      $xfer += $output->writeString($this->message_text);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->message_type !== null) {
+      $xfer += $output->writeFieldBegin('message_type', TType::I32, 6);
+      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->delivery_time !== null) {
+      $xfer += $output->writeFieldBegin('delivery_time', TType::I64, 7);
+      $xfer += $output->writeI64($this->delivery_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->status !== null) {
+      $xfer += $output->writeFieldBegin('status', TType::I32, 8);
+      $xfer += $output->writeI32($this->status);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->failure_reason !== null) {
+      $xfer += $output->writeFieldBegin('failure_reason', TType::STRING, 9);
+      $xfer += $output->writeString($this->failure_reason);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->attempt !== null) {
+      $xfer += $output->writeFieldBegin('attempt', TType::I64, 10);
+      $xfer += $output->writeI64($this->attempt);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator !== null) {
+      $xfer += $output->writeFieldBegin('operator', TType::STRING, 11);
+      $xfer += $output->writeString($this->operator);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_reply !== null) {
+      $xfer += $output->writeFieldBegin('operator_reply', TType::STRING, 12);
+      $xfer += $output->writeString($this->operator_reply);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->operator_code !== null) {
+      $xfer += $output->writeFieldBegin('operator_code', TType::STRING, 13);
+      $xfer += $output->writeString($this->operator_code);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_by !== null) {
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 14);
+      $xfer += $output->writeI64($this->created_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->created_on !== null) {
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 15);
+      $xfer += $output->writeI64($this->created_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_by !== null) {
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 16);
+      $xfer += $output->writeI64($this->modified_by);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->modified_on !== null) {
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 17);
+      $xfer += $output->writeI64($this->modified_on);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->app_name !== null) {
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 18);
+      $xfer += $output->writeString($this->app_name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->currency !== null) {
+      $xfer += $output->writeFieldBegin('currency', TType::STRING, 19);
+      $xfer += $output->writeString($this->currency);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->cost !== null) {
+      $xfer += $output->writeFieldBegin('cost', TType::DOUBLE, 20);
+      $xfer += $output->writeDouble($this->cost);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->expiry_time !== null) {
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 21);
+      $xfer += $output->writeString($this->expiry_time);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->notes !== null) {
+      $xfer += $output->writeFieldBegin('notes', TType::STRING, 22);
       $xfer += $output->writeString($this->notes);
       $xfer += $output->writeFieldEnd();
     }

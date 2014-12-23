@@ -406,6 +406,34 @@ struct AppointmentSMS {
     23: optional string notes;
 }
 
+enum GenericSMSType {
+    WEEKLY_ROI_SMS = 1
+}
+
+struct GenericSMS {
+    1: required i64 generic_sms_id;
+    2: required string name;
+    3: required string mobile;
+    4: required PersonType person_type;
+    5: required string message_text;
+    6: required GenericSMSType message_type;
+    7: required i64 delivery_time;
+    8: optional SMSDeliveryStatus status;
+    9: optional string failure_reason;
+    10: optional i64 attempt;
+    11: optional string operator;
+    12: optional string operator_reply;
+    13: required string operator_code;
+    14: optional i64 created_by;
+    15: optional i64 created_on;
+    16: optional i64 modified_by;
+    17: optional i64 modified_on;
+    18: optional string app_name;
+    19: optional string currency;
+    20: optional double cost;
+    21: optional string expiry_time;
+    22: optional string notes;
+}
 
 enum GroupSMSType {
     INVITE = 1,
