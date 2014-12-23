@@ -1,8 +1,10 @@
 <?php
 
-$path = dirname(__FILE__);
-require_once $path.'/helper.php';
-require_once $path.'/queue.php';
+namespace Practo\CommunicatorBundle\Clients;
+
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
+use Practo\CommunicatorBundle\Clients\Helper;
+use praccomm;
 
 /**
  * Clinet for generic sms

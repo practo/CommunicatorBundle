@@ -10,7 +10,7 @@ parameters:
     practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
     practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
     practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsAppointment
-    practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsGeneric
+    practo_communicator.sms_generic.class: Practo\CommunicatorBundle\Clients\SmsGeneric
     practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
 
 
