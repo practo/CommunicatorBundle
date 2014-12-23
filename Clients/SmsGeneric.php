@@ -9,7 +9,7 @@ use praccomm;
 /**
  * Clinet for generic sms
  */
-class GenericSms
+class SmsGeneric
 {
     private $_sendGenericSmsQueue;
     private $_updateGenericSmsQueue;
