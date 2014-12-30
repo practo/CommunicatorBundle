@@ -94,7 +94,8 @@ enum PatientEmailType {
     BILLS_REPORT = 17,
     MEDICAL_LEAVE = 18,
     VITAL_SIGN = 19,
-    PATIENT_GROWTH = 20
+    PATIENT_GROWTH = 20,
+    PATIENT_SMS_BLACKLISTED = 21
 }
 
 

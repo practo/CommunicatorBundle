@@ -263,6 +263,8 @@ class MailPatient
             return \praccomm\PatientEmailType::VITAL_SIGN;
         case "PATIENT_GROWTH":
             return \praccomm\PatientEmailType::PATIENT_GROWTH;
+        case "PATIENT_SMS_BLACKLISTED":
+            return \praccomm\PatientEmailType::PATIENT_SMS_BLACKLISTED;
         default:
             throw new \Exception("Invalid message type");
         }
