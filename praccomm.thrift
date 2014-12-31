@@ -148,7 +148,11 @@ enum StaffEmailType {
     SUMMARY_FOLLOWUPBIRTHDAY = 7,
     ACCOUNT_DELETE = 8,
     BILLS_REPORT = 9,
-    LOW_STOCK = 10
+    LOW_STOCK = 10,
+    CREDIT_LOW = 11,
+    CREDIT_ZERO = 12,
+    V6_UPGRADE = 13,
+    EXPIRING_BATCHES = 14
 }
 
 
@@ -531,9 +535,14 @@ struct GroupMail {
     33: optional i64 event_id;
 }
 
+
+enum GenericMailType {
+    FABRIC_ROI_REPORT = 1,
+    FABRIC_RENEWAL_ALERT = 2
+}
+
 struct GenericMail {
     1: required i64 generic_mail_id;
-    2: required i64 generic_id;
     3: required string from_name;
     4: required string from_address;
     5: required string to_address;
@@ -543,6 +552,7 @@ struct GenericMail {
     9: required string body;
     10: required i64 date;
     12: optional list<Attachment> attachments;
+    11: required GenericMailType email_type;
     13: optional i64 created_by;
     14: optional i64 created_on;
     15: optional i64 modified_by;
