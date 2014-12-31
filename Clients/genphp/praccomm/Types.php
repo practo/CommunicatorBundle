@@ -352,8 +352,10 @@ final class GroupMailType {
 
 final class GenericMailType {
   const FABRIC_ROI_REPORT = 1;
+  const FABRIC_RENEWAL_ALERT = 2;
   static public $__names = array(
     1 => 'FABRIC_ROI_REPORT',
+    2 => 'FABRIC_RENEWAL_ALERT',
   );
 }
 
@@ -8856,4 +8858,5 @@ class ApplicationException extends TException {
   }
 
 }
+
 
