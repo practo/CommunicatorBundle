@@ -212,6 +212,7 @@ final class PatientSMSType {
   const PVR_VOICEMAIL = 16;
   const PVR_CALL = 17;
   const AMOUNT_DUE = 18;
+  const VN_DETAILS = 19;
   static public $__names = array(
     1 => 'BIRTHDAY',
     2 => 'BULK',
@@ -231,6 +232,7 @@ final class PatientSMSType {
     16 => 'PVR_VOICEMAIL',
     17 => 'PVR_CALL',
     18 => 'AMOUNT_DUE',
+    19 => 'VN_DETAILS',
   );
 }
 
