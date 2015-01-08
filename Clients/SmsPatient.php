@@ -28,6 +28,7 @@ class SmsPatient
     }
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
+                            $expiryTime = null, $secondaryMobile = null,
                             $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
