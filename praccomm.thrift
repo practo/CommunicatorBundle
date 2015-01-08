@@ -411,28 +411,31 @@ enum GenericSMSType {
 }
 
 struct GenericSMS {
-    1: required i64 generic_sms_id;
-    2: required string name;
-    3: required string mobile;
-    4: required PersonType person_type;
-    5: required string message_text;
-    6: required GenericSMSType message_type;
-    7: required i64 delivery_time;
-    8: optional SMSDeliveryStatus status;
-    9: optional string failure_reason;
-    10: optional i64 attempt;
-    11: optional string operator;
-    12: optional string operator_reply;
-    13: required string operator_code;
-    14: optional i64 created_by;
-    15: optional i64 created_on;
-    16: optional i64 modified_by;
-    17: optional i64 modified_on;
-    18: optional string app_name;
-    19: optional string currency;
-    20: optional double cost;
-    21: optional string expiry_time;
-    22: optional string notes;
+    1: required i64 id;
+    2: required i64 generic_sms_id;
+    3: required i64 practice_id;
+    4: required i64 practice_doctor_id;
+    5: required string name;
+    6: required string mobile;
+    7: required PersonType person_type;
+    8: required string message_text;
+    9: required GenericSMSType message_type;
+    10: required i64 delivery_time;
+    11: optional SMSDeliveryStatus status;
+    12: optional string failure_reason;
+    13: optional i64 attempt;
+    14: optional string operator;
+    15: optional string operator_reply;
+    16: required string operator_code;
+    17: optional i64 created_by;
+    18: optional i64 created_on;
+    19: optional i64 modified_by;
+    20: optional i64 modified_on;
+    21: optional string app_name;
+    22: optional string currency;
+    23: optional double cost;
+    24: optional string expiry_time;
+    25: optional string notes;
 }
 
 enum GroupSMSType {
