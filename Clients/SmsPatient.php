@@ -28,6 +28,7 @@ class SmsPatient
     }
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
+                            $expiryTime = null, $secondaryMobile = null,
                             $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
@@ -244,6 +245,8 @@ class SmsPatient
               return praccomm\PatientSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
               return praccomm\PatientSMSType::PVR_CALL;
+            case "VN_DETAILS":
+              return praccomm\PatientSMSType::VN_DETAILS;
             default:
               throw new \Exception("Invalid message type");
         }
