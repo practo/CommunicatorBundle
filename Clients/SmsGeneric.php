@@ -20,8 +20,9 @@ class SmsGeneric
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($generic_sms_id, $practice_id, $practice_doctor_id,
+    public function sendSms($generic_sms_id, $practice_id,
                             $name, $to, $personType, $messageType, $body,
+                            $practice_doctor_id = null,
                             $notes = null, $expiryTime = null)
     {
         $job = new praccomm\GenericSms();
@@ -49,6 +50,8 @@ class SmsGeneric
         {
             case "WEEKLY_ROI_SMS":
               return praccomm\GenericSMSType::WEEKLY_ROI_SMS;
+            case "VN_DETAILS":
+              return praccomm\GenericSMSType::VN_DETAILS;
             default:
               throw new Exception("Invalid message type");
         }

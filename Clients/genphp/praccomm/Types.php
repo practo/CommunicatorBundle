@@ -297,8 +297,10 @@ final class AppointmentSMSType {
 
 final class GenericSMSType {
   const WEEKLY_ROI_SMS = 1;
+  const VN_DETAILS = 2:
   static public $__names = array(
     1 => 'WEEKLY_ROI_SMS',
+    2 => 'VN_DETAILS',
   );
 }
 
