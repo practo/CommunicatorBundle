@@ -5685,7 +5685,10 @@ class AppointmentSMS {
 class GenericSMS {
   static $_TSPEC;
 
+  public $id = null;
   public $generic_id = null;
+  public $practice_id = null;
+  public $practice_doctor_id = null;
   public $name = null;
   public $mobile = null;
   public $person_type = null;
@@ -5712,98 +5715,119 @@ class GenericSMS {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
-          'var' => 'generic_id',
+          'var' => 'id',
           'type' => TType::I64,
           ),
         2 => array(
+          'var' => 'generic_id',
+          'type' => TType::I64,
+          ),
+        3 => array(
+          'var' => 'practice_id',
+          'type' => TType::I64,
+          ),
+        4 => array(
+          'var' => 'practice_doctor_id',
+          'type' => TType::I64,
+          ),
+        5 => array(
           'var' => 'name',
           'type' => TType::STRING,
           ),
-        3 => array(
+        6 => array(
           'var' => 'mobile',
           'type' => TType::STRING,
           ),
-        4 => array(
+        7 => array(
           'var' => 'person_type',
           'type' => TType::I32,
           ),
-        5 => array(
+        8 => array(
           'var' => 'message_text',
           'type' => TType::STRING,
           ),
-        6 => array(
+        9 => array(
           'var' => 'message_type',
           'type' => TType::I32,
           ),
-        7 => array(
+        10 => array(
           'var' => 'delivery_time',
           'type' => TType::I64,
           ),
-        8 => array(
+        11 => array(
           'var' => 'status',
           'type' => TType::I32,
           ),
-        9 => array(
+        12 => array(
           'var' => 'failure_reason',
           'type' => TType::STRING,
           ),
-        10 => array(
+        13 => array(
           'var' => 'attempt',
           'type' => TType::I64,
           ),
-        11 => array(
+        14 => array(
           'var' => 'operator',
           'type' => TType::STRING,
           ),
-        12 => array(
+        15 => array(
           'var' => 'operator_reply',
           'type' => TType::STRING,
           ),
-        13 => array(
+        16 => array(
           'var' => 'operator_code',
           'type' => TType::STRING,
           ),
-        14 => array(
+        17 => array(
           'var' => 'created_by',
           'type' => TType::I64,
           ),
-        15 => array(
+        18 => array(
           'var' => 'created_on',
           'type' => TType::I64,
           ),
-        16 => array(
+        19 => array(
           'var' => 'modified_by',
           'type' => TType::I64,
           ),
-        17 => array(
+        20 => array(
           'var' => 'modified_on',
           'type' => TType::I64,
           ),
-        18 => array(
+        21 => array(
           'var' => 'app_name',
           'type' => TType::STRING,
           ),
-        19 => array(
+        22 => array(
           'var' => 'currency',
           'type' => TType::STRING,
           ),
-        20 => array(
+        23 => array(
           'var' => 'cost',
           'type' => TType::DOUBLE,
           ),
-        21 => array(
+        24 => array(
           'var' => 'expiry_time',
           'type' => TType::STRING,
           ),
-        22 => array(
+        25 => array(
           'var' => 'notes',
           'type' => TType::STRING,
           ),
         );
     }
     if (is_array($vals)) {
+      if (isset($vals['id'])) {
+        $this->id = $vals['id'];
+      }
       if (isset($vals['generic_id'])) {
         $this->generic_id = $vals['generic_id'];
+      }
+      if (isset($vals['practice_id'])) {
+        $this->practice_id = $vals['practice_id'];
+      }
+      if (isset($vals['practice_doctor_id'])) {
+        $this->practice_doctor_id = $vals['practice_doctor_id'];
       }
       if (isset($vals['name'])) {
         $this->name = $vals['name'];
@@ -5892,152 +5916,173 @@ class GenericSMS {
       {
         case 1:
           if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->generic_id);
+            $xfer += $input->readI64($this->id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->name);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->generic_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->mobile);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->practice_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->person_type);
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->practice_doctor_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 5:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->message_text);
+            $xfer += $input->readString($this->name);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 6:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->mobile);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->person_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_text);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->message_type);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 7:
+        case 10:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->delivery_time);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 8:
+        case 11:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->status);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 9:
+        case 12:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->failure_reason);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 10:
+        case 13:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->attempt);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 11:
+        case 14:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->operator);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 12:
+        case 15:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->operator_reply);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 13:
+        case 16:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->operator_code);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 14:
+        case 17:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->created_by);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 15:
+        case 18:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->created_on);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 16:
+        case 19:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->modified_by);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 17:
+        case 20:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->modified_on);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 18:
+        case 21:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->app_name);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 19:
+        case 22:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->currency);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 20:
+        case 23:
           if ($ftype == TType::DOUBLE) {
             $xfer += $input->readDouble($this->cost);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 21:
+        case 24:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->expiry_time);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 22:
+        case 25:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->notes);
           } else {
@@ -6057,9 +6102,24 @@ class GenericSMS {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('GenericSMS');
+    if ($this->id !== null) {
+      $xfer += $output->writeFieldBegin('id', TType::I64, 1);
+      $xfer += $output->writeI64($this->id);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->generic_id !== null) {
-      $xfer += $output->writeFieldBegin('generic_id', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('generic_id', TType::I64, 2);
       $xfer += $output->writeI64($this->generic_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->practice_id !== null) {
+      $xfer += $output->writeFieldBegin('practice_id', TType::I64, 3);
+      $xfer += $output->writeI64($this->practice_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->practice_doctor_id !== null) {
+      $xfer += $output->writeFieldBegin('practice_doctor_id', TType::I64, 4);
+      $xfer += $output->writeI64($this->practice_doctor_id);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->name !== null) {
