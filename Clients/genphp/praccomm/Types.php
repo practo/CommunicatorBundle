@@ -5685,7 +5685,7 @@ class AppointmentSMS {
 class GenericSMS {
   static $_TSPEC;
 
-  public $generic_sms_id = null;
+  public $generic_id = null;
   public $name = null;
   public $mobile = null;
   public $person_type = null;
@@ -5712,7 +5712,7 @@ class GenericSMS {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
-          'var' => 'generic_sms_id',
+          'var' => 'generic_id',
           'type' => TType::I64,
           ),
         2 => array(
@@ -5802,8 +5802,8 @@ class GenericSMS {
         );
     }
     if (is_array($vals)) {
-      if (isset($vals['generic_sms_id'])) {
-        $this->generic_sms_id = $vals['generic_sms_id'];
+      if (isset($vals['generic_id'])) {
+        $this->generic_id = $vals['generic_id'];
       }
       if (isset($vals['name'])) {
         $this->name = $vals['name'];
@@ -5892,7 +5892,7 @@ class GenericSMS {
       {
         case 1:
           if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->generic_sms_id);
+            $xfer += $input->readI64($this->generic_id);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6057,9 +6057,9 @@ class GenericSMS {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('GenericSMS');
-    if ($this->generic_sms_id !== null) {
-      $xfer += $output->writeFieldBegin('generic_sms_id', TType::I64, 1);
-      $xfer += $output->writeI64($this->generic_sms_id);
+    if ($this->generic_id !== null) {
+      $xfer += $output->writeFieldBegin('generic_id', TType::I64, 1);
+      $xfer += $output->writeI64($this->generic_id);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->name !== null) {
