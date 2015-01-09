@@ -6123,107 +6123,107 @@ class GenericSMS {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->name !== null) {
-      $xfer += $output->writeFieldBegin('name', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 5);
       $xfer += $output->writeString($this->name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->mobile !== null) {
-      $xfer += $output->writeFieldBegin('mobile', TType::STRING, 3);
+      $xfer += $output->writeFieldBegin('mobile', TType::STRING, 6);
       $xfer += $output->writeString($this->mobile);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->person_type !== null) {
-      $xfer += $output->writeFieldBegin('person_type', TType::I32, 4);
+      $xfer += $output->writeFieldBegin('person_type', TType::I32, 7);
       $xfer += $output->writeI32($this->person_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_text !== null) {
-      $xfer += $output->writeFieldBegin('message_text', TType::STRING, 5);
+      $xfer += $output->writeFieldBegin('message_text', TType::STRING, 8);
       $xfer += $output->writeString($this->message_text);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_type !== null) {
-      $xfer += $output->writeFieldBegin('message_type', TType::I32, 6);
+      $xfer += $output->writeFieldBegin('message_type', TType::I32, 9);
       $xfer += $output->writeI32($this->message_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->delivery_time !== null) {
-      $xfer += $output->writeFieldBegin('delivery_time', TType::I64, 7);
+      $xfer += $output->writeFieldBegin('delivery_time', TType::I64, 10);
       $xfer += $output->writeI64($this->delivery_time);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->status !== null) {
-      $xfer += $output->writeFieldBegin('status', TType::I32, 8);
+      $xfer += $output->writeFieldBegin('status', TType::I32, 11);
       $xfer += $output->writeI32($this->status);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->failure_reason !== null) {
-      $xfer += $output->writeFieldBegin('failure_reason', TType::STRING, 9);
+      $xfer += $output->writeFieldBegin('failure_reason', TType::STRING, 12);
       $xfer += $output->writeString($this->failure_reason);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attempt !== null) {
-      $xfer += $output->writeFieldBegin('attempt', TType::I64, 10);
+      $xfer += $output->writeFieldBegin('attempt', TType::I64, 13);
       $xfer += $output->writeI64($this->attempt);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->operator !== null) {
-      $xfer += $output->writeFieldBegin('operator', TType::STRING, 11);
+      $xfer += $output->writeFieldBegin('operator', TType::STRING, 14);
       $xfer += $output->writeString($this->operator);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->operator_reply !== null) {
-      $xfer += $output->writeFieldBegin('operator_reply', TType::STRING, 12);
+      $xfer += $output->writeFieldBegin('operator_reply', TType::STRING, 15);
       $xfer += $output->writeString($this->operator_reply);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->operator_code !== null) {
-      $xfer += $output->writeFieldBegin('operator_code', TType::STRING, 13);
+      $xfer += $output->writeFieldBegin('operator_code', TType::STRING, 16);
       $xfer += $output->writeString($this->operator_code);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->created_by !== null) {
-      $xfer += $output->writeFieldBegin('created_by', TType::I64, 14);
+      $xfer += $output->writeFieldBegin('created_by', TType::I64, 17);
       $xfer += $output->writeI64($this->created_by);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->created_on !== null) {
-      $xfer += $output->writeFieldBegin('created_on', TType::I64, 15);
+      $xfer += $output->writeFieldBegin('created_on', TType::I64, 18);
       $xfer += $output->writeI64($this->created_on);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->modified_by !== null) {
-      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 16);
+      $xfer += $output->writeFieldBegin('modified_by', TType::I64, 19);
       $xfer += $output->writeI64($this->modified_by);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->modified_on !== null) {
-      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 17);
+      $xfer += $output->writeFieldBegin('modified_on', TType::I64, 20);
       $xfer += $output->writeI64($this->modified_on);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->app_name !== null) {
-      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 18);
+      $xfer += $output->writeFieldBegin('app_name', TType::STRING, 21);
       $xfer += $output->writeString($this->app_name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->currency !== null) {
-      $xfer += $output->writeFieldBegin('currency', TType::STRING, 19);
+      $xfer += $output->writeFieldBegin('currency', TType::STRING, 22);
       $xfer += $output->writeString($this->currency);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cost !== null) {
-      $xfer += $output->writeFieldBegin('cost', TType::DOUBLE, 20);
+      $xfer += $output->writeFieldBegin('cost', TType::DOUBLE, 23);
       $xfer += $output->writeDouble($this->cost);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->expiry_time !== null) {
-      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 21);
+      $xfer += $output->writeFieldBegin('expiry_time', TType::STRING, 24);
       $xfer += $output->writeString($this->expiry_time);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->notes !== null) {
-      $xfer += $output->writeFieldBegin('notes', TType::STRING, 22);
+      $xfer += $output->writeFieldBegin('notes', TType::STRING, 25);
       $xfer += $output->writeString($this->notes);
       $xfer += $output->writeFieldEnd();
     }
