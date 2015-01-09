@@ -20,12 +20,12 @@ class SmsGeneric
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($generic_sms_id, $practice_id, $practice_doctor_id,
+    public function sendSms($generic_id, $practice_id, $practice_doctor_id,
                             $name, $to, $personType, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
         $job = new praccomm\GenericSms();
-        $job->generic_sms_id = $generic_sms_id;
+        $job->generic_id = $generic_id;
         $job->practice_id = $practice_id;
         $job->practice_doctor_id = $practice_doctor_id;
         $job->name = $name;

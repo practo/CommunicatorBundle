@@ -412,7 +412,7 @@ enum GenericSMSType {
 
 struct GenericSMS {
     1: required i64 id;
-    2: required i64 generic_sms_id;
+    2: required i64 generic_id;
     3: required i64 practice_id;
     4: required i64 practice_doctor_id;
     5: required string name;
