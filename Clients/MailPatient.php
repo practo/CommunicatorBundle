@@ -59,7 +59,7 @@ class MailPatient
         $job->plaintext = $plaintext;
         $job->app_name = $this->_appName;
         $job->date = time();
-        $job->email_type = $this->getMailType($type);
+        $job->email_type = $type;
         $job->reply_to = $replyTo;
 
         $i = 0;
@@ -91,7 +91,7 @@ class MailPatient
     {
         $job = new praccomm\PatientMail();
         $job->hash = $hash;
-        $job->delivery_status = Helper::getMailDeliveryStatus($status);
+        $job->delivery_status = $status;
         $job->email_provider = $emailProvider;
         $job->message_id = $messageId;
         $job->smtp_reply = $smtpReply;
@@ -214,58 +214,6 @@ class MailPatient
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\PatientMailServiceClient($protocol);
         return $client;
-    }
-
-    private function getMailType($type)
-    {
-      switch($type)
-        {
-        case "ACCOUNT_INVITE":
-            return \praccomm\PatientEmailType::ACCOUNT_INVITE;
-        case "AMOUNT_DUE":
-        case "PATIENT_AMOUNT_DUE":
-            return \praccomm\PatientEmailType::AMOUNT_DUE;
-        case "BILL":
-            return \praccomm\PatientEmailType::BILL;
-        case "BIRTHDAY":
-            return \praccomm\PatientEmailType::BIRTHDAY;
-        case "CANCELLATION":
-            return \praccomm\PatientEmailType::CANCELLATION;
-        case "CONFIRMATION":
-            return \praccomm\PatientEmailType::CONFIRMATION;
-        case "FOLLOWUP":
-            return \praccomm\PatientEmailType::FOLLOWUP;
-        case "ONLINE_APPOINTMENT":
-            return \praccomm\PatientEmailType::ONLINE_APPOINTMENT;
-        case "PRESCRIPTION":
-            return \praccomm\PatientEmailType::PRESCRIPTION;
-        case "REMINDER":
-            return \praccomm\PatientEmailType::REMINDER;
-        case "RESCHEDULE":
-            return \praccomm\PatientEmailType::RESCHEDULE;
-        case "TREATMENT":
-            return \praccomm\PatientEmailType::TREATMENT;
-        case "TREATMENTPLAN":
-            return \praccomm\PatientEmailType::TREATMENTPLAN;
-        case "INVOICE":
-            return \praccomm\PatientEmailType::INVOICE;
-        case "PAYMENT":
-            return \praccomm\PatientEmailType::PAYMENT;
-        case "TIMELINE":
-            return \praccomm\PatientEmailType::TIMELINE;
-        case "FILE":
-            return \praccomm\PatientEmailType::FILE;
-        case "BILLS_REPORT":
-            return \praccomm\PatientEmailType::BILLS_REPORT;
-        case "MEDICAL_LEAVE":
-            return \praccomm\PatientEmailType::MEDICAL_LEAVE;
-        case "VITAL_SIGN":
-            return \praccomm\PatientEmailType::VITAL_SIGN;
-        case "PATIENT_GROWTH":
-            return \praccomm\PatientEmailType::PATIENT_GROWTH;
-        default:
-            throw new \Exception("Invalid message type");
-        }
     }
 }
 ?>

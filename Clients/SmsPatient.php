@@ -38,7 +38,7 @@ class SmsPatient
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
         $job->expiry_time = $expiryTime;
-        $job->message_type = $this->getSMSType($type);
+        $job->message_type = $type;
         $job->message_text = $body;
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
@@ -63,7 +63,7 @@ class SmsPatient
                               $operator, $opReply, $opCode)
     {
         $job = new praccomm\PatientSms();
-        $job->status = Helper::getSMSDeliveryStatus($status);
+        $job->status = $status;
         $job->patient_sms_id = $key;
         $job->delivery_time = $deliveryTime;
         $job->operator = $operator;
@@ -204,49 +204,6 @@ class SmsPatient
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\PatientSMSServiceClient($protocol);
         return $client;
-    }
-
-    private function getSMSType($type)
-    {
-        switch($type)
-        {
-            case "BIRTHDAY":
-              return praccomm\PatientSMSType::BIRTHDAY;
-            case "BULK":
-              return praccomm\PatientSMSType::BULK;
-            case "CANCELLATION":
-              return praccomm\PatientSMSType::CANCELLATION;
-            case "CONFIRMATION":
-              return praccomm\PatientSMSType::CONFIRMATION;
-            case "CUSTOM":
-              return praccomm\PatientSMSType::CUSTOM;
-            case "FOLLOWUP":
-              return praccomm\PatientSMSType::FOLLOWUP;
-            case "ONLINE_APPOINTMENT":
-              return praccomm\PatientSMSType::ONLINE_APPOINTMENT;
-            case "REMINDER":
-              return praccomm\PatientSMSType::REMINDER;
-            case "RESCHEDULE":
-              return praccomm\PatientSMSType::RESCHEDULE;
-            case "PRESCRIPTION":
-              return praccomm\PatientSMSType::PRESCRIPTION;
-            case "SYSTEM":
-              return praccomm\PatientSMSType::SYSTEM;
-            case "PVR_APPOINTMENT":
-              return praccomm\PatientSMSType::PVR_APPOINTMENT;
-            case "PVR_CLINICDETAILS":
-              return praccomm\PatientSMSType::PVR_CLINICDETAILS;
-            case "PVR_MISSED":
-              return praccomm\PatientSMSType::PVR_MISSED;
-            case "PVR_EMERGENCY":
-              return praccomm\PatientSMSType::PVR_EMERGENCY;
-            case "PVR_VOICEMAIL":
-              return praccomm\PatientSMSType::PVR_VOICEMAIL;
-            case "PVR_CALL":
-              return praccomm\PatientSMSType::PVR_CALL;
-            default:
-              throw new \Exception("Invalid message type");
-        }
     }
 }
 ?>
