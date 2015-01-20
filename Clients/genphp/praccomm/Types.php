@@ -295,15 +295,6 @@ final class AppointmentSMSType {
   );
 }
 
-final class GenericSMSType {
-  const WEEKLY_ROI_SMS = 1;
-  const VN_DETAILS = 2;
-  static public $__names = array(
-    1 => 'WEEKLY_ROI_SMS',
-    2 => 'VN_DETAILS',
-  );
-}
-
 final class GroupSMSType {
   const INVITE = 1;
   const NEW_EVENT = 2;
@@ -5687,8 +5678,8 @@ class GenericSMS {
 
   public $id = null;
   public $generic_id = null;
-  public $practice_id = null;
-  public $practice_doctor_id = null;
+  public $reference_id = null;
+  public $reference_type = null;
   public $name = null;
   public $mobile = null;
   public $person_type = null;
@@ -5723,12 +5714,12 @@ class GenericSMS {
           'type' => TType::I64,
           ),
         3 => array(
-          'var' => 'practice_id',
+          'var' => 'reference_id',
           'type' => TType::I64,
           ),
         4 => array(
-          'var' => 'practice_doctor_id',
-          'type' => TType::I64,
+          'var' => 'reference_type',
+          'type' => TType::STRING,
           ),
         5 => array(
           'var' => 'name',
@@ -5748,7 +5739,7 @@ class GenericSMS {
           ),
         9 => array(
           'var' => 'message_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         10 => array(
           'var' => 'delivery_time',
@@ -5823,11 +5814,11 @@ class GenericSMS {
       if (isset($vals['generic_id'])) {
         $this->generic_id = $vals['generic_id'];
       }
-      if (isset($vals['practice_id'])) {
-        $this->practice_id = $vals['practice_id'];
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
       }
-      if (isset($vals['practice_doctor_id'])) {
-        $this->practice_doctor_id = $vals['practice_doctor_id'];
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
       }
       if (isset($vals['name'])) {
         $this->name = $vals['name'];
@@ -5930,14 +5921,14 @@ class GenericSMS {
           break;
         case 3:
           if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->practice_id);
+            $xfer += $input->readI64($this->reference_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->practice_doctor_id);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reference_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -5971,8 +5962,8 @@ class GenericSMS {
           }
           break;
         case 9:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->message_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6112,14 +6103,14 @@ class GenericSMS {
       $xfer += $output->writeI64($this->generic_id);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->practice_id !== null) {
-      $xfer += $output->writeFieldBegin('practice_id', TType::I64, 3);
-      $xfer += $output->writeI64($this->practice_id);
+    if ($this->reference_id !== null) {
+      $xfer += $output->writeFieldBegin('reference_id', TType::I64, 3);
+      $xfer += $output->writeI64($this->reference_id);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->practice_doctor_id !== null) {
-      $xfer += $output->writeFieldBegin('practice_doctor_id', TType::I64, 4);
-      $xfer += $output->writeI64($this->practice_doctor_id);
+    if ($this->reference_type !== null) {
+      $xfer += $output->writeFieldBegin('reference_type', TType::STRING, 4);
+      $xfer += $output->writeString($this->reference_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->name !== null) {
@@ -6143,8 +6134,8 @@ class GenericSMS {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_type !== null) {
-      $xfer += $output->writeFieldBegin('message_type', TType::I32, 9);
-      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldBegin('message_type', TType::STRING, 9);
+      $xfer += $output->writeString($this->message_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->delivery_time !== null) {

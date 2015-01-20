@@ -406,20 +406,16 @@ struct AppointmentSMS {
     23: optional string notes;
 }
 
-enum GenericSMSType {
-    WEEKLY_ROI_SMS = 1
-}
-
 struct GenericSMS {
     1: required i64 id;
     2: required i64 generic_id;
-    3: required i64 practice_id;
-    4: required i64 practice_doctor_id;
+    3: required i64 reference_id;
+    4: required string reference_type;
     5: required string name;
     6: required string mobile;
     7: required PersonType person_type;
     8: required string message_text;
-    9: required GenericSMSType message_type;
+    9: required string message_type;
     10: required i64 delivery_time;
     11: optional SMSDeliveryStatus status;
     12: optional string failure_reason;

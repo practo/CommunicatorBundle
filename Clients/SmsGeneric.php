@@ -20,20 +20,20 @@ class SmsGeneric
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($generic_id, $practice_id, $practice_doctor_id,
+    public function sendSms($generic_id, $reference_id, $reference_type,
                             $name, $to, $personType, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
         $job = new praccomm\GenericSms();
         $job->generic_id = $generic_id;
-        $job->practice_id = $practice_id;
-        $job->practice_doctor_id = $practice_doctor_id;
+        $job->reference_id = $reference_id;
+        $job->reference_type = $reference_type;
         $job->name = $name;
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->notes = $notes;
-        $job->message_type = $this->getSMSType($messageType);
+        $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
         $job->sms_type = 'generic';
@@ -41,19 +41,6 @@ class SmsGeneric
         return $this->_queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
-    }
-
-    public function getSMSType($type)
-    {
-        switch($type)
-        {
-            case "WEEKLY_ROI_SMS":
-              return praccomm\GenericSMSType::WEEKLY_ROI_SMS;
-            case "VN_DETAILS":
-              return praccomm\GenericSMSType::VN_DETAILS;
-            default:
-              throw new Exception("Invalid message type");
-        }
     }
 
     public function getPersonType($type)
