@@ -106,6 +106,8 @@ class MailGeneric
         {
             case "FABRIC_ROI_REPORT":
               return \praccomm\GenericMailType::FABRIC_ROI_REPORT;
+            case "MERGE_ACCOUNTS_NOTIFICATION":
+              return \praccomm\GenericMailType::MERGE_ACCOUNTS_NOTIFICATION;
             case "FABRIC_RENEWAL_ALERT":
               return \praccomm\GenericMailType::FABRIC_RENEWAL_ALERT;
             default:
