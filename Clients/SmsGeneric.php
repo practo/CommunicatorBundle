@@ -21,7 +21,7 @@ class SmsGeneric
     }
 
     public function sendSms($reference_id, $reference_type,
-                            $name, $to, $personType, $messageType, $body,
+                            $name, $to, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
         $job = new praccomm\GenericSms();
@@ -34,27 +34,11 @@ class SmsGeneric
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
-        $job->person_type = $this->getPersonType($personType);
         $job->sms_type = 'generic';
         $jsonifiedJob = json_encode($job);
         return $this->_queue
                     ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
-    }
-
-    public function getPersonType($type)
-    {
-        switch($type)
-        {
-            case "PATIENT":
-              return praccomm\PersonType::PATIENT;
-            case "STAFF":
-              return praccomm\PersonType::STAFF;
-            case "DOCTOR":
-              return praccomm\PersonType::DOCTOR;
-            default:
-              throw new Exception("Invalid person type");
-        }
     }
 }
 ?>
