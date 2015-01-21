@@ -20,12 +20,11 @@ class SmsGeneric
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($generic_id, $reference_id, $reference_type,
+    public function sendSms($reference_id, $reference_type,
                             $name, $to, $personType, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
         $job = new praccomm\GenericSms();
-        $job->generic_id = $generic_id;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->name = $name;
@@ -39,7 +38,7 @@ class SmsGeneric
         $job->sms_type = 'generic';
         $jsonifiedJob = json_encode($job);
         return $this->_queue
-                    ->setQueueName(Queue::SEND_SMS_QUEUE)
+                    ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 

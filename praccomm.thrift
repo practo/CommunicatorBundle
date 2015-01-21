@@ -408,30 +408,29 @@ struct AppointmentSMS {
 
 struct GenericSMS {
     1: required i64 id;
-    2: required i64 generic_id;
-    3: required i64 reference_id;
-    4: required string reference_type;
-    5: required string name;
-    6: required string mobile;
-    7: required PersonType person_type;
-    8: required string message_text;
-    9: required string message_type;
-    10: required i64 delivery_time;
-    11: optional SMSDeliveryStatus status;
-    12: optional string failure_reason;
-    13: optional i64 attempt;
-    14: optional string operator;
-    15: optional string operator_reply;
-    16: required string operator_code;
-    17: optional i64 created_by;
-    18: optional i64 created_on;
-    19: optional i64 modified_by;
-    20: optional i64 modified_on;
-    21: optional string app_name;
-    22: optional string currency;
-    23: optional double cost;
-    24: optional string expiry_time;
-    25: optional string notes;
+    2: required i64 reference_id;
+    3: required string reference_type;
+    4: required string name;
+    5: required string mobile;
+    6: required PersonType person_type;
+    7: required string message_text;
+    8: required string message_type;
+    9: required i64 delivery_time;
+    10: optional SMSDeliveryStatus status;
+    11: optional string failure_reason;
+    12: optional i64 attempt;
+    13: optional string operator;
+    14: optional string operator_reply;
+    15: required string operator_code;
+    16: optional i64 created_by;
+    17: optional i64 created_on;
+    18: optional i64 modified_by;
+    19: optional i64 modified_on;
+    20: optional string app_name;
+    21: optional string currency;
+    22: optional double cost;
+    23: optional string expiry_time;
+    24: optional string notes;
 }
 
 enum GroupSMSType {
