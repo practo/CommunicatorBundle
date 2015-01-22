@@ -31,6 +31,7 @@ class MailPatient
                              $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = null)
     {
+        $this->validateMailType($type);
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
         $job->practice_id = $practiceId;
@@ -91,7 +92,7 @@ class MailPatient
     {
         $job = new praccomm\PatientMail();
         $job->hash = $hash;
-        $job->delivery_status = $status;
+        $job->delivery_status = Helper::getMailDeliveryStatus($status);
         $job->email_provider = $emailProvider;
         $job->message_id = $messageId;
         $job->smtp_reply = $smtpReply;
@@ -214,6 +215,37 @@ class MailPatient
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\PatientMailServiceClient($protocol);
         return $client;
+    }
+
+    private function validateMailType($type)
+    {
+        $allowedTypes = array(
+            'ACCOUNT_INVITE',
+            'AMOUNT_DUE',
+            'BILL',
+            'BIRTHDAY',
+            'CANCELLATION',
+            'CONFIRMATION',
+            'FOLLOWUP',
+            'ONLINE_APPOINTMENT',
+            'PRESCRIPTION',
+            'REMINDER',
+            'RESCHEDULE',
+            'TREATMENT',
+            'TREATMENTPLAN',
+            'INVOICE',
+            'PAYMENT',
+            'TIMELINE',
+            'FILE',
+            'BILLS_REPORT',
+            'MEDICAL_LEAVE',
+            'VITAL_SIGN',
+            'PATIENT_GROWTH',
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
+        }
     }
 }
 ?>

@@ -31,6 +31,7 @@ class SmsPatient
                             $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
+        $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
         $job->practice_id = $practiceId;
         $job->patient_contact_id = $contactId;
@@ -63,7 +64,7 @@ class SmsPatient
                               $operator, $opReply, $opCode)
     {
         $job = new praccomm\PatientSms();
-        $job->status = $status;
+        $job->status = Helper::getSMSDeliveryStatus($status);
         $job->patient_sms_id = $key;
         $job->delivery_time = $deliveryTime;
         $job->operator = $operator;
@@ -205,5 +206,34 @@ class SmsPatient
         $client = new praccomm\PatientSMSServiceClient($protocol);
         return $client;
     }
+
+    private function validateSMSType($type)
+    {
+        $allowedTypes = array(
+            'BIRTHDAY',
+            'BULK',
+            'CANCELLATION',
+            'CONFIRMATION',
+            'CUSTOM',
+            'FOLLOWUP',
+            'ONLINE_APPOINTMENT',
+            'REMINDER',
+            'RESCHEDULE',
+            'PRESCRIPTION',
+            'SYSTEM',
+            'PVR_APPOINTMENT',
+            'PVR_CLINICDETAILS',
+            'PVR_MISSED',
+            'PVR_EMERGENCY',
+            'PVR_VOICEMAIL',
+            'PVR_CALL',
+            'AMOUNT_DUE',
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
+        }
+    }
+
 }
 ?>
