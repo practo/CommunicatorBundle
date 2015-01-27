@@ -263,6 +263,10 @@ class MailPatient
             return \praccomm\PatientEmailType::VITAL_SIGN;
         case "PATIENT_GROWTH":
             return \praccomm\PatientEmailType::PATIENT_GROWTH;
+        case "IMMUNISATION":
+            return \praccomm\PatientEmailType::IMMUNISATION;
+        case "IMMUNISATION_REMINDER":
+            return \praccomm\PatientEmailType::IMMUNISATION_REMINDER;
         default:
             throw new \Exception("Invalid message type");
         }
