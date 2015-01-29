@@ -138,24 +138,6 @@ struct PatientEmails {
 }
 
 
-enum StaffEmailType {
-    ACCOUNT_MAILS = 1,
-    EXPENSES_REPORT = 2,
-    INCOME_REPORT = 3,
-    ACCOUNT_INVITE = 4,
-    ONLINE_APPOINTMENT = 5,
-    REMINDER = 6,
-    SUMMARY_FOLLOWUPBIRTHDAY = 7,
-    ACCOUNT_DELETE = 8,
-    BILLS_REPORT = 9,
-    LOW_STOCK = 10,
-    CREDIT_LOW = 11,
-    CREDIT_ZERO = 12,
-    V6_UPGRADE = 13,
-    EXPIRING_BATCHES = 14
-}
-
-
 struct StaffMail {
     1: required i64 staff_mail_id;
     2: required string from_name;
@@ -166,7 +148,7 @@ struct StaffMail {
     7: required string subject;
     8: required string body;
     9: required i64 date;
-    10: required StaffEmailType email_type;
+    10: required string email_type;
     11: optional list<Attachment> attachments;
     12: optional i64 created_by;
     13: optional i64 created_on;
