@@ -42,7 +42,7 @@ class SmsGeneric
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function validateSmsType($type)
+    public function validateSmsType($type)
     {
         $allowedTypes = array(
             'WEEKELY_ROI_SMS',
