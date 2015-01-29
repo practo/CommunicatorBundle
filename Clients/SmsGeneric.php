@@ -24,6 +24,7 @@ class SmsGeneric
                             $name, $to, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
+        $this->validateMailType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
@@ -39,6 +40,17 @@ class SmsGeneric
         return $this->_queue
                     ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
+    }
+
+    private function validateSmsType($type)
+    {
+        $allowedTypes = array(
+            'WEEKELY_ROI_SMS',
+            'VN_DETAILS',
+        );
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
+        }
     }
 }
 ?>
