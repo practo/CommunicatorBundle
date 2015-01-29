@@ -24,7 +24,7 @@ class SmsGeneric
                             $name, $to, $messageType, $body,
                             $notes = null, $expiryTime = null)
     {
-        $this->validateMailType(strtoupper($messageType));
+        $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
@@ -42,10 +42,10 @@ class SmsGeneric
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function validateSmsType($type)
+    private function validateSmsType($type)
     {
         $allowedTypes = array(
-            'WEEKELY_ROI_SMS',
+            'WEEKLY_ROI_SMS',
             'VN_DETAILS',
         );
         if (!in_array($type, $allowedTypes, true)) {
