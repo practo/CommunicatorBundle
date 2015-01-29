@@ -52,53 +52,6 @@ final class DoctorEmailType {
   );
 }
 
-final class PatientEmailType {
-  const ACCOUNT_INVITE = 0;
-  const AMOUNT_DUE = 1;
-  const BILL = 2;
-  const BIRTHDAY = 3;
-  const CANCELLATION = 4;
-  const CONFIRMATION = 5;
-  const FOLLOWUP = 6;
-  const ONLINE_APPOINTMENT = 7;
-  const PRESCRIPTION = 8;
-  const REMINDER = 9;
-  const RESCHEDULE = 10;
-  const TREATMENT = 11;
-  const TREATMENTPLAN = 12;
-  const INVOICE = 13;
-  const PAYMENT = 14;
-  const TIMELINE = 15;
-  const FILE = 16;
-  const BILLS_REPORT = 17;
-  const MEDICAL_LEAVE = 18;
-  const VITAL_SIGN = 19;
-  const PATIENT_GROWTH = 20;
-  static public $__names = array(
-    0 => 'ACCOUNT_INVITE',
-    1 => 'AMOUNT_DUE',
-    2 => 'BILL',
-    3 => 'BIRTHDAY',
-    4 => 'CANCELLATION',
-    5 => 'CONFIRMATION',
-    6 => 'FOLLOWUP',
-    7 => 'ONLINE_APPOINTMENT',
-    8 => 'PRESCRIPTION',
-    9 => 'REMINDER',
-    10 => 'RESCHEDULE',
-    11 => 'TREATMENT',
-    12 => 'TREATMENTPLAN',
-    13 => 'INVOICE',
-    14 => 'PAYMENT',
-    15 => 'TIMELINE',
-    16 => 'FILE',
-    17 => 'BILLS_REPORT',
-    18 => 'MEDICAL_LEAVE',
-    19 => 'VITAL_SIGN',
-    20 => 'PATIENT_GROWTH',
-  );
-}
-
 final class StaffEmailType {
   const ACCOUNT_MAILS = 1;
   const EXPENSES_REPORT = 2;
@@ -190,47 +143,6 @@ final class CreditAction {
     3 => 'DEDUCT_PRACTO_CREDIT',
     4 => 'DEDUCT_WALLET_CREDIT',
     5 => 'INSERT_CREDIT',
-  );
-}
-
-final class PatientSMSType {
-  const BIRTHDAY = 1;
-  const BULK = 2;
-  const CANCELLATION = 3;
-  const CONFIRMATION = 4;
-  const CUSTOM = 5;
-  const FOLLOWUP = 6;
-  const ONLINE_APPOINTMENT = 7;
-  const REMINDER = 8;
-  const RESCHEDULE = 9;
-  const PRESCRIPTION = 10;
-  const SYSTEM = 11;
-  const PVR_APPOINTMENT = 12;
-  const PVR_CLINICDETAILS = 13;
-  const PVR_MISSED = 14;
-  const PVR_EMERGENCY = 15;
-  const PVR_VOICEMAIL = 16;
-  const PVR_CALL = 17;
-  const AMOUNT_DUE = 18;
-  static public $__names = array(
-    1 => 'BIRTHDAY',
-    2 => 'BULK',
-    3 => 'CANCELLATION',
-    4 => 'CONFIRMATION',
-    5 => 'CUSTOM',
-    6 => 'FOLLOWUP',
-    7 => 'ONLINE_APPOINTMENT',
-    8 => 'REMINDER',
-    9 => 'RESCHEDULE',
-    10 => 'PRESCRIPTION',
-    11 => 'SYSTEM',
-    12 => 'PVR_APPOINTMENT',
-    13 => 'PVR_CLINICDETAILS',
-    14 => 'PVR_MISSED',
-    15 => 'PVR_EMERGENCY',
-    16 => 'PVR_VOICEMAIL',
-    17 => 'PVR_CALL',
-    18 => 'AMOUNT_DUE',
   );
 }
 
@@ -1432,7 +1344,7 @@ class PatientMail {
           ),
         11 => array(
           'var' => 'email_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         12 => array(
           'var' => 'attachments',
@@ -1735,8 +1647,8 @@ class PatientMail {
           }
           break;
         case 11:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->email_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1987,8 +1899,8 @@ class PatientMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->email_type !== null) {
-      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
-      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldBegin('email_type', TType::STRING, 11);
+      $xfer += $output->writeString($this->email_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
@@ -3831,7 +3743,7 @@ class PatientSMS {
           ),
         5 => array(
           'var' => 'message_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         6 => array(
           'var' => 'message_text',
@@ -4056,8 +3968,8 @@ class PatientSMS {
           }
           break;
         case 5:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->message_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -4250,8 +4162,8 @@ class PatientSMS {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_type !== null) {
-      $xfer += $output->writeFieldBegin('message_type', TType::I32, 5);
-      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldBegin('message_type', TType::STRING, 5);
+      $xfer += $output->writeString($this->message_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_text !== null) {
