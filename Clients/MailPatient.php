@@ -231,7 +231,6 @@ class MailPatient
     {
         $allowedTypes = array(
             'ACCOUNT_INVITE',
-            'PATIENT_AMOUNT_DUE',
             'AMOUNT_DUE',
             'BILL',
             'BIRTHDAY',
@@ -255,7 +254,7 @@ class MailPatient
         );
 
         if (!in_array($type, $allowedTypes, true)) {
-            throw new Exception("Invalid message type");
+            throw new \Exception("Invalid message type");
         }
     }
 }
