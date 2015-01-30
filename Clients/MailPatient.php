@@ -31,6 +31,7 @@ class MailPatient
                              $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = null)
     {
+        $type = $this->typeMapping($type);
         $this->validateMailType($type);
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
@@ -215,6 +216,15 @@ class MailPatient
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\PatientMailServiceClient($protocol);
         return $client;
+    }
+    
+    private function typeMapping($type)
+    {
+        if ($type === 'PATIENT_AMOUNT_DUE') {
+            return 'AMOUNT_DUE';
+        } else {
+            return $type;
+        }
     }
 
     private function validateMailType($type)
