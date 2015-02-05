@@ -190,11 +190,12 @@ class MailStaff
             'CREDIT_LOW',
             'CREDIT_ZERO',
             'EXPIRING_BATCHES',
-            'V6_UPGRADE'
+            'V6_UPGRADE',
+            'LAB_ORDERS'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
-             throw new Exception("Invalid message type");
+             throw new \Exception("Invalid message type");
          }
     }
 }
