@@ -22,7 +22,8 @@ class MailGeneric
 
     public function sendMail($fromName, $fromMail, $toName = "", $to,
                              $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL)
+                             $files, $hash, $plaintext = "", $reference_id, $reference_type,
+                             $replyTo = NULL)
     {
         $job = new praccomm\GenericMail();
         $job->from_name = $fromName;
@@ -48,6 +49,8 @@ class MailGeneric
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
+        $job->reference_id = $reference_id;
+        $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
         $job->email_type = $this->getMailType($type);
         $job->date = time();
@@ -110,6 +113,8 @@ class MailGeneric
               return \praccomm\GenericMailType::MERGE_ACCOUNTS_NOTIFICATION;
             case "FABRIC_RENEWAL_ALERT":
               return \praccomm\GenericMailType::FABRIC_RENEWAL_ALERT;
+            case "VN_DETAILS":
+              return \praccomm\GenericMailType::VN_DETAILS;
             default:
               throw new \Exception("Invalid mail type");
         }

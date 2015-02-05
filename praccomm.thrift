@@ -493,7 +493,8 @@ struct GroupMail {
 enum GenericMailType {
     FABRIC_ROI_REPORT = 1,
     FABRIC_RENEWAL_ALERT = 2,
-    MERGE_ACCOUNTS_NOTIFICATION = 3
+    MERGE_ACCOUNTS_NOTIFICATION = 3,
+    VN_DETAILS = 4
 }
 
 struct GenericMail {
@@ -527,6 +528,8 @@ struct GenericMail {
     30: optional string mail_type;
     31: optional i32 attempt;
     32: optional string reply_to;
+    33: required i64 reference_id;
+    34: required string reference_type;
 }
 
 enum HelloPlan {
