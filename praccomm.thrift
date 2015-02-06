@@ -73,31 +73,6 @@ struct DoctorEmails {
     1: required list<DoctorMail> mails;
 }
 
-enum PatientEmailType {
-    ACCOUNT_INVITE = 0,
-    AMOUNT_DUE = 1,
-    BILL = 2,
-    BIRTHDAY = 3,
-    CANCELLATION = 4,
-    CONFIRMATION = 5,
-    FOLLOWUP = 6,
-    ONLINE_APPOINTMENT = 7,
-    PRESCRIPTION = 8,
-    REMINDER = 9,
-    RESCHEDULE = 10,
-    TREATMENT = 11,
-    TREATMENTPLAN = 12,
-    INVOICE = 13,
-    PAYMENT = 14,
-    TIMELINE = 15,
-    FILE = 16,
-    BILLS_REPORT = 17,
-    MEDICAL_LEAVE = 18,
-    VITAL_SIGN = 19,
-    PATIENT_GROWTH = 20
-}
-
-
 struct PatientMail {
     1: required i64 patient_mail_id;
     2: required i64 patient_contact_id;
@@ -109,7 +84,7 @@ struct PatientMail {
     8: required string subject;
     9: required string body;
     10: required i64 date;
-    11: required PatientEmailType email_type;
+    11: required string email_type;
     12: optional list<Attachment> attachments;
     13: optional i64 created_by;
     14: optional i64 created_on;
@@ -262,33 +237,12 @@ struct DoctorMessages {
     1: required list<DoctorSMS> messages;
 }
 
-enum PatientSMSType {
-    BIRTHDAY = 1,
-    BULK = 2,
-    CANCELLATION = 3,
-    CONFIRMATION = 4,
-    CUSTOM = 5,
-    FOLLOWUP = 6,
-    ONLINE_APPOINTMENT = 7,
-    REMINDER = 8,
-    RESCHEDULE = 9,
-    PRESCRIPTION = 10,
-    SYSTEM = 11,
-    PVR_APPOINTMENT = 12,
-    PVR_CLINICDETAILS = 13,
-    PVR_MISSED = 14,
-    PVR_EMERGENCY = 15,
-    PVR_VOICEMAIL = 16,
-    PVR_CALL = 17,
-    AMOUNT_DUE = 18
-}
-
 struct PatientSMS {
     1: required i64 patient_sms_id;
     2: required i64 practice_id;
     3: required string name;
     4: required string mobile;
-    5: required PatientSMSType message_type;
+    5: required string message_type;
     6: required string message_text;
     7: required i64 send_time;
     8: required i64 delivery_time;

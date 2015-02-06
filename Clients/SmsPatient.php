@@ -31,6 +31,7 @@ class SmsPatient
                             $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
+        $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
         $job->practice_id = $practiceId;
         $job->patient_contact_id = $contactId;
@@ -38,7 +39,7 @@ class SmsPatient
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
         $job->expiry_time = $expiryTime;
-        $job->message_type = $this->getSMSType($type);
+        $job->message_type = $type;
         $job->message_text = $body;
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
@@ -206,47 +207,33 @@ class SmsPatient
         return $client;
     }
 
-    private function getSMSType($type)
+    private function validateSMSType($type)
     {
-        switch($type)
-        {
-            case "BIRTHDAY":
-              return praccomm\PatientSMSType::BIRTHDAY;
-            case "BULK":
-              return praccomm\PatientSMSType::BULK;
-            case "CANCELLATION":
-              return praccomm\PatientSMSType::CANCELLATION;
-            case "CONFIRMATION":
-              return praccomm\PatientSMSType::CONFIRMATION;
-            case "CUSTOM":
-              return praccomm\PatientSMSType::CUSTOM;
-            case "FOLLOWUP":
-              return praccomm\PatientSMSType::FOLLOWUP;
-            case "ONLINE_APPOINTMENT":
-              return praccomm\PatientSMSType::ONLINE_APPOINTMENT;
-            case "REMINDER":
-              return praccomm\PatientSMSType::REMINDER;
-            case "RESCHEDULE":
-              return praccomm\PatientSMSType::RESCHEDULE;
-            case "PRESCRIPTION":
-              return praccomm\PatientSMSType::PRESCRIPTION;
-            case "SYSTEM":
-              return praccomm\PatientSMSType::SYSTEM;
-            case "PVR_APPOINTMENT":
-              return praccomm\PatientSMSType::PVR_APPOINTMENT;
-            case "PVR_CLINICDETAILS":
-              return praccomm\PatientSMSType::PVR_CLINICDETAILS;
-            case "PVR_MISSED":
-              return praccomm\PatientSMSType::PVR_MISSED;
-            case "PVR_EMERGENCY":
-              return praccomm\PatientSMSType::PVR_EMERGENCY;
-            case "PVR_VOICEMAIL":
-              return praccomm\PatientSMSType::PVR_VOICEMAIL;
-            case "PVR_CALL":
-              return praccomm\PatientSMSType::PVR_CALL;
-            default:
-              throw new \Exception("Invalid message type");
+        $allowedTypes = array(
+            'BIRTHDAY',
+            'BULK',
+            'CANCELLATION',
+            'CONFIRMATION',
+            'CUSTOM',
+            'FOLLOWUP',
+            'ONLINE_APPOINTMENT',
+            'REMINDER',
+            'RESCHEDULE',
+            'PRESCRIPTION',
+            'SYSTEM',
+            'PVR_APPOINTMENT',
+            'PVR_CLINICDETAILS',
+            'PVR_MISSED',
+            'PVR_EMERGENCY',
+            'PVR_VOICEMAIL',
+            'PVR_CALL',
+            'AMOUNT_DUE',
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
         }
     }
+
 }
 ?>
