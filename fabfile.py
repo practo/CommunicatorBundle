@@ -6,7 +6,7 @@ def fix_file_permissions():
     info('Fixing file permissions...')
     return local(
         '! find `git ls-files` '
-        '-name *.sh -o '  # Exclude shell scripts
+        '-name "*.sh" -o '  # Exclude shell scripts
         '-not -perm 0664 -print0 | '
         'tee /dev/stderr | '
         'xargs -0 chmod 0664 >/dev/null 2>&1'
@@ -18,7 +18,8 @@ def fix_script_permissions():
     info('Fixing script permissions...')
     return local(
         '! find `git ls-files` '
-        '-name *.sh -perm 0775 -print0 | '
+        '-name "*.sh" '
+        '-not -perm 0775 -print0 | '
         'tee /dev/stderr | '
         'xargs -0 chmod 0775 >/dev/null 2>&1'
     )
