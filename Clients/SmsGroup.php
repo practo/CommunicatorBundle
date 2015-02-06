@@ -23,9 +23,15 @@ class SmsGroup
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($groupId, $name, $to, $messageType,
-                            $body, $eventId, $expiryTime = null)
-    {
+    public function sendSms(
+        $groupId,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $eventId,
+        $expiryTime = null
+    ) {
         $job = new praccomm\GroupSms();
         $job->group_id = $groupId;
         $job->name = $name;
@@ -53,8 +59,10 @@ class SmsGroup
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->_smsServer,
+            $this->_smsPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
         $transport =
@@ -74,15 +82,15 @@ class SmsGroup
         switch($type)
         {
             case "VERIFICATION":
-              return praccomm\GroupSMSType::INVITE;
+                return praccomm\GroupSMSType::INVITE;
             case "REQUEST":
-              return praccomm\GroupSMSType::NEW_EVENT;
+                return praccomm\GroupSMSType::NEW_EVENT;
             case "CONFIRMATION":
-              return praccomm\GroupSMSType::EVENT_CANCELLATION;
+                return praccomm\GroupSMSType::EVENT_CANCELLATION;
             case "CANCELLATION":
-              return praccomm\GroupSMSType::EVENT_CONFIRMATION;
+                return praccomm\GroupSMSType::EVENT_CONFIRMATION;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }

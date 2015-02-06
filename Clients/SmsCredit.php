@@ -5,6 +5,7 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
+
 require_once __DIR__.'/genphp/praccomm/SmsCreditService.php';
 
 /**
@@ -104,8 +105,10 @@ class SmsCredit
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->deduct_hello_call_cost($practiceId,
-            $callDurationInMins);
+        $result = $client->deduct_hello_call_cost(
+            $practiceId,
+            $callDurationInMins
+        );
         $transport->close();
 
         return $result;
@@ -131,8 +134,10 @@ class SmsCredit
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsCreditServer,
-            $this->_smsCreditPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->_smsCreditServer,
+            $this->_smsCreditPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
 

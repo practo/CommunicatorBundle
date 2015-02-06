@@ -23,10 +23,16 @@ class SmsStaff
         $this->_queue = $queue;
     }
 
-    public function sendSms($practice_id, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false)
-    {
+    public function sendSms(
+        $practice_id,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $reduceCredit = false
+    ) {
         $job = new praccomm\StaffSms();
         $job->practice_id = $practice_id;
         $job->name = $name;
@@ -38,13 +44,11 @@ class SmsStaff
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'staff';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             $job->failure_reason = 'SMSDISABLED';
         }
@@ -54,9 +58,14 @@ class SmsStaff
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
         $job = new praccomm\StaffSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->staff_sms_id = $key;
@@ -92,28 +101,44 @@ class SmsStaff
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate,
-                                                $endDate, $smsTypes, $status)
-    {
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_delivery_status($pid, $startDate, $endDate,
-                                                   $smsTypes, $status);
+          $client->get_messages_by_delivery_status(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes,
+              $status
+          );
         $transport->close();
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_failure_reason($pid, $startDate,
-                                                  $endDate, $smsTypes);
+          $client->get_messages_by_failure_reason(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes
+          );
         $transport->close();
         return $result;
     }
@@ -141,8 +166,10 @@ class SmsStaff
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->_smsServer,
+            $this->_smsPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
 
@@ -163,30 +190,29 @@ class SmsStaff
         switch($type)
         {
             case "BULK":
-              return praccomm\StaffSMSType::BULK;
+                return praccomm\StaffSMSType::BULK;
             case "CUSTOM":
-              return praccomm\StaffSMSType::CUSTOM;
+                return praccomm\StaffSMSType::CUSTOM;
             case "ONLINE_APPOINTMENT":
-              return praccomm\StaffSMSType::ONLINE_APPOINTMENT;
+                return praccomm\StaffSMSType::ONLINE_APPOINTMENT;
             case "REMINDER":
-              return praccomm\StaffSMSType::REMINDER;
+                return praccomm\StaffSMSType::REMINDER;
             case "SYSTEM":
-              return praccomm\StaffSMSType::SYSTEM;
+                return praccomm\StaffSMSType::SYSTEM;
             case "PVR_APPOINTMENT":
-              return praccomm\StaffSMSType::PVR_APPOINTMENT;
+                return praccomm\StaffSMSType::PVR_APPOINTMENT;
             case "PVR_CLINICDETAILS":
-              return praccomm\StaffSMSType::PVR_CLINICDETAILS;
+                return praccomm\StaffSMSType::PVR_CLINICDETAILS;
             case "PVR_MISSED":
-              return praccomm\StaffSMSType::PVR_MISSED;
+                return praccomm\StaffSMSType::PVR_MISSED;
             case "PVR_EMERGENCY":
-              return praccomm\StaffSMSType::PVR_EMERGENCY;
+                return praccomm\StaffSMSType::PVR_EMERGENCY;
             case "PVR_VOICEMAIL":
-              return praccomm\StaffSMSType::PVR_VOICEMAIL;
+                return praccomm\StaffSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
-              return praccomm\StaffSMSType::PVR_CALL;
+                return praccomm\StaffSMSType::PVR_CALL;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }
-?>

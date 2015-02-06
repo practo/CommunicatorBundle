@@ -5,7 +5,6 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 
-
 /**
  * Mail clinet for mailing doctors
  */
@@ -16,19 +15,29 @@ class SmsDoctor
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
-    {
+    public function __construct(
+        $queue,
+        $serviceHost,
+        $servicePort,
+        $appName
+    ) {
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
 
-    public function sendSms($practiceId, $doctorProfileId, $name, $to, $type,
-                            $body, $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false)
-    {
+    public function sendSms(
+        $practiceId,
+        $doctorProfileId,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $reduceCredit = false
+    ) {
         $job = new praccomm\DoctorSms();
         $job->practice_id = $practiceId;
         $job->doctor_profile_id = $doctorProfileId;
@@ -41,13 +50,11 @@ class SmsDoctor
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'doctor';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             $job->failure_reason = 'SMSDISABLED';
         }
@@ -57,9 +64,14 @@ class SmsDoctor
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
         $job = new praccomm\DoctorSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->doctor_sms_id = $key;
@@ -95,28 +107,44 @@ class SmsDoctor
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate,
-                                                $endDate, $smsTypes, $status)
-    {
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_delivery_status($pid, $startDate, $endDate,
-                                                   $smsTypes, $status);
+          $client->get_messages_by_delivery_status(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes,
+              $status
+          );
         $transport->close();
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_failure_reason($pid, $startDate,
-                                                  $endDate, $smsTypes);
+          $client->get_messages_by_failure_reason(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes
+          );
         $transport->close();
         return $result;
     }
@@ -166,36 +194,35 @@ class SmsDoctor
         switch($type)
         {
             case "BULK":
-              return praccomm\DoctorSMSType::BULK;
+                return praccomm\DoctorSMSType::BULK;
             case "CANCELLATION":
-              return praccomm\DoctorSMSType::CANCELLATION;
+                return praccomm\DoctorSMSType::CANCELLATION;
             case "CONFIRMATION":
-              return praccomm\DoctorSMSType::CONFIRMATION;
+                return praccomm\DoctorSMSType::CONFIRMATION;
             case "CUSTOM":
-              return praccomm\DoctorSMSType::CUSTOM;
+                return praccomm\DoctorSMSType::CUSTOM;
             case "ONLINE_APPOINTMENT":
-              return praccomm\DoctorSMSType::APPOINTMENT;
+                return praccomm\DoctorSMSType::APPOINTMENT;
             case "REMINDER":
-              return praccomm\DoctorSMSType::REMINDER;
+                return praccomm\DoctorSMSType::REMINDER;
             case "RESCHEDULE":
-              return praccomm\DoctorSMSType::RESCHEDULE;
+                return praccomm\DoctorSMSType::RESCHEDULE;
             case "SYSTEM":
-              return praccomm\DoctorSMSType::SYSTEM;
+                return praccomm\DoctorSMSType::SYSTEM;
             case "PVR_APPOINTMENT":
-              return praccomm\DoctorSMSType::PVR_APPOINTMENT;
+                return praccomm\DoctorSMSType::PVR_APPOINTMENT;
             case "PVR_CLINICDETAILS":
-              return praccomm\DoctorSMSType::PVR_CLINICDETAILS;
+                return praccomm\DoctorSMSType::PVR_CLINICDETAILS;
             case "PVR_MISSED":
-              return praccomm\DoctorSMSType::PVR_MISSED;
+                return praccomm\DoctorSMSType::PVR_MISSED;
             case "PVR_EMERGENCY":
-              return praccomm\DoctorSMSType::PVR_EMERGENCY;
+                return praccomm\DoctorSMSType::PVR_EMERGENCY;
             case "PVR_VOICEMAIL":
-              return praccomm\DoctorSMSType::PVR_VOICEMAIL;
+                return praccomm\DoctorSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
-              return praccomm\DoctorSMSType::PVR_CALL;
+                return praccomm\DoctorSMSType::PVR_CALL;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }
-?>

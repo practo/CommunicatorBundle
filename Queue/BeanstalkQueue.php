@@ -53,7 +53,7 @@ class BeanstalkQueue extends AbstractQueue
      * @param Message $message - Message
      * @param integer $delay   - Delay
      */
-    protected function doSendMessage(Message $message, $delay=null)
+    protected function doSendMessage(Message $message, $delay = null)
     {
         $messageId = $this->pheanstalk
                           ->useTube($this->getQueueName())

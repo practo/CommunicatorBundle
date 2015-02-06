@@ -6,6 +6,7 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
+
 require_once __DIR__.'/genphp/praccomm/PatientSMSService.php';
 
 /**
@@ -18,19 +19,29 @@ class SmsPatient
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
-    {
+    public function __construct(
+        $queue,
+        $serviceHost,
+        $servicePort,
+        $appName
+    ) {
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
 
-    public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false)
-    {
+    public function sendSms(
+        $practiceId,
+        $contactId,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $reduceCredit = false
+    ) {
         $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
         $job->practice_id = $practiceId;
@@ -44,13 +55,11 @@ class SmsPatient
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'patient';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             $job->failure_reason = 'SMSDISABLED';
         }
@@ -60,9 +69,14 @@ class SmsPatient
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
         $job = new praccomm\PatientSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->patient_sms_id = $key;
@@ -88,32 +102,33 @@ class SmsPatient
         return $result;
     }
 
-    public function searchSmsByContactId($pid, $cid,
-                                         $start = NULL, $end = NULL)
-    {
-        if(is_null($start) and !is_int($start))
-        {
+    public function searchSmsByContactId(
+        $pid,
+        $cid,
+        $start = null,
+        $end = null
+    ) {
+        if (is_null($start) and !is_int($start)) {
             $start_ts = mktime(0, 0, 0, 1, 2, 1970);
-        }
-        else
-        {
+        } else {
             $start_ts = $start;
         }
 
-        if(is_null($end) and !is_int($end))
-        {
+        if (is_null($end) and !is_int($end)) {
             $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-        }
-        else
-        {
+        } else {
             $end_ts = $end;
         }
 
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_messages_by_contact_id($pid, $cid,
-                                                      $start_ts, $end_ts);
+        $result = $client->get_messages_by_contact_id(
+            $pid,
+            $cid,
+            $start_ts,
+            $end_ts
+        );
         $transport->close();
         return $result;
     }
@@ -129,28 +144,44 @@ class SmsPatient
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate, $endDate,
-                                                $smsTypes, $status)
-    {
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_delivery_status($pid, $startDate, $endDate,
-                                                   $smsTypes, $status);
+          $client->get_messages_by_delivery_status(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes,
+              $status
+          );
         $transport->close();
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
         $result =
-          $client->get_messages_by_failure_reason($pid, $startDate,
-                                                  $endDate, $smsTypes);
+          $client->get_messages_by_failure_reason(
+              $pid,
+              $startDate,
+              $endDate,
+              $smsTypes
+          );
         $transport->close();
         return $result;
     }
@@ -176,22 +207,31 @@ class SmsPatient
         return $result;
     }
 
-    public function getMessagesByCidGroupedByApp($pid, $cid,
-                                                 $startDate, $endDate)
-    {
+    public function getMessagesByCidGroupedByApp(
+        $pid,
+        $cid,
+        $startDate,
+        $endDate
+    ) {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->get_messages_by_app_for_cid($pid, $cid,
-                                                       $startDate, $endDate);
+        $result = $client->get_messages_by_app_for_cid(
+            $pid,
+            $cid,
+            $startDate,
+            $endDate
+        );
         $transport->close();
         return $result;
     }
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->_smsServer,
+            $this->_smsPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
 
@@ -234,6 +274,4 @@ class SmsPatient
             throw new Exception("Invalid message type");
         }
     }
-
 }
-?>
