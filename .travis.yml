@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 5.5
+
+before_install:
+  - sudo apt-get install -qq python-pip
+  - sudo pip install fabric
+
+before_script:
+  - pyrus install pear/PHP_CodeSniffer
+  - phpenv rehash
+  - composer self-update
+  - composer install -n
+
+script: fab polish:all
