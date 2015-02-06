@@ -1,4 +1,8 @@
-from fabpolish import sniff, info, local, polish
+import sys
+
+from fabric.api import local, settings, env
+
+from fabpolish import sniff, info, polish
 
 
 @sniff(severity='minor')
@@ -54,13 +58,25 @@ def check_php_debug_stmts():
 
 
 @sniff(severity='minor')
-def run_php_codesniffer():
+def fix_psr2_violations():
     info('Running coding standards check...')
-    return local(
-        "git ls-files -z | "
-        "grep -PZz '.*\.(php|phtml)$' | "
-        "xargs -0 phpcs --standard=Symfony2"
-    )
+    with settings(warn_only=True):
+        result = local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcs --standard=PSR2"
+        )
+    if result.failed:
+        local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcbf --standard=PSR2"
+        )
+    if not env.warn_only and result.failed:
+        sys.exit(1)
+    return result
 
 
 if __name__ == "__main__":
