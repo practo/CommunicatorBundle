@@ -11,13 +11,13 @@ use praccomm;
  */
 class MailGeneric
 {
-    private $_appName;
-    private $_queue;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $appName)
     {
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
     public function sendMail(
@@ -53,7 +53,7 @@ class MailGeneric
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->email_type = $this->getMailType($type);
         $job->date = time();
         $job->reply_to = $replyTo;
@@ -72,7 +72,7 @@ class MailGeneric
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -96,7 +96,7 @@ class MailGeneric
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }

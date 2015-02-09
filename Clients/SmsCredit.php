@@ -13,15 +13,15 @@ require_once __DIR__.'/genphp/praccomm/SmsCreditService.php';
  */
 class SmsCredit
 {
-    private $_smsCreditServer;
-    private $_smsCreditPort;
-    private $_queue;
+    private $smsCreditServer;
+    private $smsCreditPort;
+    private $queue;
 
     public function __construct($queue, $serviceHost, $servicePort)
     {
-        $this->_smsCreditServer = $serviceHost;
-        $this->_smsCreditPort = $servicePort;
-        $this->_queue = $queue;
+        $this->smsCreditServer = $serviceHost;
+        $this->smsCreditPort = $servicePort;
+        $this->queue = $queue;
     }
 
     public function insertCredit($practiceId, $credit, $currency, $planId, $helloPlan, $walletCredit)
@@ -35,7 +35,7 @@ class SmsCredit
         $job->hello_plan = $helloPlan;
         $job->wallet_credit = $walletCredit;
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SMS_CREDIT_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -135,8 +135,8 @@ class SmsCredit
     private function getTransport()
     {
         $socket = new Thrift\Transport\TSocket(
-            $this->_smsCreditServer,
-            $this->_smsCreditPort
+            $this->smsCreditServer,
+            $this->smsCreditPort
         );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);

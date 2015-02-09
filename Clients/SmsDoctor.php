@@ -10,10 +10,10 @@ use praccomm;
  */
 class SmsDoctor
 {
-    private $_smsServer;
-    private $_smsPort;
-    private $_appName;
-    private $_queue;
+    private $smsServer;
+    private $smsPort;
+    private $appName;
+    private $queue;
 
     public function __construct(
         $queue,
@@ -21,10 +21,10 @@ class SmsDoctor
         $servicePort,
         $appName
     ) {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
-        $this->_appName = Helper::getValidAppName($appName);
-        $this->_queue = $queue;
+        $this->smsServer = $serviceHost;
+        $this->smsPort = $servicePort;
+        $this->appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
     }
 
     public function sendSms(
@@ -47,7 +47,7 @@ class SmsDoctor
         $job->expiry_time = $expiryTime;
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'doctor';
         if ($unverified) {
@@ -59,7 +59,7 @@ class SmsDoctor
             $job->failure_reason = 'SMSDISABLED';
         }
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -81,7 +81,7 @@ class SmsDoctor
         $job->operator_code = $opCode;
         $job->sms_type = 'doctor';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -172,7 +172,7 @@ class SmsDoctor
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer, $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket($this->smsServer, $this->smsPort);
 
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);

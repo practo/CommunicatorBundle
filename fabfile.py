@@ -64,6 +64,7 @@ def fix_psr2_violations():
         result = local(
             "git ls-files -z | "
             "grep -vZz '/genphp/' | "
+            "grep -vZz '/Thrift\.php$' | "
             "grep -PZz '.*\.(php|phtml)$' | "
             "xargs -0 phpcs --standard=PSR2"
         )
