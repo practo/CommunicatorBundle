@@ -6,8 +6,6 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
 
-require_once __DIR__.'/genphp/praccomm/PatientMailService.php';
-
 /**
  * Mail clinet for mailing patients
  */

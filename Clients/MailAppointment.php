@@ -6,8 +6,6 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
 
-require_once __DIR__.'/genphp/praccomm/AppointmentMailService.php';
-
 /**
  * Clinet for sending appointment mails
  */

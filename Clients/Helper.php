@@ -2,8 +2,6 @@
 
 namespace Practo\CommunicatorBundle\Clients;
 
-require_once __DIR__.'/genphp/praccomm/Types.php';
-
 class Helper
 {
     public static function getMailDeliveryStatus($status)
