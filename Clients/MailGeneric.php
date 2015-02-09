@@ -23,10 +23,10 @@ class MailGeneric
     public function sendMail(
         $fromName,
         $fromMail,
-        $toName = "",
+        $toName,
         $to,
-        $cc = "",
-        $bcc = "",
+        $cc,
+        $bcc,
         $subject,
         $body,
         $type,
