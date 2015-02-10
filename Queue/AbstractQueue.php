@@ -25,6 +25,8 @@ abstract class AbstractQueue
     const UPDATE_SMS_ERROR_QUEUE       = 'sms_updater_error';
     const SMS_CREDIT_QUEUE             = 'credit_handler';
     const METRIC_MONITOR               = 'metric_monitor';
+    const SEND_GENERIC_SMS_QUEUE       = 'generic_sms_sender';
+    const UPDATE_GENERIC_SMS_QUEUE     = 'generic_sms_updater';
 
     /**
      * Receive Message
@@ -120,6 +122,8 @@ abstract class AbstractQueue
             case self::UPDATE_SMS_ERROR_QUEUE:
             case self::SMS_CREDIT_QUEUE:
             case self::METRIC_MONITOR:
+            case self::SEND_GENERIC_SMS_QUEUE:
+            case self::UPDATE_GENERIC_SMS_QUEUE:
             default:
                 return 60;
         }

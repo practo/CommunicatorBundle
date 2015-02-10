@@ -10,6 +10,7 @@ parameters:
     practo_communicator.sms_staff.class: Practo\CommunicatorBundle\Clients\SmsStaff
     practo_communicator.sms_credit.class: Practo\CommunicatorBundle\Clients\SmsCredit
     practo_communicator.sms_appointment.class: Practo\CommunicatorBundle\Clients\SmsAppointment
+    practo_communicator.sms_generic.class: Practo\CommunicatorBundle\Clients\SmsGeneric
     practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
 
 
@@ -109,6 +110,11 @@ services:
       - %communicator.sms_doctor.host%
       - %communicator.sms_doctor.port%
       - RAY
+  practo_communicator.sms_generic:
+    class: %practo_communicator.sms_generic.class%
+    arguments:
+      - @practo_communicator.queue
+      - FABRIC
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:

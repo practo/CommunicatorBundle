@@ -364,6 +364,31 @@ struct AppointmentSMS {
     23: optional string notes;
 }
 
+struct GenericSMS {
+    1: required i64 id;
+    2: required i64 reference_id;
+    3: required string reference_type;
+    4: required string name;
+    5: required string mobile;
+    6: required string message_text;
+    7: required string message_type;
+    8: required i64 delivery_time;
+    9: optional SMSDeliveryStatus status;
+    10: optional string failure_reason;
+    11: optional i64 attempt;
+    12: optional string operator;
+    13: optional string operator_reply;
+    14: required string operator_code;
+    15: optional i64 created_by;
+    16: optional i64 created_on;
+    17: optional i64 modified_by;
+    18: optional i64 modified_on;
+    19: optional string app_name;
+    20: optional string currency;
+    21: optional double cost;
+    22: optional string expiry_time;
+    23: optional string notes;
+}
 
 enum GroupSMSType {
     INVITE = 1,
@@ -668,4 +693,8 @@ service SmsCreditService {
     string get_credit(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_credit_for_pid(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_message_expense_report(1:i64 practice_id, 2:i64 from_date, 3:i64 to_date) throws (1: ApplicationException expt);
+}
+
+service GenericSMSService {
+    string get_messages_by_reference_id(1:i64 reference_id, 2:list<string> sms_types);
 }
