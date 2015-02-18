@@ -47,6 +47,7 @@ class SmsGeneric
         $allowedTypes = array(
             'WEEKLY_ROI_SMS',
             'VN_DETAILS',
+            'SURVEY_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new Exception("Invalid message type");
