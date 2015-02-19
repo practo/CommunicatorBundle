@@ -22,8 +22,8 @@ class MailGeneric
 
     public function sendMail($fromName, $fromMail, $toName = "", $to,
                              $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $reference_id, $reference_type,
-                             $replyTo = NULL)
+                             $files, $hash, $plaintext = "", $replyTo = NULL,
+                             $reference_id = NULL, $reference_type = NULL)
     {
         $job = new praccomm\GenericMail();
         $job->from_name = $fromName;
