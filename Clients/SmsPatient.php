@@ -228,6 +228,7 @@ class SmsPatient
             'PVR_VOICEMAIL',
             'PVR_CALL',
             'AMOUNT_DUE',
+            'RX_REMINDER',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
