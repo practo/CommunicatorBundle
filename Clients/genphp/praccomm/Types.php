@@ -262,19 +262,6 @@ final class GroupMailType {
   );
 }
 
-final class GenericMailType {
-  const FABRIC_ROI_REPORT = 1;
-  const FABRIC_RENEWAL_ALERT = 2;
-  const MERGE_ACCOUNTS_NOTIFICATION = 3;
-  const VN_DETAILS = 4;
-  static public $__names = array(
-    1 => 'FABRIC_ROI_REPORT',
-    2 => 'FABRIC_RENEWAL_ALERT',
-    3 => 'MERGE_ACCOUNTS_NOTIFICATION',
-    4 => 'VN_DETAILS',
-  );
-}
-
 final class HelloPlan {
   const HELLO_LEGACY = 1;
   const HELLO = 2;
@@ -8213,7 +8200,7 @@ class GenericMail {
           ),
         11 => array(
           'var' => 'email_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         13 => array(
           'var' => 'created_by',
@@ -8522,8 +8509,8 @@ class GenericMail {
           }
           break;
         case 11:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->email_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -8758,8 +8745,8 @@ class GenericMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->email_type !== null) {
-      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
-      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldBegin('email_type', TType::STRING, 11);
+      $xfer += $output->writeString($this->email_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
