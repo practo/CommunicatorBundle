@@ -262,17 +262,6 @@ final class GroupMailType {
   );
 }
 
-final class GenericMailType {
-  const FABRIC_ROI_REPORT = 1;
-  const FABRIC_RENEWAL_ALERT = 2;
-  const MERGE_ACCOUNTS_NOTIFICATION = 3;
-  static public $__names = array(
-    1 => 'FABRIC_ROI_REPORT',
-    2 => 'FABRIC_RENEWAL_ALERT',
-    3 => 'MERGE_ACCOUNTS_NOTIFICATION',
-  );
-}
-
 final class HelloPlan {
   const HELLO_LEGACY = 1;
   const HELLO = 2;
@@ -8150,6 +8139,8 @@ class GenericMail {
   public $mail_type = null;
   public $attempt = null;
   public $reply_to = null;
+  public $reference_id = null;
+  public $reference_type = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -8209,7 +8200,7 @@ class GenericMail {
           ),
         11 => array(
           'var' => 'email_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         13 => array(
           'var' => 'created_by',
@@ -8285,6 +8276,14 @@ class GenericMail {
           ),
         32 => array(
           'var' => 'reply_to',
+          'type' => TType::STRING,
+          ),
+        33 => array(
+          'var' => 'reference_id',
+          'type' => TType::I64,
+          ),
+        34 => array(
+          'var' => 'reference_type',
           'type' => TType::STRING,
           ),
         );
@@ -8379,6 +8378,12 @@ class GenericMail {
       }
       if (isset($vals['reply_to'])) {
         $this->reply_to = $vals['reply_to'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
       }
     }
   }
@@ -8504,8 +8509,8 @@ class GenericMail {
           }
           break;
         case 11:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->email_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -8643,6 +8648,20 @@ class GenericMail {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 33:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->reference_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 34:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->reference_type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -8726,8 +8745,8 @@ class GenericMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->email_type !== null) {
-      $xfer += $output->writeFieldBegin('email_type', TType::I32, 11);
-      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldBegin('email_type', TType::STRING, 11);
+      $xfer += $output->writeString($this->email_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
@@ -8840,6 +8859,16 @@ class GenericMail {
     if ($this->reply_to !== null) {
       $xfer += $output->writeFieldBegin('reply_to', TType::STRING, 32);
       $xfer += $output->writeString($this->reply_to);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->reference_id !== null) {
+      $xfer += $output->writeFieldBegin('reference_id', TType::I64, 33);
+      $xfer += $output->writeI64($this->reference_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->reference_type !== null) {
+      $xfer += $output->writeFieldBegin('reference_type', TType::STRING, 34);
+      $xfer += $output->writeString($this->reference_type);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

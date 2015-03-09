@@ -515,12 +515,6 @@ struct GroupMail {
 }
 
 
-enum GenericMailType {
-    FABRIC_ROI_REPORT = 1,
-    FABRIC_RENEWAL_ALERT = 2,
-    MERGE_ACCOUNTS_NOTIFICATION = 3
-}
-
 struct GenericMail {
     1: required i64 generic_mail_id;
     3: required string from_name;
@@ -532,7 +526,7 @@ struct GenericMail {
     9: required string body;
     10: required i64 date;
     12: optional list<Attachment> attachments;
-    11: required GenericMailType email_type;
+    11: required string email_type;
     13: optional i64 created_by;
     14: optional i64 created_on;
     15: optional i64 modified_by;
@@ -552,6 +546,8 @@ struct GenericMail {
     30: optional string mail_type;
     31: optional i32 attempt;
     32: optional string reply_to;
+    33: required i64 reference_id;
+    34: required string reference_type;
 }
 
 enum HelloPlan {
