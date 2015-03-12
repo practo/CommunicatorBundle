@@ -253,27 +253,13 @@ struct PatientMessages {
     1: required list<PatientSMS> messages;
 }
 
-enum StaffSMSType {
-    BULK = 1,
-    CUSTOM = 2,
-    ONLINE_APPOINTMENT = 3,
-    REMINDER = 4,
-    SYSTEM = 5,
-    PVR_APPOINTMENT = 6,
-    PVR_CLINICDETAILS = 7,
-    PVR_MISSED = 8,
-    PVR_EMERGENCY = 9,
-    PVR_VOICEMAIL = 10,
-    PVR_CALL = 11
-}
-
 
 struct StaffSMS {
     1: required i64 staff_sms_id;
     2: required i64 practice_id;
     3: required string name;
     4: required string mobile;
-    5: required StaffSMSType message_type;
+    5: required string message_type;
     6: required string message_text;
     7: required i64 send_time;
     8: required i64 delivery_time;
