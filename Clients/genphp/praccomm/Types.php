@@ -113,33 +113,6 @@ final class CreditAction {
   );
 }
 
-final class StaffSMSType {
-  const BULK = 1;
-  const CUSTOM = 2;
-  const ONLINE_APPOINTMENT = 3;
-  const REMINDER = 4;
-  const SYSTEM = 5;
-  const PVR_APPOINTMENT = 6;
-  const PVR_CLINICDETAILS = 7;
-  const PVR_MISSED = 8;
-  const PVR_EMERGENCY = 9;
-  const PVR_VOICEMAIL = 10;
-  const PVR_CALL = 11;
-  static public $__names = array(
-    1 => 'BULK',
-    2 => 'CUSTOM',
-    3 => 'ONLINE_APPOINTMENT',
-    4 => 'REMINDER',
-    5 => 'SYSTEM',
-    6 => 'PVR_APPOINTMENT',
-    7 => 'PVR_CLINICDETAILS',
-    8 => 'PVR_MISSED',
-    9 => 'PVR_EMERGENCY',
-    10 => 'PVR_VOICEMAIL',
-    11 => 'PVR_CALL',
-  );
-}
-
 final class PersonType {
   const PATIENT = 1;
   const STAFF = 2;
@@ -4393,7 +4366,7 @@ class StaffSMS {
           ),
         5 => array(
           'var' => 'message_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         6 => array(
           'var' => 'message_text',
@@ -4618,8 +4591,8 @@ class StaffSMS {
           }
           break;
         case 5:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->message_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -4812,8 +4785,8 @@ class StaffSMS {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_type !== null) {
-      $xfer += $output->writeFieldBegin('message_type', TType::I32, 5);
-      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldBegin('message_type', TType::STRING, 5);
+      $xfer += $output->writeString($this->message_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_text !== null) {
