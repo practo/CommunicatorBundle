@@ -241,6 +241,9 @@ class MailPatient
             'MEDICAL_LEAVE',
             'VITAL_SIGN',
             'PATIENT_GROWTH',
+            'IMMUNISATION',
+            'IMMUNISATION_REMINDER',
+            'PATIENT_SMS_BLACKLISTED',
         );
 
         if (!in_array($type, $allowedTypes, true)) {

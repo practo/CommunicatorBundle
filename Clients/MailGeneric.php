@@ -22,8 +22,10 @@ class MailGeneric
 
     public function sendMail($fromName, $fromMail, $toName = "", $to,
                              $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL)
+                             $files, $hash, $plaintext = "", $replyTo = NULL,
+                             $reference_id = NULL, $reference_type = NULL)
     {
+        $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
         $job->from_name = $fromName;
         $job->from_address = $fromMail;
@@ -48,8 +50,10 @@ class MailGeneric
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
+        $job->reference_id = $reference_id;
+        $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
-        $job->email_type = $this->getMailType($type);
+        $job->email_type = strtoupper($type);
         $job->date = time();
         $job->reply_to = $replyTo;
         $i = 0;
@@ -100,18 +104,17 @@ class MailGeneric
         return $client;
     }
 
-    private function getMailType($type)
+    private function validateMailType($type)
     {
-        switch($type)
-        {
-            case "FABRIC_ROI_REPORT":
-              return \praccomm\GenericMailType::FABRIC_ROI_REPORT;
-            case "MERGE_ACCOUNTS_NOTIFICATION":
-              return \praccomm\GenericMailType::MERGE_ACCOUNTS_NOTIFICATION;
-            case "FABRIC_RENEWAL_ALERT":
-              return \praccomm\GenericMailType::FABRIC_RENEWAL_ALERT;
-            default:
-              throw new \Exception("Invalid mail type");
+        $allowedTypes = array(
+            'FABRIC_ROI_REPORT',
+            'FABRIC_RENEWAL_ALERT',
+            'MERGE_ACCOUNTS_NOTIFICATION',
+            'VN_DETAILS',
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
         }
     }
 }

@@ -346,6 +346,31 @@ struct AppointmentSMS {
     23: optional string notes;
 }
 
+struct GenericSMS {
+    1: required i64 id;
+    2: required i64 reference_id;
+    3: required string reference_type;
+    4: required string name;
+    5: required string mobile;
+    6: required string message_text;
+    7: required string message_type;
+    8: required i64 delivery_time;
+    9: optional SMSDeliveryStatus status;
+    10: optional string failure_reason;
+    11: optional i64 attempt;
+    12: optional string operator;
+    13: optional string operator_reply;
+    14: required string operator_code;
+    15: optional i64 created_by;
+    16: optional i64 created_on;
+    17: optional i64 modified_by;
+    18: optional i64 modified_on;
+    19: optional string app_name;
+    20: optional string currency;
+    21: optional double cost;
+    22: optional string expiry_time;
+    23: optional string notes;
+}
 
 enum GroupSMSType {
     INVITE = 1,
@@ -472,12 +497,6 @@ struct GroupMail {
 }
 
 
-enum GenericMailType {
-    FABRIC_ROI_REPORT = 1,
-    FABRIC_RENEWAL_ALERT = 2,
-    MERGE_ACCOUNTS_NOTIFICATION = 3
-}
-
 struct GenericMail {
     1: required i64 generic_mail_id;
     3: required string from_name;
@@ -489,7 +508,7 @@ struct GenericMail {
     9: required string body;
     10: required i64 date;
     12: optional list<Attachment> attachments;
-    11: required GenericMailType email_type;
+    11: required string email_type;
     13: optional i64 created_by;
     14: optional i64 created_on;
     15: optional i64 modified_by;
@@ -509,6 +528,8 @@ struct GenericMail {
     30: optional string mail_type;
     31: optional i32 attempt;
     32: optional string reply_to;
+    33: required i64 reference_id;
+    34: required string reference_type;
 }
 
 enum HelloPlan {
@@ -647,4 +668,8 @@ service SmsCreditService {
     string get_credit(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_credit_for_pid(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_message_expense_report(1:i64 practice_id, 2:i64 from_date, 3:i64 to_date) throws (1: ApplicationException expt);
+}
+
+service GenericSMSService {
+    string get_messages_by_reference_id(1:i64 reference_id, 2:list<string> sms_types);
 }
