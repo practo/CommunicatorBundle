@@ -111,6 +111,7 @@ class MailGeneric
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
             'VN_DETAILS',
+            'DIAGNOSTIC'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
