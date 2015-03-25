@@ -174,6 +174,7 @@ class SmsStaff
             'PVR_EMERGENCY',
             'PVR_VOICEMAIL',
             'PVR_CALL',
+            'LAB_ORDERS'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
