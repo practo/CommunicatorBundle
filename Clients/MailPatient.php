@@ -221,6 +221,7 @@ class MailPatient
     {
         $allowedTypes = array(
             'ACCOUNT_INVITE',
+            'PATIENT_AMOUNT_DUE',
             'AMOUNT_DUE',
             'BILL',
             'BIRTHDAY',
