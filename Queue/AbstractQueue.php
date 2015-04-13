@@ -41,7 +41,7 @@ abstract class AbstractQueue
      * @param mixed   $message - Message
      * @param integer $delay   - Delay
      */
-    public function sendMessage($message, $delay=null)
+    public function sendMessage($message, $delay = null)
     {
         if (!($message instanceof Message)) {
             $message = new Message($message);
@@ -56,7 +56,7 @@ abstract class AbstractQueue
      * @param Message $message - Message
      * @param integer $delay   - Delay
      */
-    abstract protected function doSendMessage(Message $message, $delay=null);
+    abstract protected function doSendMessage(Message $message, $delay = null);
 
     /**
      * Delete Message
@@ -70,7 +70,7 @@ abstract class AbstractQueue
      *
      * @param string $queuePrefix - Queue Prefix
      */
-    public function __construct($queuePrefix='')
+    public function __construct($queuePrefix = '')
     {
         $this->queuePrefix = $queuePrefix;
     }

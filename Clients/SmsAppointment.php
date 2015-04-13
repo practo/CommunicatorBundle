@@ -5,31 +5,39 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Thrift;
-require_once __DIR__.'/genphp/praccomm/AppointmentSMSService.php';
 
 /**
  * Clinet for messaging doctors
  */
 class SmsAppointment
 {
-    private $_smsServer;
-    private $_smsPort;
-    private $_appName;
-    private $_queue;
+    private $smsServer;
+    private $smsPort;
+    private $appName;
+    private $queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
-    {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+    public function __construct(
+        $queue,
+        $serviceHost,
+        $servicePort,
+        $appName
+    ) {
+        $this->smsServer = $serviceHost;
+        $this->smsPort = $servicePort;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($appointmentId, $name, $to, $personType,
-                            $messageType, $body, $notes = null,
-                            $expiryTime = null)
-    {
+    public function sendSms(
+        $appointmentId,
+        $name,
+        $to,
+        $personType,
+        $messageType,
+        $body,
+        $notes = null,
+        $expiryTime = null
+    ) {
         $job = new praccomm\AppointmentSms();
         $job->appointment_id = $appointmentId;
         $job->name = $name;
@@ -38,10 +46,10 @@ class SmsAppointment
         $job->message_text = $body;
         $job->notes = $notes;
         $job->message_type = $this->getSMSType($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -59,8 +67,10 @@ class SmsAppointment
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->smsServer,
+            $this->smsPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
         $transport =
@@ -80,25 +90,25 @@ class SmsAppointment
         switch($type)
         {
             case "VERIFICATION":
-              return praccomm\AppointmentSMSType::VERIFICATION;
+                return praccomm\AppointmentSMSType::VERIFICATION;
             case "REQUEST":
-              return praccomm\AppointmentSMSType::REQUEST;
+                return praccomm\AppointmentSMSType::REQUEST;
             case "CONFIRMATION":
-              return praccomm\AppointmentSMSType::CONFIRMATION;
+                return praccomm\AppointmentSMSType::CONFIRMATION;
             case "CANCELLATION":
-              return praccomm\AppointmentSMSType::CANCELLATION;
+                return praccomm\AppointmentSMSType::CANCELLATION;
             case "RESCHEDULE":
-              return praccomm\AppointmentSMSType::RESCHEDULE;
+                return praccomm\AppointmentSMSType::RESCHEDULE;
             case "TEST":
-              return praccomm\AppointmentSMSType::TEST;
+                return praccomm\AppointmentSMSType::TEST;
             case "PASSED_ON":
-              return praccomm\AppointmentSMSType::PASSED_ON;
+                return praccomm\AppointmentSMSType::PASSED_ON;
             case "WALK_IN":
-              return praccomm\AppointmentSMSType::WALK_IN;
+                return praccomm\AppointmentSMSType::WALK_IN;
             case "PENDING":
-              return praccomm\AppointmentSMSType::PENDING;
+                return praccomm\AppointmentSMSType::PENDING;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 
@@ -107,13 +117,13 @@ class SmsAppointment
         switch($type)
         {
             case "PATIENT":
-              return praccomm\PersonType::PATIENT;
+                return praccomm\PersonType::PATIENT;
             case "STAFF":
-              return praccomm\PersonType::STAFF;
+                return praccomm\PersonType::STAFF;
             case "DOCTOR":
-              return praccomm\PersonType::DOCTOR;
+                return praccomm\PersonType::DOCTOR;
             default:
-              throw new \Exception("Invalid person type");
+                throw new \Exception("Invalid person type");
         }
     }
 }

@@ -123,7 +123,7 @@ class SQSQueue extends AbstractQueue
      * @param Message $message - Message
      * @param integer $delay   - Delay
      */
-    protected function doSendMessage(Message $message, $delay=null)
+    protected function doSendMessage(Message $message, $delay = null)
     {
         if ($delay > 900) {
             // TODO: Post warning in sentry

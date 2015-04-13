@@ -10,22 +10,28 @@ use praccomm;
  */
 class SmsGroup
 {
-    private $_smsServer;
-    private $_smsPort;
-    private $_appName;
-    private $_queue;
+    private $smsServer;
+    private $smsPort;
+    private $appName;
+    private $queue;
 
     private function __construct($queue, $serviceHost, $servicePort, $appName)
     {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->smsServer = $serviceHost;
+        $this->smsPort = $servicePort;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($groupId, $name, $to, $messageType,
-                            $body, $eventId, $expiryTime = null)
-    {
+    public function sendSms(
+        $groupId,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $eventId,
+        $expiryTime = null
+    ) {
         $job = new praccomm\GroupSms();
         $job->group_id = $groupId;
         $job->name = $name;
@@ -34,9 +40,9 @@ class SmsGroup
         $job->event_id = $eventId;
         $job->message_text = $body;
         $job->message_type = $this->getSMSType($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_GROUP_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -53,8 +59,10 @@ class SmsGroup
 
     private function getTransport()
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
+        $socket = new Thrift\Transport\TSocket(
+            $this->smsServer,
+            $this->smsPort
+        );
         $socket->setRecvTimeout(20 * 1000);
         $socket->setSendTimeout(20 * 1000);
         $transport =
@@ -74,15 +82,15 @@ class SmsGroup
         switch($type)
         {
             case "VERIFICATION":
-              return praccomm\GroupSMSType::INVITE;
+                return praccomm\GroupSMSType::INVITE;
             case "REQUEST":
-              return praccomm\GroupSMSType::NEW_EVENT;
+                return praccomm\GroupSMSType::NEW_EVENT;
             case "CONFIRMATION":
-              return praccomm\GroupSMSType::EVENT_CANCELLATION;
+                return praccomm\GroupSMSType::EVENT_CANCELLATION;
             case "CANCELLATION":
-              return praccomm\GroupSMSType::EVENT_CONFIRMATION;
+                return praccomm\GroupSMSType::EVENT_CONFIRMATION;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }

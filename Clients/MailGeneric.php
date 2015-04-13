@@ -11,40 +11,46 @@ use praccomm;
  */
 class MailGeneric
 {
-    private $_appName;
-    private $_queue;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $appName)
     {
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendMail($fromName, $fromMail, $toName = "", $to,
-                             $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $reference_id = NULL, $reference_type = NULL)
-    {
+    public function sendMail(
+        $fromName,
+        $fromMail,
+        $toName,
+        $to,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $reference_id = null,
+        $reference_type = null
+    ) {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
         $job->from_name = $fromName;
         $job->from_address = $fromMail;
         $job->to_name = $toName;
         $job->to_address = $to;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
@@ -52,16 +58,14 @@ class MailGeneric
         $job->plaintext = $plaintext;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->email_type = strtoupper($type);
         $job->date = time();
         $job->reply_to = $replyTo;
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -73,15 +77,20 @@ class MailGeneric
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
         $job = new praccomm\GenericMail();
         $job->hash = $hash;
         $job->delivery_status = getMailDeliveryStatus($status);
@@ -92,7 +101,7 @@ class MailGeneric
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }

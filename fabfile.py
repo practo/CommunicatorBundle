@@ -1,60 +1,84 @@
-from fabric.api import lcd, local, settings, task, puts, hide
-from fabric.colors import green
-import os
+import sys
 
-ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
+from fabric.api import local, settings, env
 
-
-def info(text):
-    puts(green(text))
+from fabpolish import sniff, info, polish
 
 
-@task
-def polish():
-    with lcd(ROOT_DIR):
-        with settings(hide('running'), warn_only=True):
-            # Fix file permissions
-            info('Fixing file permissions...')
-            local('find . '
-                  '-path ./.git -prune -o '
-                  '-path ./vendor -prune -o '
-                  '-name *.sh -exec chmod 0755 {} \\; -o '
-                  '-type d -exec chmod 0755 {} \\; -o '
-                  '-type f -exec chmod 0644 {} \\;')
+@sniff(severity='minor')
+def fix_file_permissions():
+    info('Fixing file permissions...')
+    return local(
+        '! find `git ls-files` '
+        '-name "*.sh" -o '  # Exclude shell scripts
+        '-not -perm 0664 -print0 | '
+        'tee /dev/stderr | '
+        'xargs -0 chmod 0664 >/dev/null 2>&1'
+    )
 
-            # Fixing whitespace
-            info('Fixing trailing whitespace...')
-            local('find . '
-                  '-path ./.git -prune -o '
-                  '-path ./vendor -prune -o '
-                  '-type f '
-                  "-exec sed -i 's/\\s\\+$//' {} \\;")
 
-            # Converting tabs to spaces
-            info('Converting tabs to spaces...')
-            local('find . '
-                  '-path ./.git -prune -o '
-                  '-path ./vendor -prune -o '
-                  '-type f '
-                  "-exec sed -i 's/\\t/    /' {} \\;")
+@sniff(severity='major')
+def fix_script_permissions():
+    info('Fixing script permissions...')
+    return local(
+        '! find `git ls-files` '
+        '-name "*.sh" '
+        '-not -perm 0775 -print0 | '
+        'tee /dev/stderr | '
+        'xargs -0 chmod 0775 >/dev/null 2>&1'
+    )
 
-            # Find merge conflict leftovers
-            info('Finding merge conflict leftovers...')
-            local('! find . '
-                  '-path ./.git -prune -o '
-                  '-path ./vendor -prune -o '
-                  '-type d -o '
-                  '-print0 | '
-                  'xargs -0 grep -Pn "^(<|=|>){7}(?![<=>])"')
 
-            # Run coding standards check
-            info('Running coding standards check...')
-            local('phpcs --standard=Symfony2 . --ignore=genphp,vendor')
+@sniff(severity='minor')
+def fix_trailing_whitespace():
+    info('Fixing trailing whitespace...')
+    return local(
+        "! git ls-files -z | "
+        "xargs -0 grep -PlZn '(\\s+$)|(\\t)' | "
+        "tee /dev/stderr | "
+        "xargs -0 sed -i -e 's/\\s\\+$//' -e 's/\\t/    /g' "
+        ">/dev/null 2>&1"
+    )
 
-            # Check for var_dump, echo or die statements
-            info('Checking for var_dump, echo or die statements...')
-            local('! find . '
-                  '-path ./.git -prune -o '
-                  '-path ./vendor -prune -o '
-                  '-name "*.php" -print0 | '
-                  'xargs -0 egrep -n "var_dump|echo|die" | grep -v "NOCHECK"')
+
+@sniff(severity='critical')
+def find_merge_conflict_leftovers():
+    info('Finding merge conflict leftovers...')
+    return local("! git grep -P '^(<|=|>){7}(?![<=>])'")
+
+
+@sniff(severity='critical')
+def check_php_debug_stmts():
+    info('Checking for var_dump, echo or die statements...')
+    return local(
+        "! git ls-files -z | "
+        "grep -PZz '.*\.(php|phtml)$' | "
+        "xargs -0 grep -P '(var_dump|echo|die)'"
+    )
+
+
+@sniff(severity='minor')
+def fix_psr2_violations():
+    info('Running coding standards check...')
+    with settings(warn_only=True):
+        result = local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -vZz '/Thrift\.php$' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcs --standard=PSR2"
+        )
+    if result.failed:
+        local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcbf --standard=PSR2"
+        )
+    if not env.warn_only and result.failed:
+        sys.exit(1)
+    return result
+
+
+if __name__ == "__main__":
+    polish()

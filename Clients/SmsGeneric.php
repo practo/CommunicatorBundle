@@ -11,19 +11,25 @@ use praccomm;
  */
 class SmsGeneric
 {
-    private $_appName;
-    private $_queue;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $appName)
     {
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null)
-    {
+    public function sendSms(
+        $reference_id,
+        $reference_type,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $notes = null,
+        $expiryTime = null
+    ) {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
@@ -34,10 +40,10 @@ class SmsGeneric
         $job->message_text = $body;
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->sms_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        return $this->_queue
+        return $this->queue
                     ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -54,4 +60,3 @@ class SmsGeneric
         }
     }
 }
-?>
