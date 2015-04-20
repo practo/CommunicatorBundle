@@ -130,18 +130,18 @@ class SmsCredit
     }
 
     /**
-     * Allow negative credit
+     * Set Unlimited credit flag
      *
      * @param integer $practiceId - Practice Id
      *
      * @return array
      */
-    public function allowNegativeCredit($practiceId)
+    public function setUnlimitedCreditFlag($practiceId)
     {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->allow_negative_credit($practiceId);
+        $result = $client->set_unlimited_credit_flag($practiceId);
         $transport->close();
 
         return $result;
