@@ -29,7 +29,7 @@ interface SmsCreditServiceIf {
   public function get_credit($practice_id);
   public function get_credit_for_pid($practice_id);
   public function get_message_expense_report($practice_id, $from_date, $to_date);
-  public function allow_negative_credit($practice_id);
+  public function set_unlimited_credit_flag($practice_id);
   public function add_practice_to_credit_pool($old_practice_id, $new_practice_id);
 }
 
@@ -758,34 +758,34 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     throw new \Exception("get_message_expense_report failed: unknown result");
   }
 
-  public function allow_negative_credit($practice_id)
+  public function set_unlimited_credit_flag($practice_id)
   {
-    $this->send_allow_negative_credit($practice_id);
-    return $this->recv_allow_negative_credit();
+    $this->send_set_unlimited_credit_flag($practice_id);
+    return $this->recv_set_unlimited_credit_flag();
   }
 
-  public function send_allow_negative_credit($practice_id)
+  public function send_set_unlimited_credit_flag($practice_id)
   {
-    $args = new \praccomm\SmsCreditService_allow_negative_credit_args();
+    $args = new \praccomm\SmsCreditService_set_unlimited_credit_flag_args();
     $args->practice_id = $practice_id;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
-      thrift_protocol_write_binary($this->output_, 'allow_negative_credit', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+      thrift_protocol_write_binary($this->output_, 'set_unlimited_credit_flag', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
     }
     else
     {
-      $this->output_->writeMessageBegin('allow_negative_credit', TMessageType::CALL, $this->seqid_);
+      $this->output_->writeMessageBegin('set_unlimited_credit_flag', TMessageType::CALL, $this->seqid_);
       $args->write($this->output_);
       $this->output_->writeMessageEnd();
       $this->output_->getTransport()->flush();
     }
   }
 
-  public function recv_allow_negative_credit()
+  public function recv_set_unlimited_credit_flag()
   {
     $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_allow_negative_credit_result', $this->input_->isStrictRead());
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\praccomm\SmsCreditService_set_unlimited_credit_flag_result', $this->input_->isStrictRead());
     else
     {
       $rseqid = 0;
@@ -799,7 +799,7 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
         $this->input_->readMessageEnd();
         throw $x;
       }
-      $result = new \praccomm\SmsCreditService_allow_negative_credit_result();
+      $result = new \praccomm\SmsCreditService_set_unlimited_credit_flag_result();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
@@ -809,7 +809,7 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     if ($result->expt !== null) {
       throw $result->expt;
     }
-    throw new \Exception("allow_negative_credit failed: unknown result");
+    throw new \Exception("set_unlimited_credit_flag failed: unknown result");
   }
 
   public function add_practice_to_credit_pool($old_practice_id, $new_practice_id)
@@ -3317,7 +3317,7 @@ class SmsCreditService_get_message_expense_report_result {
 
 }
 
-class SmsCreditService_allow_negative_credit_args {
+class SmsCreditService_set_unlimited_credit_flag_args {
   static $_TSPEC;
 
   public $practice_id = null;
@@ -3339,7 +3339,7 @@ class SmsCreditService_allow_negative_credit_args {
   }
 
   public function getName() {
-    return 'SmsCreditService_allow_negative_credit_args';
+    return 'SmsCreditService_set_unlimited_credit_flag_args';
   }
 
   public function read($input)
@@ -3376,7 +3376,7 @@ class SmsCreditService_allow_negative_credit_args {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('SmsCreditService_allow_negative_credit_args');
+    $xfer += $output->writeStructBegin('SmsCreditService_set_unlimited_credit_flag_args');
     if ($this->practice_id !== null) {
       $xfer += $output->writeFieldBegin('practice_id', TType::I64, 1);
       $xfer += $output->writeI64($this->practice_id);
@@ -3389,7 +3389,7 @@ class SmsCreditService_allow_negative_credit_args {
 
 }
 
-class SmsCreditService_allow_negative_credit_result {
+class SmsCreditService_set_unlimited_credit_flag_result {
   static $_TSPEC;
 
   public $success = null;
@@ -3400,7 +3400,7 @@ class SmsCreditService_allow_negative_credit_result {
       self::$_TSPEC = array(
         0 => array(
           'var' => 'success',
-          'type' => TType::STRING,
+          'type' => TType::BOOL,
           ),
         1 => array(
           'var' => 'expt',
@@ -3420,7 +3420,7 @@ class SmsCreditService_allow_negative_credit_result {
   }
 
   public function getName() {
-    return 'SmsCreditService_allow_negative_credit_result';
+    return 'SmsCreditService_set_unlimited_credit_flag_result';
   }
 
   public function read($input)
@@ -3439,8 +3439,8 @@ class SmsCreditService_allow_negative_credit_result {
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->success);
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->success);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -3465,10 +3465,10 @@ class SmsCreditService_allow_negative_credit_result {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('SmsCreditService_allow_negative_credit_result');
+    $xfer += $output->writeStructBegin('SmsCreditService_set_unlimited_credit_flag_result');
     if ($this->success !== null) {
-      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
-      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeBool($this->success);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->expt !== null) {
@@ -3586,7 +3586,7 @@ class SmsCreditService_add_practice_to_credit_pool_result {
       self::$_TSPEC = array(
         0 => array(
           'var' => 'success',
-          'type' => TType::STRING,
+          'type' => TType::BOOL,
           ),
         1 => array(
           'var' => 'expt',
@@ -3625,8 +3625,8 @@ class SmsCreditService_add_practice_to_credit_pool_result {
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->success);
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->success);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -3653,8 +3653,8 @@ class SmsCreditService_add_practice_to_credit_pool_result {
     $xfer = 0;
     $xfer += $output->writeStructBegin('SmsCreditService_add_practice_to_credit_pool_result');
     if ($this->success !== null) {
-      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
-      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeBool($this->success);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->expt !== null) {
