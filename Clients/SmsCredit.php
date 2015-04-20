@@ -129,6 +129,43 @@ class SmsCredit
         return $result;
     }
 
+    /**
+     * Allow negative credit
+     *
+     * @param integer $practiceId - Practice Id
+     *
+     * @return array
+     */
+    public function allowNegativeCredit($practiceId)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->allow_negative_credit($practiceId);
+        $transport->close();
+
+        return $result;
+    }
+
+    /**
+     * Add Practice to credit pool
+     *
+     * @param integer $oldPracticeId - Old Practice Id
+     * @param integer $newPracticeId - New Practice Id
+     *
+     * @return array
+     */
+    public function addPracticeToCreditPool($oldPracticeId, $newPracticeId)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->add_practice_to_credit_pool($practiceId);
+        $transport->close();
+
+        return $result;
+    }
+
     private function getTransport()
     {
         $socket = new Thrift\Transport\TSocket($this->_smsCreditServer,
