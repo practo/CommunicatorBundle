@@ -160,7 +160,7 @@ class SmsCredit
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->add_practice_to_credit_pool($practiceId);
+        $result = $client->add_practice_to_credit_pool($oldPracticeId, $newPracticeId);
         $transport->close();
 
         return $result;
