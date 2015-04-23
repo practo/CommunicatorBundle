@@ -133,15 +133,16 @@ class SmsCredit
      * Set Unlimited credit flag
      *
      * @param integer $practiceId - Practice Id
+     * @param boolean $flag       - Flag
      *
      * @return array
      */
-    public function setUnlimitedCreditFlag($practiceId)
+    public function setUnlimitedCreditFlag($practiceId, $flag)
     {
         $transport = $this->getTransport();
         $client = $this->getClient($transport);
         $transport->open();
-        $result = $client->set_unlimited_credit_flag($practiceId);
+        $result = $client->set_unlimited_credit_flag($practiceId, $flag);
         $transport->close();
 
         return $result;

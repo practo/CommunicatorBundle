@@ -29,7 +29,7 @@ interface SmsCreditServiceIf {
   public function get_credit($practice_id);
   public function get_credit_for_pid($practice_id);
   public function get_message_expense_report($practice_id, $from_date, $to_date);
-  public function set_unlimited_credit_flag($practice_id);
+  public function set_unlimited_credit_flag($practice_id, $flag);
   public function add_practice_to_credit_pool($old_practice_id, $new_practice_id);
 }
 
@@ -758,16 +758,17 @@ class SmsCreditServiceClient implements \praccomm\SmsCreditServiceIf {
     throw new \Exception("get_message_expense_report failed: unknown result");
   }
 
-  public function set_unlimited_credit_flag($practice_id)
+  public function set_unlimited_credit_flag($practice_id, $flag)
   {
-    $this->send_set_unlimited_credit_flag($practice_id);
+    $this->send_set_unlimited_credit_flag($practice_id, $flag);
     return $this->recv_set_unlimited_credit_flag();
   }
 
-  public function send_set_unlimited_credit_flag($practice_id)
+  public function send_set_unlimited_credit_flag($practice_id, $flag)
   {
     $args = new \praccomm\SmsCreditService_set_unlimited_credit_flag_args();
     $args->practice_id = $practice_id;
+    $args->flag = $flag;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -3321,6 +3322,7 @@ class SmsCreditService_set_unlimited_credit_flag_args {
   static $_TSPEC;
 
   public $practice_id = null;
+  public $flag = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -3329,11 +3331,18 @@ class SmsCreditService_set_unlimited_credit_flag_args {
           'var' => 'practice_id',
           'type' => TType::I64,
           ),
+        2 => array(
+          'var' => 'flag',
+          'type' => TType::BOOL,
+          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['practice_id'])) {
         $this->practice_id = $vals['practice_id'];
+      }
+      if (isset($vals['flag'])) {
+        $this->flag = $vals['flag'];
       }
     }
   }
@@ -3364,6 +3373,13 @@ class SmsCreditService_set_unlimited_credit_flag_args {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 2:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->flag);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -3380,6 +3396,11 @@ class SmsCreditService_set_unlimited_credit_flag_args {
     if ($this->practice_id !== null) {
       $xfer += $output->writeFieldBegin('practice_id', TType::I64, 1);
       $xfer += $output->writeI64($this->practice_id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->flag !== null) {
+      $xfer += $output->writeFieldBegin('flag', TType::BOOL, 2);
+      $xfer += $output->writeBool($this->flag);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
