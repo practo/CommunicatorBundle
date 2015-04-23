@@ -129,6 +129,44 @@ class SmsCredit
         return $result;
     }
 
+    /**
+     * Set Unlimited credit flag
+     *
+     * @param integer $practiceId - Practice Id
+     * @param boolean $flag       - Flag
+     *
+     * @return array
+     */
+    public function setUnlimitedCreditFlag($practiceId, $flag)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->set_unlimited_credit_flag($practiceId, $flag);
+        $transport->close();
+
+        return $result;
+    }
+
+    /**
+     * Add Practice to credit pool
+     *
+     * @param integer $oldPracticeId - Old Practice Id
+     * @param integer $newPracticeId - New Practice Id
+     *
+     * @return array
+     */
+    public function addPracticeToCreditPool($oldPracticeId, $newPracticeId)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->add_practice_to_credit_pool($oldPracticeId, $newPracticeId);
+        $transport->close();
+
+        return $result;
+    }
+
     private function getTransport()
     {
         $socket = new Thrift\Transport\TSocket($this->_smsCreditServer,
