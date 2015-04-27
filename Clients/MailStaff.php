@@ -30,6 +30,7 @@ class MailStaff
                              $subject, $body, $type, $files,
                              $hash, $plaintext = "", $replyTo=null)
     {
+        $this->validateMailType($type);
         $job = new praccomm\StaffMail();
         $job->practice_id = $practiceId;
         $job->staff_profile_id = $staffProfileId;
@@ -58,7 +59,7 @@ class MailStaff
         $job->plaintext = $plaintext;
         $job->app_name = $this->_appName;
         $job->date = time();
-        $job->email_type = $this->getMailType($type);
+        $job->email_type = $type;
         $job->reply_to = $replyTo;
 
         $i = 0;
@@ -170,36 +171,32 @@ class MailStaff
     {
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new praccomm\StaffMailServiceClient($protocol);
-        return $client;
-    }
+        return $client;    }
 
-    private function getMailType($type)
+    private function validateMailType($type)
     {
-      switch($type)
-      {
-        case "ACCOUNT_MAILS":
-          return \praccomm\StaffEmailType::ACCOUNT_MAILS;
-        case "EXPENSES_REPORT":
-          return \praccomm\StaffEmailType::EXPENSES_REPORT;
-        case "INCOME_REPORT":
-          return \praccomm\StaffEmailType::INCOME_REPORT;
-        case "ACCOUNT_INVITE":
-          return \praccomm\StaffEmailType::ACCOUNT_INVITE;
-        case "ONLINE_APPOINTMENT":
-          return \praccomm\StaffEmailType::ONLINE_APPOINTMENT;
-        case "REMINDER":
-          return \praccomm\StaffEmailType::REMINDER;
-        case "SUMMARY_FOLLOWUPBIRTHDAY":
-          return \praccomm\StaffEmailType::SUMMARY_FOLLOWUPBIRTHDAY;
-        case "ACCOUNT_DELETE":
-          return \praccomm\StaffEmailType::ACCOUNT_DELETE;
-        case "BILLS_REPORT":
-          return \praccomm\StaffEmailType::BILLS_REPORT;
-        case "LOW_STOCK":
-          return \praccomm\StaffEmailType::LOW_STOCK;
-        default:
-          throw new \Exception("Invalid message type");
-      }
+
+       $allowedTypes = array(
+            'ACCOUNT_MAILS',
+            'EXPENSES_REPORT',
+            'INCOME_REPORT',
+            'ACCOUNT_INVITE',
+            'ONLINE_APPOINTMENT',
+            'REMINDER',
+            'BILLS_REPORT',
+            'SUMMARY_FOLLOWUPBIRTHDAY',
+            'ACCOUNT_DELETE',
+            'LOW_STOCK',
+            'CREDIT_LOW',
+            'CREDIT_ZERO',
+            'EXPIRING_BATCHES',
+            'V6_UPGRADE',
+            'LAB_ORDERS'
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+             throw new \Exception("Invalid message type");
+         }
     }
 }
 ?>

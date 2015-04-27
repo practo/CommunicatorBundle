@@ -27,6 +27,7 @@ class SmsStaff
                             $unverified = false, $smsDisabled = false,
                             $reduceCredit = false)
     {
+        $this->validateSMSType($type);
         $job = new praccomm\StaffSms();
         $job->practice_id = $practice_id;
         $job->name = $name;
@@ -34,7 +35,7 @@ class SmsStaff
         $job->secondary_mobile = $secondaryMobile;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
-        $job->message_type = $this->getSMSType($type);
+        $job->message_type = $type;
         $job->app_name = $this->_appName;
         $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'staff';
@@ -158,35 +159,27 @@ class SmsStaff
         return $client;
     }
 
-    private function getSMSType($type)
+  
+    private function validateSMSType($type)
     {
-        switch($type)
-        {
-            case "BULK":
-              return praccomm\StaffSMSType::BULK;
-            case "CUSTOM":
-              return praccomm\StaffSMSType::CUSTOM;
-            case "ONLINE_APPOINTMENT":
-              return praccomm\StaffSMSType::ONLINE_APPOINTMENT;
-            case "REMINDER":
-              return praccomm\StaffSMSType::REMINDER;
-            case "SYSTEM":
-              return praccomm\StaffSMSType::SYSTEM;
-            case "PVR_APPOINTMENT":
-              return praccomm\StaffSMSType::PVR_APPOINTMENT;
-            case "PVR_CLINICDETAILS":
-              return praccomm\StaffSMSType::PVR_CLINICDETAILS;
-            case "PVR_MISSED":
-              return praccomm\StaffSMSType::PVR_MISSED;
-            case "PVR_EMERGENCY":
-              return praccomm\StaffSMSType::PVR_EMERGENCY;
-            case "PVR_VOICEMAIL":
-              return praccomm\StaffSMSType::PVR_VOICEMAIL;
-            case "PVR_CALL":
-              return praccomm\StaffSMSType::PVR_CALL;
-            default:
-              throw new \Exception("Invalid message type");
-        }
+        $allowedTypes = array(
+            'BULK',
+            'CUSTOM',
+            'ONLINE_APPOINTMENT',
+            'REMINDER',
+            'SYSTEM',
+            'PVR_APPOINTMENT',
+            'PVR_CLINICDETAILS',
+            'PVR_MISSED',
+            'PVR_EMERGENCY',
+            'PVR_VOICEMAIL',
+            'PVR_CALL',
+            'LAB_ORDERS'
+        );
+
+        if (!in_array($type, $allowedTypes, true)) {
+            throw new Exception("Invalid message type");
+         }
     }
 }
 ?>

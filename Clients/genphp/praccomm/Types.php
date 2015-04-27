@@ -52,39 +52,6 @@ final class DoctorEmailType {
   );
 }
 
-final class StaffEmailType {
-  const ACCOUNT_MAILS = 1;
-  const EXPENSES_REPORT = 2;
-  const INCOME_REPORT = 3;
-  const ACCOUNT_INVITE = 4;
-  const ONLINE_APPOINTMENT = 5;
-  const REMINDER = 6;
-  const SUMMARY_FOLLOWUPBIRTHDAY = 7;
-  const ACCOUNT_DELETE = 8;
-  const BILLS_REPORT = 9;
-  const LOW_STOCK = 10;
-  const CREDIT_LOW = 11;
-  const CREDIT_ZERO = 12;
-  const V6_UPGRADE = 13;
-  const EXPIRING_BATCHES = 14;
-  static public $__names = array(
-    1 => 'ACCOUNT_MAILS',
-    2 => 'EXPENSES_REPORT',
-    3 => 'INCOME_REPORT',
-    4 => 'ACCOUNT_INVITE',
-    5 => 'ONLINE_APPOINTMENT',
-    6 => 'REMINDER',
-    7 => 'SUMMARY_FOLLOWUPBIRTHDAY',
-    8 => 'ACCOUNT_DELETE',
-    9 => 'BILLS_REPORT',
-    10 => 'LOW_STOCK',
-    11 => 'CREDIT_LOW',
-    12 => 'CREDIT_ZERO',
-    13 => 'V6_UPGRADE',
-    14 => 'EXPIRING_BATCHES',
-  );
-}
-
 final class DoctorSMSType {
   const BULK = 1;
   const CANCELLATION = 2;
@@ -143,33 +110,6 @@ final class CreditAction {
     3 => 'DEDUCT_PRACTO_CREDIT',
     4 => 'DEDUCT_WALLET_CREDIT',
     5 => 'INSERT_CREDIT',
-  );
-}
-
-final class StaffSMSType {
-  const BULK = 1;
-  const CUSTOM = 2;
-  const ONLINE_APPOINTMENT = 3;
-  const REMINDER = 4;
-  const SYSTEM = 5;
-  const PVR_APPOINTMENT = 6;
-  const PVR_CLINICDETAILS = 7;
-  const PVR_MISSED = 8;
-  const PVR_EMERGENCY = 9;
-  const PVR_VOICEMAIL = 10;
-  const PVR_CALL = 11;
-  static public $__names = array(
-    1 => 'BULK',
-    2 => 'CUSTOM',
-    3 => 'ONLINE_APPOINTMENT',
-    4 => 'REMINDER',
-    5 => 'SYSTEM',
-    6 => 'PVR_APPOINTMENT',
-    7 => 'PVR_CLINICDETAILS',
-    8 => 'PVR_MISSED',
-    9 => 'PVR_EMERGENCY',
-    10 => 'PVR_VOICEMAIL',
-    11 => 'PVR_CALL',
   );
 }
 
@@ -2203,7 +2143,7 @@ class StaffMail {
           ),
         10 => array(
           'var' => 'email_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         11 => array(
           'var' => 'attachments',
@@ -2503,8 +2443,8 @@ class StaffMail {
           }
           break;
         case 10:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->email_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->email_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -2757,8 +2697,8 @@ class StaffMail {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->email_type !== null) {
-      $xfer += $output->writeFieldBegin('email_type', TType::I32, 10);
-      $xfer += $output->writeI32($this->email_type);
+      $xfer += $output->writeFieldBegin('email_type', TType::STRING, 10);
+      $xfer += $output->writeString($this->email_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->attachments !== null) {
@@ -4426,7 +4366,7 @@ class StaffSMS {
           ),
         5 => array(
           'var' => 'message_type',
-          'type' => TType::I32,
+          'type' => TType::STRING,
           ),
         6 => array(
           'var' => 'message_text',
@@ -4651,8 +4591,8 @@ class StaffSMS {
           }
           break;
         case 5:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->message_type);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->message_type);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -4845,8 +4785,8 @@ class StaffSMS {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_type !== null) {
-      $xfer += $output->writeFieldBegin('message_type', TType::I32, 5);
-      $xfer += $output->writeI32($this->message_type);
+      $xfer += $output->writeFieldBegin('message_type', TType::STRING, 5);
+      $xfer += $output->writeString($this->message_type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->message_text !== null) {

@@ -113,24 +113,6 @@ struct PatientEmails {
 }
 
 
-enum StaffEmailType {
-    ACCOUNT_MAILS = 1,
-    EXPENSES_REPORT = 2,
-    INCOME_REPORT = 3,
-    ACCOUNT_INVITE = 4,
-    ONLINE_APPOINTMENT = 5,
-    REMINDER = 6,
-    SUMMARY_FOLLOWUPBIRTHDAY = 7,
-    ACCOUNT_DELETE = 8,
-    BILLS_REPORT = 9,
-    LOW_STOCK = 10,
-    CREDIT_LOW = 11,
-    CREDIT_ZERO = 12,
-    V6_UPGRADE = 13,
-    EXPIRING_BATCHES = 14
-}
-
-
 struct StaffMail {
     1: required i64 staff_mail_id;
     2: required string from_name;
@@ -141,7 +123,7 @@ struct StaffMail {
     7: required string subject;
     8: required string body;
     9: required i64 date;
-    10: required StaffEmailType email_type;
+    10: required string email_type;
     11: optional list<Attachment> attachments;
     12: optional i64 created_by;
     13: optional i64 created_on;
@@ -271,27 +253,13 @@ struct PatientMessages {
     1: required list<PatientSMS> messages;
 }
 
-enum StaffSMSType {
-    BULK = 1,
-    CUSTOM = 2,
-    ONLINE_APPOINTMENT = 3,
-    REMINDER = 4,
-    SYSTEM = 5,
-    PVR_APPOINTMENT = 6,
-    PVR_CLINICDETAILS = 7,
-    PVR_MISSED = 8,
-    PVR_EMERGENCY = 9,
-    PVR_VOICEMAIL = 10,
-    PVR_CALL = 11
-}
-
 
 struct StaffSMS {
     1: required i64 staff_sms_id;
     2: required i64 practice_id;
     3: required string name;
     4: required string mobile;
-    5: required StaffSMSType message_type;
+    5: required string message_type;
     6: required string message_text;
     7: required i64 send_time;
     8: required i64 delivery_time;
