@@ -1,7 +1,7 @@
 <?php
 
 namespace Practo\CommunicatorBundle\Clients;
-require_once __DIR__.'/genphp/praccomm/Types.php';
+require_once __DIR__.'/Types.php';
 
 class Helper
 {

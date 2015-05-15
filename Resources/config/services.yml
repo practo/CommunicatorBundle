@@ -28,68 +28,45 @@ parameters:
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
 
-    #mails
-    communicator.mail_patient.host: %communicator.host%
-    communicator.mail_patient.port: 2020
-    communicator.mail_doctor.host: %communicator.host%
-    communicator.mail_doctor.port: 1030
-    communicator.mail_staff.host: %communicator.host%
-    communicator.mail_staff.port: 3030
-    communicator.mail_appointment.host: %communicator.host%
-    communicator.mail_appointment.port: 1111
-    communicator.mail_group.host: %communicator.host%
-    communicator.mail_group.port: 1113
-
-    #sms
-    communicator.sms_patient.host: %communicator.host%
-    communicator.sms_patient.port: 6060
-    communicator.sms_doctor.host: %communicator.host%
-    communicator.sms_doctor.port: 5050
-    communicator.sms_staff.host: %communicator.host%
-    communicator.sms_staff.port: 7070
-    communicator.sms_appointment.host: %communicator.host%
-    communicator.sms_appointment.port: 1112
-    communicator.sms_group.host: %communicator.host%
-    communicator.sms_group.port: 1114
-    #credits
-    communicator.sms_credit.host: %communicator.host%
-    communicator.sms_credit.port: 4040
+    #communicator_config
+    communicator.base_uri: %communicator.base_uri%
+    communicator.api.secret: %communicator.api.secret%
 
 services:
   practo_communicator.mail_patient:
     class: %practo_communicator.mail_patient.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_patient.host%
-      - %communicator.mail_patient.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.mail_doctor:
     class: %practo_communicator.mail_doctor.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_doctor.host%
-      - %communicator.mail_doctor.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.mail_staff:
     class: %practo_communicator.mail_staff.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_staff.host%
-      - %communicator.mail_staff.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.mail_appointment:
     class: %practo_communicator.mail_appointment.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_appointment.host%
-      - %communicator.mail_appointment.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.mail_group:
     class: %practo_communicator.mail_group.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_group.host%
-      - %communicator.mail_group.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.mail_generic:
     class: %practo_communicator.mail_generic.class%
@@ -100,15 +77,15 @@ services:
     class: %practo_communicator.sms_patient.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.sms_patient.host%
-      - %communicator.sms_patient.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.sms_doctor.host%
-      - %communicator.sms_doctor.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.sms_generic:
     class: %practo_communicator.sms_generic.class%
@@ -119,29 +96,29 @@ services:
     class: %practo_communicator.sms_staff.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_staff.host%
-      - %communicator.mail_staff.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - RAY
   practo_communicator.sms_appointment:
     class: %practo_communicator.sms_appointment.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.sms_appointment.host%
-      - %communicator.sms_appointment.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.sms_group:
     class: %practo_communicator.sms_group.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.mail_group.host%
-      - %communicator.mail_group.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.sms_credit.host%
-      - %communicator.sms_credit.port%
+      - %communicator.base_uri%
+      - %communicator.api.secret%
   practo_communicator.queue_factory:
     class: Practo\CommunicatorBundle\Queue\QueueFactory
     calls:

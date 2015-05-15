@@ -10,16 +10,16 @@ use praccomm;
  */
 class MailDoctor
 {
-    private $_mailServer;
-    private $_mailPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri,
+                                $apiSecretKey, $appName)
     {
-        $this->_mailServer = $serviceHost;
-        $this->_mailPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
@@ -105,72 +105,53 @@ class MailDoctor
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->search_by_practice_id($pid, $sendDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['send_date'] = $sendDate;
+        $result = $client->get("/doctormail/search_by_practice_id", $params);
         return $result;
     }
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_status($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/doctormail/get_mails_by_status", $params);
         return $result;
     }
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_application($startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/doctormail/get_mails_by_application", $params);
         return $result;
     }
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_mails_by_app_for_pid($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/doctormail/get_mails_by_app_for_pid", $params);
         return $result;
     }
 
     public function getMailById($mailId)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mail_by_id($mailId);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['doc_mail_id'] = $mailId;
+        $result = $client->get("/doctormail/get_mail_by_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_mailServer,
-                                               $this->_mailPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\DoctorMailServiceClient($protocol);
-        return $client;
     }
 
     private function getMailType($type)

@@ -4,22 +4,20 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
-require_once __DIR__.'/genphp/praccomm/SmsCreditService.php';
 
 /**
  * Mail clinet for mailing doctors
  */
 class SmsCredit
 {
-    private $_smsCreditServer;
-    private $_smsCreditPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_queue;
 
-    public function __construct($queue, $serviceHost, $servicePort)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey)
     {
-        $this->_smsCreditServer = $serviceHost;
-        $this->_smsCreditPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
     }
 
@@ -41,34 +39,31 @@ class SmsCredit
 
     public function insertPractoCredit($practiceId, $credit)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->insert_practo_credit($practiceId, $credit);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $params['amount'] = $credit;
+        $result = $client->post("/smscredit/add_practo_credit", $params);
         return $result;
     }
 
     public function addWalletCredit($practiceId, $credit)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->add_wallet_credit($practiceId, $credit);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $params['amount'] = $credit;
+        $result = $client->post("/smscredit/add_wallet_credit", $params);
         return $result;
     }
 
     public function deductCredit($practiceId, $credit)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->deduct_credit($practiceId, $credit);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $params['amount'] = $credit;
+        $result = $client->post("/smscredit/deduct_credit", $params);
         return $result;
     }
 
@@ -82,12 +77,11 @@ class SmsCredit
      */
     public function deductWalletCredit($practiceId, $credit)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->deduct_wallet_credit($practiceId, $credit);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $params['amount'] = $credit;
+        $result = $client->post("/smscredit/deduct_wallet_credit", $params);
         return $result;
     }
 
@@ -101,13 +95,11 @@ class SmsCredit
      */
     public function deductHelloCallCost($practiceId, $callDurationInMins)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->deduct_hello_call_cost($practiceId,
-            $callDurationInMins);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $params['call_duration_mins'] = $callDurationInMins;
+        $result = $client->post("/smscredit/deduct_hello_call_cost", $params);
         return $result;
     }
 
@@ -120,34 +112,11 @@ class SmsCredit
      */
     public function getCredits($pid)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_credit($pid);
-        $transport->close();
-
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $result = $client->get("/smscredit/get_credit", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_smsCreditServer,
-            $this->_smsCreditPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\SmsCreditServiceClient($protocol);
-
-        return $client;
     }
 
     private function getCurrency($curr)

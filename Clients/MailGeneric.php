@@ -97,13 +97,6 @@ class MailGeneric
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GenericMailServiceClient($protocol);
-        return $client;
-    }
-
     private function validateMailType($type)
     {
         $allowedTypes = array(
