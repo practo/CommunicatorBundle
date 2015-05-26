@@ -229,6 +229,7 @@ class SmsPatient
             'PVR_CALL',
             'AMOUNT_DUE',
             'RX_REMINDER',
+            'PATIENT_SMS_BLACKLISTED',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
