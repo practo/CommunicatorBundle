@@ -232,7 +232,7 @@ class SmsPatient
         );
 
         if (!in_array($type, $allowedTypes, true)) {
-            throw new Exception("Invalid message type");
+            throw new \Exception("Invalid message type");
         }
     }
 
