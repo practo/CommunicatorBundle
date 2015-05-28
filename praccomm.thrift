@@ -127,7 +127,8 @@ enum StaffEmailType {
     CREDIT_LOW = 11,
     CREDIT_ZERO = 12,
     V6_UPGRADE = 13,
-    EXPIRING_BATCHES = 14
+    EXPIRING_BATCHES = 14,
+    TOTP_ENABLED = 15,
 }
 
 
@@ -686,6 +687,8 @@ service SmsCreditService {
     string get_credit(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_credit_for_pid(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_message_expense_report(1:i64 practice_id, 2:i64 from_date, 3:i64 to_date) throws (1: ApplicationException expt);
+    bool set_unlimited_credit_flag(1:i64 practice_id, 2:bool flag) throws (1: ApplicationException expt);
+    bool add_practice_to_credit_pool(1:i64 old_practice_id, 2:i64 new_practice_id) throws (1: ApplicationException expt);
 }
 
 service GenericSMSService {

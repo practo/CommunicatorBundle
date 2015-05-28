@@ -67,6 +67,7 @@ final class StaffEmailType {
   const CREDIT_ZERO = 12;
   const V6_UPGRADE = 13;
   const EXPIRING_BATCHES = 14;
+  const TOTP_ENABLED = 15;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -82,6 +83,7 @@ final class StaffEmailType {
     12 => 'CREDIT_ZERO',
     13 => 'V6_UPGRADE',
     14 => 'EXPIRING_BATCHES',
+    15 => 'TOTP_ENABLED',
   );
 }
 
