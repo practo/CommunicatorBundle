@@ -160,6 +160,7 @@ final class StaffSMSType {
   const PVR_EMERGENCY = 9;
   const PVR_VOICEMAIL = 10;
   const PVR_CALL = 11;
+  const TOTP_ENABLED = 12;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CUSTOM',
@@ -172,6 +173,7 @@ final class StaffSMSType {
     9 => 'PVR_EMERGENCY',
     10 => 'PVR_VOICEMAIL',
     11 => 'PVR_CALL',
+    12 => 'TOTP_ENABLED',
   );
 }
 

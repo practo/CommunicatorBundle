@@ -283,7 +283,8 @@ enum StaffSMSType {
     PVR_MISSED = 8,
     PVR_EMERGENCY = 9,
     PVR_VOICEMAIL = 10,
-    PVR_CALL = 11
+    PVR_CALL = 11,
+    TOTP_ENABLED = 12
 }
 
 
@@ -687,8 +688,6 @@ service SmsCreditService {
     string get_credit(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_credit_for_pid(1:i64 practice_id) throws (1: ApplicationException expt);
     string get_message_expense_report(1:i64 practice_id, 2:i64 from_date, 3:i64 to_date) throws (1: ApplicationException expt);
-    bool set_unlimited_credit_flag(1:i64 practice_id, 2:bool flag) throws (1: ApplicationException expt);
-    bool add_practice_to_credit_pool(1:i64 old_practice_id, 2:i64 new_practice_id) throws (1: ApplicationException expt);
 }
 
 service GenericSMSService {
