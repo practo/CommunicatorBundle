@@ -184,6 +184,8 @@ class SmsStaff
               return praccomm\StaffSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
               return praccomm\StaffSMSType::PVR_CALL;
+            case "LAB_ORDERS":
+              return praccomm\StaffSMSType::LAB_ORDERS;
             default:
               throw new \Exception("Invalid message type");
         }

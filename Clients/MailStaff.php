@@ -197,6 +197,8 @@ class MailStaff
           return \praccomm\StaffEmailType::BILLS_REPORT;
         case "LOW_STOCK":
           return \praccomm\StaffEmailType::LOW_STOCK;
+        case "LAB_ORDERS":
+          return \praccomm\StaffEmailType::LAB_ORDERS;
         default:
           throw new \Exception("Invalid message type");
       }
