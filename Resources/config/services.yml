@@ -51,6 +51,9 @@ parameters:
     communicator.sms_appointment.port: 1112
     communicator.sms_group.host: %communicator.host%
     communicator.sms_group.port: 1114
+    communicator.sms_generic.host: %communicator.host%
+    communicator.sms_generic.port: 9090
+
     #credits
     communicator.sms_credit.host: %communicator.host%
     communicator.sms_credit.port: 4040
@@ -114,6 +117,8 @@ services:
     class: %practo_communicator.sms_generic.class%
     arguments:
       - @practo_communicator.queue
+      - %communicator.sms_generic.host%
+      - %communicator.sms_generic.port%
       - FABRIC
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
