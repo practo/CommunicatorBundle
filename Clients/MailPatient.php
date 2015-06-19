@@ -246,6 +246,7 @@ class MailPatient
             'IMMUNISATION_REMINDER',
             'PATIENT_SMS_BLACKLISTED',
             'IMMUNISATIONCARD',
+            'PATIENTLABORDERRESULT',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
