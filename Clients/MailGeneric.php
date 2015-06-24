@@ -112,6 +112,7 @@ class MailGeneric
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
             'VN_DETAILS',
+            'ALERT_BAD_HEALTH',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
