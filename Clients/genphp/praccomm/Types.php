@@ -67,7 +67,8 @@ final class StaffEmailType {
   const CREDIT_ZERO = 12;
   const V6_UPGRADE = 13;
   const EXPIRING_BATCHES = 14;
-  const LAB_ORDERS = 15;
+  const TOTP_ENABLED = 15;
+  const LAB_ORDERS = 16;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -83,7 +84,8 @@ final class StaffEmailType {
     12 => 'CREDIT_ZERO',
     13 => 'V6_UPGRADE',
     14 => 'EXPIRING_BATCHES',
-    15 => 'LAB_ORDERS',
+    15 => 'TOTP_ENABLED',
+    16 => 'LAB_ORDERS',
   );
 }
 
@@ -160,7 +162,8 @@ final class StaffSMSType {
   const PVR_EMERGENCY = 9;
   const PVR_VOICEMAIL = 10;
   const PVR_CALL = 11;
-  const LAB_ORDERS = 12;
+  const TOTP_ENABLED = 12;
+  const LAB_ORDERS = 13;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CUSTOM',
@@ -173,7 +176,8 @@ final class StaffSMSType {
     9 => 'PVR_EMERGENCY',
     10 => 'PVR_VOICEMAIL',
     11 => 'PVR_CALL',
-    12 => 'LAB_ORDERS',
+    12 => 'TOTP_ENABLED',
+    13 => 'LAB_ORDERS',
   );
 }
 

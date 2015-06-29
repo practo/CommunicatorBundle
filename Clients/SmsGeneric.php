@@ -5,6 +5,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
 
 /**
  * Clinet for generic sms
@@ -13,10 +14,14 @@ class SmsGeneric
 {
     private $_appName;
     private $_queue;
+    private $_smsServer;
+    private $_smsPort;
 
-    public function __construct($queue, $appName)
+    public function __construct($queue, $serviceHost, $servicePort, $appName)
     {
         $this->_queue = $queue;
+        $this->_smsServer = $serviceHost;
+        $this->_smsPort = $servicePort;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
@@ -53,6 +58,35 @@ class SmsGeneric
         if (!in_array($type, $allowedTypes, true)) {
             throw new Exception("Invalid message type");
         }
+    }
+
+    public function getMessageLogBySurveyId($surveyId)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_messages_by_reference_id($surveyId, array('SURVEY_SMS'));
+        $transport->close();
+        return $result;
+    }
+
+    private function getTransport()
+    {
+        $socket = new Thrift\Transport\TSocket($this->_smsServer, $this->_smsPort);
+
+        $socket->setRecvTimeout(20 * 1000);
+        $socket->setSendTimeout(20 * 1000);
+
+        $transport =
+          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
+        return $transport;
+    }
+
+    private function getClient($transport)
+    {
+        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
+        $client = new praccomm\GenericSMSServiceClient($protocol);
+        return $client;
     }
 }
 ?>

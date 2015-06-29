@@ -4,6 +4,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
 
 
 /**
@@ -197,6 +198,8 @@ class MailStaff
           return \praccomm\StaffEmailType::BILLS_REPORT;
         case "LOW_STOCK":
           return \praccomm\StaffEmailType::LOW_STOCK;
+        case "TOTP_ENABLED":
+          return \praccomm\StaffEmailType::TOTP_ENABLED;
         case "LAB_ORDERS":
           return \praccomm\StaffEmailType::LAB_ORDERS;
         default:
