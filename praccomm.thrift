@@ -127,7 +127,8 @@ enum StaffEmailType {
     CREDIT_LOW = 11,
     CREDIT_ZERO = 12,
     V6_UPGRADE = 13,
-    EXPIRING_BATCHES = 14
+    EXPIRING_BATCHES = 14,
+    TOTP_ENABLED = 15,
 }
 
 
@@ -282,7 +283,8 @@ enum StaffSMSType {
     PVR_MISSED = 8,
     PVR_EMERGENCY = 9,
     PVR_VOICEMAIL = 10,
-    PVR_CALL = 11
+    PVR_CALL = 11,
+    TOTP_ENABLED = 12
 }
 
 
