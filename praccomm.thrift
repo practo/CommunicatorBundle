@@ -286,7 +286,7 @@ enum StaffSMSType {
     PVR_VOICEMAIL = 10,
     PVR_CALL = 11,
     TOTP_ENABLED = 12,
-    LAB_ORDERS = 12
+    LAB_ORDERS = 13
 }
 
 
