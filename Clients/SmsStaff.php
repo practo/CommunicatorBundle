@@ -187,6 +187,8 @@ class SmsStaff
               return praccomm\StaffSMSType::PVR_CALL;
             case "TOTP_ENABLED":
               return praccomm\StaffSMSType::TOTP_ENABLED;
+            case "LAB_ORDERS":
+              return praccomm\StaffSMSType::LAB_ORDERS;
             default:
               throw new \Exception("Invalid message type");
         }

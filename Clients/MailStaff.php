@@ -200,6 +200,8 @@ class MailStaff
           return \praccomm\StaffEmailType::LOW_STOCK;
         case "TOTP_ENABLED":
           return \praccomm\StaffEmailType::TOTP_ENABLED;
+        case "LAB_ORDERS":
+          return \praccomm\StaffEmailType::LAB_ORDERS;
         default:
           throw new \Exception("Invalid message type");
       }

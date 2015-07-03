@@ -129,6 +129,7 @@ enum StaffEmailType {
     V6_UPGRADE = 13,
     EXPIRING_BATCHES = 14,
     TOTP_ENABLED = 15,
+    LAB_ORDERS = 16
 }
 
 
@@ -284,7 +285,8 @@ enum StaffSMSType {
     PVR_EMERGENCY = 9,
     PVR_VOICEMAIL = 10,
     PVR_CALL = 11,
-    TOTP_ENABLED = 12
+    TOTP_ENABLED = 12,
+    LAB_ORDERS = 13
 }
 
 
