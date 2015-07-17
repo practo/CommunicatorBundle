@@ -53,7 +53,8 @@ class SmsGeneric
             'WEEKLY_ROI_SMS',
             'VN_DETAILS',
             'SURVEY_SMS',
-            'MARKETING_APP_LINK_SMS'
+            'MARKETING_APP_LINK_SMS',
+            'VN_APP_PROMOTION_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new Exception("Invalid message type");
@@ -66,6 +67,16 @@ class SmsGeneric
         $client = $this->getClient($transport);
         $transport->open();
         $result = $client->get_messages_by_reference_id($surveyId, array('SURVEY_SMS'));
+        $transport->close();
+        return $result;
+    }
+
+    public function getMessagesBySmsTypeAndRecipient($messageType, $mobile)
+    {
+        $transport = $this->getTransport();
+        $client = $this->getClient($transport);
+        $transport->open();
+        $result = $client->get_messages_by_smstype_and_recipient($messageType, $mobile);
         $transport->close();
         return $result;
     }
