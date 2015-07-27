@@ -5,6 +5,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
 
 /**
  * Clinet for generic sms
@@ -13,10 +14,14 @@ class SmsGeneric
 {
     private $_appName;
     private $_queue;
+    private $_smsServer;
+    private $_smsPort;
 
-    public function __construct($queue, $appName)
+    public function __construct($queue, $serviceHost, $servicePort, $appName)
     {
         $this->_queue = $queue;
+        $this->_smsServer = $serviceHost;
+        $this->_smsPort = $servicePort;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
@@ -53,6 +58,16 @@ class SmsGeneric
         if (!in_array($type, $allowedTypes, true)) {
             throw new Exception("Invalid message type");
         }
+    }
+
+    public function getMessageLogBySurveyId($surveyId)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['reference_id'] = $surveyId;
+        $params['sms_types'] = array('SURVEY_SMS');
+        $result = $client->get("/genericsms/get_messages_by_reference_id", $params);
+        return $result;
     }
 }
 ?>

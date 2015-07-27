@@ -4,6 +4,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Thrift;
 
 /**
  * Mail clinet for mailing doctors
@@ -176,6 +177,10 @@ class SmsStaff
               return praccomm\StaffSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
               return praccomm\StaffSMSType::PVR_CALL;
+            case "TOTP_ENABLED":
+              return praccomm\StaffSMSType::TOTP_ENABLED;
+            case "LAB_ORDERS":
+              return praccomm\StaffSMSType::LAB_ORDERS;
             default:
               throw new \Exception("Invalid message type");
         }

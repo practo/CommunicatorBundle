@@ -91,6 +91,8 @@ services:
     class: %practo_communicator.sms_generic.class%
     arguments:
       - @practo_communicator.queue
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
