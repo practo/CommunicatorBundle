@@ -5,7 +5,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Clinet for generic sms
@@ -62,31 +62,12 @@ class SmsGeneric
 
     public function getMessageLogBySurveyId($surveyId)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_messages_by_reference_id($surveyId, array('SURVEY_SMS'));
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['reference_id'] = $surveyId;
+        $params['sms_types'] = array('SURVEY_SMS');
+        $result = $client->get("/genericsms/get_messages_by_reference_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer, $this->_smsPort);
-
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GenericSMSServiceClient($protocol);
-        return $client;
     }
 }
 ?>

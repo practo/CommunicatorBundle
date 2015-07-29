@@ -4,22 +4,22 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Mail clinet for mailing doctors
  */
 class SmsStaff
 {
-    private $_smsServer;
-    private $_smsPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
@@ -74,89 +74,81 @@ class SmsStaff
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->search_by_practice_id($pid, $sendDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['send_date'] = $sendDate;
+        $params['sms_types'] = $smsTypes;
+        $result = $client->get("/staffsms/search_by_practice_id", $params);
         return $result;
     }
 
     public function getMessagesByDateRange($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_messages_in_date_range($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/staffsms/get_messages_in_date_range", $params);
         return $result;
     }
 
     public function getMessagesByDeliveryStatus($pid, $startDate,
                                                 $endDate, $smsTypes, $status)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_messages_by_delivery_status($pid, $startDate, $endDate,
-                                                   $smsTypes, $status);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $params['sms_types'] = $smsTypes;
+        $params['status'] = $status;
+        $result = $client->get("/staffsms/get_messages_by_delivery_status", $params);
         return $result;
     }
 
     public function getMessagesByFailureReason($pid, $startDate,
                                                $endDate, $smsTypes)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_messages_by_failure_reason($pid, $startDate,
-                                                  $endDate, $smsTypes);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $params['sms_types'] = $smsTypes;
+        $result = $client->get("/staffsms/get_messages_by_failure_reason", $params);
         return $result;
     }
 
     public function getMessagesByApplication($startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_messages_by_application($startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/staffsms/get_messages_by_application", $params);
         return $result;
     }
 
     public function getMessagesByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_messages_by_app_for_pid($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/staffsms/get_messages_by_app_for_pid", $params);
         return $result;
     }
 
-    private function getTransport()
+    public function getRetriedMessagesForId($smsId)
     {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\StaffSMSServiceClient($protocol);
-        return $client;
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['sms_id'] = $smsId;
+        $result = $client->get("/staffsms/get_retried_messages_for_smsid", $params);
+        return $result;
     }
 
     private function getSMSType($type)
