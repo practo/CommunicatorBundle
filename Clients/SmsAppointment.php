@@ -4,24 +4,23 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
-require_once __DIR__.'/genphp/praccomm/AppointmentSMSService.php';
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Clinet for messaging doctors
  */
 class SmsAppointment
 {
-    private $_smsServer;
-    private $_smsPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri,
+                                $apiSecretKey, $appName)
     {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
@@ -49,30 +48,12 @@ class SmsAppointment
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_messages_by_appointment_id($apptId, $smsTypes);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['appointment_id'] = $apptId;
+        $params['sms_types'] = $smsTypes;
+        $result = $client->get("/appointmentsms/get_messages_by_appointment_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\AppointmentSMSServiceClient($protocol);
-        return $client;
     }
 
     private function getSMSType($type)

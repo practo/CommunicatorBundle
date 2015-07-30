@@ -5,7 +5,6 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
 
 /**
  * Clinet for sending generic mails
@@ -96,13 +95,6 @@ class MailGeneric
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GenericMailServiceClient($protocol);
-        return $client;
     }
 
     private function validateMailType($type)
