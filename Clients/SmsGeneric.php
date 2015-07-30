@@ -14,14 +14,14 @@ class SmsGeneric
 {
     private $_appName;
     private $_queue;
-    private $_smsServer;
-    private $_smsPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
 
-    public function __construct($queue, $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
         $this->_queue = $queue;
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
