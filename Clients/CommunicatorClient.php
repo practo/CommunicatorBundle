@@ -52,7 +52,7 @@ class CommunicatorClient {
 
         curl_close($ch);
         if($errorMessage){
-            throw new Exception($errorMessage);
+            throw new \Exception($errorMessage);
         }
     }
 
@@ -95,7 +95,7 @@ class CommunicatorClient {
 
         curl_close($ch);
         if($errorMessage){
-            throw new Exception($errorMessage);
+            throw new \Exception($errorMessage);
         }
     }
 }
