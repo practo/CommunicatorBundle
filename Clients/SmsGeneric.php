@@ -73,31 +73,12 @@ class SmsGeneric
 
     public function getMessagesBySmsTypeAndRecipient($messageType, $mobile)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_messages_by_smstype_and_recipient($messageType, $mobile);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['message_type'] = $messageType;
+        $params['mobile'] = $mobile;
+        $result = $client->get("/genericsms/get_messages_by_smstype_and_recipient", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer, $this->_smsPort);
-
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GenericSMSServiceClient($protocol);
-        return $client;
     }
 }
 ?>
