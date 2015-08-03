@@ -71,13 +71,13 @@ class SmsGeneric
         return $result;
     }
 
-    public function getMessagesBySmsTypeAndRecipient($messageType, $mobile)
+    public function isMsgSentOfTypeForRecipient($messageType, $mobile)
     {
         $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
         $params = array();
         $params['message_type'] = $messageType;
         $params['mobile'] = $mobile;
-        $result = $client->get("/genericsms/get_messages_by_smstype_and_recipient", $params);
+        $result = $client->get("/genericsms/is_msg_sent_of_type_for_recipient", $params);
         return $result;
     }
 }
