@@ -12,12 +12,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsGeneric
 {
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
     private $_smsServer;
     private $_smsPort;
 
-    public function __construct($queue, $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $serviceHost, $servicePort,
+                                $communicatorBaseUri, $apiSecretKey, $appName)
     {
         $this->_queue = $queue;
         $this->_smsServer = $serviceHost;
