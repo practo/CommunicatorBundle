@@ -57,7 +57,7 @@ class SmsGeneric
             'VN_APP_PROMOTION_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
-            throw new Exception("Invalid message type");
+            throw new \Exception("Invalid message type");
         }
     }
 
