@@ -19,7 +19,7 @@ class SmsGeneric
     private $_communicatorBaseUri;
     private $_apiSecretKey;
 
-    private function __construct($queue, $sendQueue, $updateQueue,
+    public function __construct($queue, $sendQueue, $updateQueue,
                                  $communicatorBaseUri, $apiSecretKey, $appName)
     {
         $this->_communicatorBaseUri = $communicatorBaseUri;
