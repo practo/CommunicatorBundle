@@ -27,7 +27,7 @@ class SmsGeneric
         $this->_sendGroupSmsQueue = $sendQueue;
         $this->_updateGroupSmsQueue = $updateQueue;
         $this->_queue = $queue;
-        $this->_appName = getValidAppName($appName);
+        $this->_appName = Helper::getValidAppName($appName);
     }
 
     public function sendSms($reference_id, $reference_type,
