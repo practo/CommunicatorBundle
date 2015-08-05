@@ -12,20 +12,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsGeneric
 {
-    private $_sendGenericSmsQueue;
-    private $_updateGenericSmsQueue;
     private $_appName;
     private $_queue;
     private $_communicatorBaseUri;
     private $_apiSecretKey;
 
-    public function __construct($queue, $sendQueue, $updateQueue,
-                                 $communicatorBaseUri, $apiSecretKey, $appName)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
         $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
-        $this->_sendGroupSmsQueue = $sendQueue;
-        $this->_updateGroupSmsQueue = $updateQueue;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
