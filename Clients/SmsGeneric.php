@@ -22,6 +22,8 @@ class SmsGeneric
     public function __construct($queue, $serviceHost, $servicePort,
                                 $communicatorBaseUri, $apiSecretKey, $appName)
     {
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_smsServer = $serviceHost;
         $this->_smsPort = $servicePort;
