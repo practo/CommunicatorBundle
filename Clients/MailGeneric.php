@@ -5,7 +5,6 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
 
 /**
  * Clinet for sending generic mails
@@ -98,13 +97,6 @@ class MailGeneric
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GenericMailServiceClient($protocol);
-        return $client;
-    }
-
     private function validateMailType($type)
     {
         $allowedTypes = array(
@@ -112,6 +104,7 @@ class MailGeneric
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
             'VN_DETAILS',
+            'ALERT_BAD_HEALTH',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
