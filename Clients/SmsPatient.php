@@ -222,6 +222,7 @@ class SmsPatient
             'PVR_CALL',
             'AMOUNT_DUE',
             'RX_REMINDER',
+            'PATIENT_LAB_ORDERS',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
