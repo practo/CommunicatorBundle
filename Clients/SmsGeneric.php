@@ -19,9 +19,9 @@ class SmsGeneric
 
     public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
-        $this->_queue = $queue;
         $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
+        $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
 
@@ -53,10 +53,11 @@ class SmsGeneric
             'WEEKLY_ROI_SMS',
             'VN_DETAILS',
             'SURVEY_SMS',
-            'MARKETING_APP_LINK_SMS'
+            'MARKETING_APP_LINK_SMS',
+            'VN_APP_PROMOTION_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
-            throw new Exception("Invalid message type");
+            throw new \Exception("Invalid message type");
         }
     }
 
@@ -67,6 +68,16 @@ class SmsGeneric
         $params['reference_id'] = $surveyId;
         $params['sms_types'] = array('SURVEY_SMS');
         $result = $client->get("/genericsms/get_messages_by_reference_id", $params);
+        return $result;
+    }
+
+    public function isMsgSentOfTypeForRecipient($messageType, $mobile)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['message_type'] = $messageType;
+        $params['mobile'] = $mobile;
+        $result = $client->get("/genericsms/is_msg_sent_of_type_for_recipient", $params);
         return $result;
     }
 }

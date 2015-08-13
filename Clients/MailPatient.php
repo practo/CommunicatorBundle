@@ -229,6 +229,8 @@ class MailPatient
             'PATIENT_SMS_BLACKLISTED',
             'IMMUNISATIONCARD',
             'GROWTH_CHARTS',
+            'PATIENT_LAB_ORDER_RESULT',
+            'PATIENT_LAB_ORDERS',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
