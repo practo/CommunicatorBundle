@@ -222,6 +222,8 @@ class SmsPatient
             'PVR_CALL',
             'AMOUNT_DUE',
             'RX_REMINDER',
+            'PATIENT_MEMBERSHIP',
+            'PAYMENT',
             'PATIENT_LAB_ORDERS',
         );
 
