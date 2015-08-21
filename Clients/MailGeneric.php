@@ -105,6 +105,7 @@ class MailGeneric
             'MERGE_ACCOUNTS_NOTIFICATION',
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
+            'FABRIC_DQS_REPORT',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
