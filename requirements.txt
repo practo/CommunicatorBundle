@@ -1,1 +1,1 @@
-fab-polish
+fab-polish>=1.0.1,<2
