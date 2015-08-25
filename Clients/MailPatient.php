@@ -228,6 +228,7 @@ class MailPatient
             'IMMUNISATION_REMINDER',
             'PATIENT_SMS_BLACKLISTED',
             'IMMUNISATIONCARD',
+            'GROWTH_CHARTS',
             'PATIENT_LAB_ORDER_RESULT',
             'PATIENT_LAB_ORDERS',
         );
