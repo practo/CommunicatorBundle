@@ -106,6 +106,7 @@ class MailGeneric
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
+            'SURVEY_VERIFICATION_EMAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
