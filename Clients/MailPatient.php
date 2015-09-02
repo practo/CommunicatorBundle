@@ -231,6 +231,7 @@ class MailPatient
             'GROWTH_CHARTS',
             'PATIENT_LAB_ORDER_RESULT',
             'PATIENT_LAB_ORDERS',
+            'LENS_PRESCRIPTION',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
