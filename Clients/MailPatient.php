@@ -231,6 +231,9 @@ class MailPatient
             'GROWTH_CHARTS',
             'PATIENT_LAB_ORDER_RESULT',
             'PATIENT_LAB_ORDERS',
+            'LAB_ORDER_CONFIRMATION',
+            'LAB_ORDER_DUEON',
+            'LAB_ORDER_RESULT',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
