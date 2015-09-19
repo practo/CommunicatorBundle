@@ -72,6 +72,8 @@ services:
     class: %practo_communicator.mail_generic.class%
     arguments:
       - @practo_communicator.queue
+      - %communicator.base_uri%
+      - %communicator.api.secret%
       - FABRIC
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
