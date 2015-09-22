@@ -13,6 +13,8 @@ class MailGeneric
 {
     private $_appName;
     private $_queue;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
 
     public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
