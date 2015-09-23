@@ -5,6 +5,7 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Client for sending generic mails
