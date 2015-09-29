@@ -5,17 +5,22 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
- * Clinet for sending generic mails
+ * Client for sending generic mails
  */
 class MailGeneric
 {
     private $_appName;
     private $_queue;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
 
-    public function __construct($queue, $appName)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
@@ -111,5 +116,29 @@ class MailGeneric
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
         }
+    }
+
+    /**
+     * Returns count of mails grouped by their delivery status
+     * Filtered on: date, mail type
+     *
+     * @param string $mailType       - Type of the mail
+     * @param string $startDate      - Start Date
+     * @param string $endDate        - End Date
+     * @param array  $deliveryStatus - Array of delivery status
+     *
+     * @return array - Array of Mail counts grouped by delivery status
+     */
+    public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = [
+            'mail_type'       => $mailType,
+            'start_date'      => $startDate,
+            'end_date'        => $endDate,
+            'delivery_status' => $deliveryStatus
+        ];
+        $result = $client->get("/genericmail/get_mail_count_for_type", $params);
+        return $result;
     }
 }
