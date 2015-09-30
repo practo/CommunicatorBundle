@@ -234,6 +234,7 @@ class MailPatient
             'LAB_ORDER_CONFIRMATION',
             'LAB_ORDER_DUEON',
             'LAB_ORDER_RESULT',
+	     'ANNIVERSARY',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
@@ -242,3 +243,4 @@ class MailPatient
     }
 }
 ?>
+
