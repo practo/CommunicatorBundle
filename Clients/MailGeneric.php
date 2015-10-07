@@ -111,7 +111,7 @@ class MailGeneric
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
-            'FIT_MAIL',
+            'FIT_GENERIC_MAIL',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
