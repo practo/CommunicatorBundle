@@ -8,7 +8,7 @@ use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
- * Clinet for generic sms
+ * Client for generic sms
  */
 class SmsGeneric
 {
@@ -78,6 +78,30 @@ class SmsGeneric
         $params['message_type'] = $messageType;
         $params['mobile'] = $mobile;
         $result = $client->get("/genericsms/is_msg_sent_of_type_for_recipient", $params);
+        return $result;
+    }
+
+    /**
+     * Returns count of messages grouped by their delivery status
+     * Filtered on: date, message type
+     *
+     * @param string $messageType - Type of the message
+     * @param string $startDate   - Start Date
+     * @param string $endDate     - End Date
+     * @param array  $status      - Array of status
+     *
+     * @return array - Array of message counts grouped by delivery status
+     */
+    public function getMessageCountByType($messageType, $startDate, $endDate, $status)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = [
+            'message_type' => $messageType,
+            'start_date'   => $startDate,
+            'end_date'     => $endDate,
+            'status'       => $status
+        ];
+        $result = $client->get("/genericsms/get_message_count_for_type", $params);
         return $result;
     }
 }
