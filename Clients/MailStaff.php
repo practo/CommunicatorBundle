@@ -183,6 +183,8 @@ class MailStaff
           return \praccomm\StaffEmailType::TOTP_ENABLED;
         case "LAB_ORDERS":
           return \praccomm\StaffEmailType::LAB_ORDERS;
+        case "V6_UPGRADE":
+          return \praccomm\StaffEmailType::V6_UPGRADE;
         default:
           throw new \Exception("Invalid message type");
       }
