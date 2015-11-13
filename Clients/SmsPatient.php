@@ -225,7 +225,8 @@ class SmsPatient
             'PATIENT_MEMBERSHIP',
             'PAYMENT',
             'PATIENT_LAB_ORDERS',
-	     'ANNIVERSARY',
+            'ANNIVERSARY',
+            'LENS_REPLACEMENT_REMINDER',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
