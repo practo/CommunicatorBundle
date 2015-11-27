@@ -236,8 +236,9 @@ class MailPatient
             'LAB_ORDER_CONFIRMATION',
             'LAB_ORDER_DUEON',
             'LAB_ORDER_RESULT',
-	    'ANNIVERSARY',
-	    'LIFESTYLE_ADVISORY',
+            'ANNIVERSARY',
+            'LIFESTYLE_ADVISORY',
+            'CHART'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
