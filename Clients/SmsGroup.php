@@ -4,21 +4,22 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Clinet for messaging doctors
  */
 class SmsGroup
 {
-    private $_smsServer;
-    private $_smsPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    private function __construct($queue, $serviceHost, $servicePort, $appName)
+    private function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
-        $this->_smsServer = $serviceHost;
-        $this->_smsPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
     }
@@ -43,30 +44,12 @@ class SmsGroup
 
     public function getMessagesByGroupId($groupId, $smsTypes)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_messages_by_group_id($groupid, $smsTypes);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['group_id'] = $groupId;
+        $params['sms_types'] = $smsTypes;
+        $result = $client->get("/groupsms/get_messages_by_group_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_smsServer,
-                                               $this->_smsPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\GroupSMSService($protocol);
-        return $client;
     }
 
     private function getSMSType($type)

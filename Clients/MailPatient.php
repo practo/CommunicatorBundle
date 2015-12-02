@@ -4,24 +4,23 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
-require_once __DIR__.'/genphp/praccomm/PatientMailService.php';
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Mail clinet for mailing patients
  */
 class MailPatient
 {
-    private $_mailServer;
-    private $_mailPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost,
-                                $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri,
+                                $apiSecretKey, $appName)
     {
-        $this->_mailServer = $serviceHost;
-        $this->_mailPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
@@ -109,11 +108,11 @@ class MailPatient
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->search_by_practice_id($pid, $sendDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['send_date'] = $sendDate;
+        $result = $client->get("/patientmail/search_by_practice_id", $params);
         return $result;
     }
 
@@ -137,84 +136,67 @@ class MailPatient
         {
             $end_ts = $end;
         }
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_contact_id($pid, $cid,
-                                                   $start_ts, $end_ts);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['cid'] = $cid;
+        $params['start_date'] = $start_ts;
+        $params['end_date'] = $end_ts;
+        $result = $client->get("/patientmail/get_mails_by_contact_id", $params);
         return $result;
     }
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_status($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/patientmail/get_mails_by_status", $params);
         return $result;
     }
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_application($startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/patientmail/get_mails_by_application", $params);
         return $result;
     }
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_mails_by_app_for_pid($pid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/patientmail/get_mails_by_app_for_pid", $params);
         return $result;
     }
 
     public function getMailByCidGroupedByApp($pid, $cid, $startDate, $endDate)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result =
-          $client->get_mails_by_app_for_cid($pid, $cid, $startDate, $endDate);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['cid'] = $cid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/patientmail/get_mails_by_app_for_cid", $params);
         return $result;
     }
 
     public function getMailById($mailId)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mail_by_id($mailId);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['patient_mail_id'] = $mailId;
+        $result = $client->get("/patientmail/get_mail_by_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_mailServer,
-                                               $this->_mailPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\PatientMailServiceClient($protocol);
-        return $client;
     }
 
     private function validateMailType($type)
@@ -246,6 +228,17 @@ class MailPatient
             'IMMUNISATION_REMINDER',
             'PATIENT_SMS_BLACKLISTED',
             'IMMUNISATIONCARD',
+            'GROWTH_CHARTS',
+            'PATIENT_LAB_ORDER_RESULT',
+            'PATIENT_LAB_ORDERS',
+            'LENS_PRESCRIPTION',
+            'LENS_REPLACEMENT_REMINDER',
+            'LAB_ORDER_CONFIRMATION',
+            'LAB_ORDER_DUEON',
+            'LAB_ORDER_RESULT',
+            'ANNIVERSARY',
+            'LIFESTYLE_ADVISORY',
+            'CHART'
         );
 
         if (!in_array($type, $allowedTypes, true)) {

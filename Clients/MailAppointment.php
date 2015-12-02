@@ -4,23 +4,22 @@ namespace Practo\CommunicatorBundle\Clients;
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
-use Thrift;
-require_once __DIR__.'/genphp/praccomm/AppointmentMailService.php';
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
  * Clinet for sending appointment mails
  */
 class MailAppointment
 {
-    private $_mailServer;
-    private $_mailPort;
+    private $_communicatorBaseUri;
+    private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $serviceHost, $servicePort, $appName)
+    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
     {
-        $this->_mailServer = $serviceHost;
-        $this->_mailPort = $servicePort;
+        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
@@ -102,30 +101,12 @@ class MailAppointment
 
     public function getMailsByAppointmentId($apptId, $mailTypes)
     {
-        $transport = $this->getTransport();
-        $client = $this->getClient($transport);
-        $transport->open();
-        $result = $client->get_mails_by_appointment_id($apptId, $mailTypes);
-        $transport->close();
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['appointment_id'] = $apptId;
+        $params['mail_types'] = $mailTypes;
+        $result = $client->get("/appointmentmail/get_mails_by_appointment_id", $params);
         return $result;
-    }
-
-    private function getTransport()
-    {
-        $socket = new Thrift\Transport\TSocket($this->_mailServer,
-                                               $this->_mailPort);
-        $socket->setRecvTimeout(20 * 1000);
-        $socket->setSendTimeout(20 * 1000);
-        $transport =
-          new Thrift\Transport\TFramedTransport($socket, 1024, 1024);
-        return $transport;
-    }
-
-    private function getClient($transport)
-    {
-        $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
-        $client = new praccomm\AppointmentMailServiceClient($protocol);
-        return $client;
     }
 
     private function getMailType($type)

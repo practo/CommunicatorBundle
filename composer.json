@@ -12,14 +12,12 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "symfony/framework-bundle": ">=2.0",
-        "ebuzzing/thrift": "0.9.*-dev"
+        "symfony/framework-bundle": ">=2.0"
     },
     "autoload": {
       "psr-0": {
         "Practo\\CommunicatorBundle\\": ""
-      },
-      "classmap": ["Clients/genphp/praccomm/"]
+      }
     },
     "target-dir": "Practo/CommunicatorBundle"
 }
