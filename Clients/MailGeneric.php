@@ -112,6 +112,7 @@ class MailGeneric
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
             'FIT_GENERIC_MAIL',
+            'PHARMA_INVOICEDIFF_REPORT',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
