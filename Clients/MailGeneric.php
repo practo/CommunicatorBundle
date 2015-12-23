@@ -112,6 +112,7 @@ class MailGeneric
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
             'FIT_GENERIC_MAIL',
+            'CONSULT_GENERIC_MAIL',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
