@@ -113,6 +113,8 @@ class MailGeneric
             'FABRIC_DQS_REPORT',
             'FIT_GENERIC_MAIL',
             'CONSULT_GENERIC_MAIL',
+            'REACH_TOS_MAIL',
+            'REACH_QUALITY_REMINDER',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
