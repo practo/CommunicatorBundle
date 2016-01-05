@@ -115,6 +115,7 @@ class MailGeneric
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
+            'QIKWELL_APPOINTMENT_REMINDER_MAIL',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
