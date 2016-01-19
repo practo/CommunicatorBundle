@@ -231,6 +231,14 @@ class MailPatient
             'GROWTH_CHARTS',
             'PATIENT_LAB_ORDER_RESULT',
             'PATIENT_LAB_ORDERS',
+            'LENS_PRESCRIPTION',
+            'LENS_REPLACEMENT_REMINDER',
+            'LAB_ORDER_CONFIRMATION',
+            'LAB_ORDER_DUEON',
+            'LAB_ORDER_RESULT',
+            'ANNIVERSARY',
+            'LIFESTYLE_ADVISORY',
+            'CHART'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
