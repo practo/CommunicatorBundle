@@ -116,6 +116,8 @@ class MailGeneric
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
             'QIKWELL_APPOINTMENT_REMINDER_MAIL',
+            'FEEDBACK_DAILY_HEALTH_EMAIL',
+            'FEEDBACK_SURVEY_EMAIL',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
