@@ -28,7 +28,7 @@ class SmsPatient
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
                             $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false)
+                            $reduceCredit = false, $dndFail = false)
     {
         $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
@@ -51,7 +51,11 @@ class SmsPatient
         if($smsDisabled)
         {
             $job->status = 'FAILED';
-            $job->failure_reason = 'SMSDISABLED';
+            if ($dndFail) {
+                $job->failure_reason = 'DND_FAIL';
+            } else {
+                $job->failure_reason = 'SMSDISABLED';
+            }
         }
         $jsonifiedJob = json_encode($job);
         return $this->_queue
