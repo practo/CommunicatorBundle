@@ -111,6 +111,7 @@ class MailGeneric
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
+            'SURVEY_VERIFICATION_EMAIL',
             'FIT_GENERIC_MAIL',
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',

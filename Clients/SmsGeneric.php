@@ -55,6 +55,7 @@ class SmsGeneric
             'SURVEY_SMS',
             'MARKETING_APP_LINK_SMS',
             'VN_APP_PROMOTION_SMS',
+            'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
         );
         if (!in_array($type, $allowedTypes, true)) {
