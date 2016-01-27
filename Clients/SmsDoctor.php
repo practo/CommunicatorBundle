@@ -27,8 +27,8 @@ class SmsDoctor
     }
 
     public function sendSms($practiceId, $doctorProfileId, $name, $to, $type,
-                            $body, $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false)
+                            $body, $expiryTime = null, $secondaryMobile = null,
+                            $unverified = false, $smsDisabled = false)
     {
         $job = new praccomm\DoctorSms();
         $job->practice_id = $practiceId;
@@ -40,7 +40,6 @@ class SmsDoctor
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
         $job->app_name = $this->_appName;
-        $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'doctor';
         if($unverified)
         {
