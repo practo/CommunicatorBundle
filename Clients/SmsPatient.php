@@ -28,7 +28,8 @@ class SmsPatient
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
                             $unverified = false, $smsDisabled = false,
-                            $reduceCredit = false, $dndFail = false)
+                            $expiryTime = null, $secondaryMobile = null,
+                            $dndFail = false)
     {
         $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
@@ -41,7 +42,6 @@ class SmsPatient
         $job->message_type = $type;
         $job->message_text = $body;
         $job->app_name = $this->_appName;
-        $job->reduce_credit = $reduceCredit;
         $job->sms_type = 'patient';
         if($unverified)
         {
