@@ -25,8 +25,8 @@ class SmsStaff
     }
 
     public function sendSms($practice_id, $name, $to, $type, $body,
-                            $expiryTime = null, $secondaryMobile = null,
-                            $unverified = false, $smsDisabled = false)
+                            $unverified = false, $smsDisabled = false,
+                            $expiryTime = null, $secondaryMobile = null)
     {
         $job = new praccomm\StaffSms();
         $job->practice_id = $practice_id;

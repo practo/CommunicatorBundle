@@ -28,8 +28,8 @@ class SmsPatient
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
                             $unverified = false, $smsDisabled = false,
-                            $expiryTime = null, $secondaryMobile = null,
-                            $dndFail = false)
+                            $dndFail = false, $expiryTime = null,
+                            $secondaryMobile = null)
     {
         $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
