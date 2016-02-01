@@ -119,6 +119,8 @@ class MailGeneric
             'QIKWELL_APPOINTMENT_REMINDER_MAIL',
             'FEEDBACK_DAILY_HEALTH_EMAIL',
             'FEEDBACK_SURVEY_EMAIL',
+            'TAB_BIAS_DAILY_REPORT',
+            'TAB_BIAS_DETECTION_EMAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
