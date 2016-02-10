@@ -28,7 +28,8 @@ class MailPatient
     public function sendMail($contactId, $practiceId, $fromName,
                              $fromMail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = null)
+                             $files, $hash, $plaintext = "", $replyTo = null,
+                             $enable_banner = false)
     {
         $this->validateMailType($type);
         $job = new praccomm\PatientMail();
