@@ -187,6 +187,8 @@ class SmsDoctor
               return praccomm\DoctorSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
               return praccomm\DoctorSMSType::PVR_CALL;
+            case "APPOINTMENT_REMINDER":
+              return praccomm\DoctorSMSType::APPOINTMENT_REMINDER;
             default:
               throw new \Exception("Invalid message type");
         }
