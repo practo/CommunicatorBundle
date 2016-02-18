@@ -27,7 +27,8 @@ class MailAppointment
     public function sendMail($appointmentId, $fromName,
                              $fromMail, $toName = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo = NULL)
+                             $hash, $plaintext = "", $replyTo = NULL,
+                             $enable_banner = false)
     {
         $job = new praccomm\AppointmentMail();
         $job->appointment_id = $appointmentId;
