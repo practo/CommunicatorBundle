@@ -28,7 +28,8 @@ class MailGeneric
     public function sendMail($fromName, $fromMail, $toName = "", $to,
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $reference_id = NULL, $reference_type = NULL)
+                             $reference_id = NULL, $reference_type = NULL,
+                             $expiryTime = NULL)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
@@ -36,6 +37,7 @@ class MailGeneric
         $job->from_address = $fromMail;
         $job->to_name = $toName;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);

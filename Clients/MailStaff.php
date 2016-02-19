@@ -29,7 +29,8 @@ class MailStaff
     public function sendMail($practiceId, $staffProfileId, $fromName, $fromMail,
                              $to_name = "", $to, $cc = "", $bcc = "",
                              $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo=null)
+                             $hash, $plaintext = "", $replyTo=NULL,
+                             $expiryTime = NULL)
     {
         $job = new praccomm\StaffMail();
         $job->practice_id = $practiceId;
