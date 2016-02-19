@@ -39,6 +39,7 @@ class MailStaff
         $job->from_address = $fromMail;
         $job->to_name = $to_name;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);
