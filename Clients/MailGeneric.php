@@ -119,6 +119,7 @@ class MailGeneric
             'QIKWELL_APPOINTMENT_REMINDER_MAIL',
             'FEEDBACK_DAILY_HEALTH_EMAIL',
             'FEEDBACK_SURVEY_EMAIL',
+            'SCOUT_HOURLY_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
