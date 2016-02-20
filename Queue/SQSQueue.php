@@ -28,11 +28,15 @@ class SQSQueue extends AbstractQueue
         $this->region = @$hParts[1]?:'ap-southeast-1';
         $accessKey = @$parts['user']?:'';
         $accessSecret = @$parts['pass']?:'';
-        $this->sqs = SqsClient::factory(array(
-            'key'    => $accessKey,
-            'secret' => $accessSecret,
-            'region' => $this->region
+        $this->sqs = new SqsClient(array(
+            'version' => '2012-11-05',
+            'region' => $this->region,
+            'credentials' => array(
+                'key'    => $accessKey,
+                'secret' => $accessSecret
+            )
         ));
+
         if (($path = ltrim(@$parts['path'], '/'))) {
             $pParts = explode('/', $path, 2);
             $this->accountId = $pParts[0];
@@ -67,7 +71,7 @@ class SQSQueue extends AbstractQueue
                 )
             ));
         } catch (SqsException $e) {
-            if ($e->getExceptionCode() === 'QueueAlreadyExists') {
+            if ($e->getAwsErrorCode() === 'QueueAlreadyExists') {
                 return;
             }
             throw $e;
@@ -100,17 +104,18 @@ class SQSQueue extends AbstractQueue
                     'VisibilityTimeout' => $visibilityTimeout
                 ));
             } catch (SqsException $e) {
-                if ($e->getExceptionCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
+                if ($e->getAwsErrorCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
                     $this->createQueueIfNotExists($this->getQueueName());
                     continue;
                 }
                 throw $e;
             }
-            $data = $result->getPath('Messages/0');
-            if ($data) {
+            $data = $result->get('Messages');
+            if ($data[0]) {
                 break;
             }
         }
+        $data = $data[0];
         $message = new Message(base64_decode($data['Body']), $data['MessageId']);
         $message->setHandle($data['ReceiptHandle']);
 
@@ -136,7 +141,7 @@ class SQSQueue extends AbstractQueue
                 'DelaySeconds' => $delay?:0
             ));
         } catch (SqsException $e) {
-            if ($e->getExceptionCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
+            if ($e->getAwsErrorCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
                 $this->createQueueIfNotExists($this->getQueueName());
                 $messageId = $this->sqs->sendMessage(array(
                     'QueueUrl' => $this->getQueueUrl(),
