@@ -111,7 +111,7 @@ class SQSQueue extends AbstractQueue
                 throw $e;
             }
             $data = $result->get('Messages');
-            if ($data[0]) {
+            if ($data && $data[0]) {
                 break;
             }
         }
