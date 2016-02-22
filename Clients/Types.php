@@ -337,6 +337,7 @@ class DoctorMail {
   public $attempt = null;
   public $doctor_profile_id = null;
   public $reply_to = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -436,6 +437,9 @@ class DoctorMail {
       if (isset($vals['reply_to'])) {
         $this->reply_to = $vals['reply_to'];
       }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
     }
   }
 
@@ -496,6 +500,7 @@ class PatientMail {
   public $mail_type = null;
   public $attempt = null;
   public $reply_to = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -595,6 +600,9 @@ class PatientMail {
       if (isset($vals['reply_to'])) {
         $this->reply_to = $vals['reply_to'];
       }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
     }
   }
 
@@ -654,6 +662,7 @@ class StaffMail {
   public $staff_profile_id = null;
   public $attempt = null;
   public $reply_to = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -752,6 +761,9 @@ class StaffMail {
       }
       if (isset($vals['reply_to'])) {
         $this->reply_to = $vals['reply_to'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
       }
     }
   }
@@ -1536,6 +1548,7 @@ class AppointmentMail {
   public $mail_type = null;
   public $attempt = null;
   public $reply_to = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1632,6 +1645,9 @@ class AppointmentMail {
       if (isset($vals['reply_to'])) {
         $this->reply_to = $vals['reply_to'];
       }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
     }
   }
 
@@ -1674,6 +1690,7 @@ class GroupMail {
   public $attempt = null;
   public $reply_to = null;
   public $event_id = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1773,6 +1790,9 @@ class GroupMail {
       if (isset($vals['event_id'])) {
         $this->event_id = $vals['event_id'];
       }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
     }
   }
 
@@ -1815,6 +1835,7 @@ class GenericMail {
   public $reply_to = null;
   public $reference_id = null;
   public $reference_type = null;
+  public $expiry_time = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1913,6 +1934,9 @@ class GenericMail {
       }
       if (isset($vals['reference_type'])) {
         $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
       }
     }
   }

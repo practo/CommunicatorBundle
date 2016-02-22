@@ -28,7 +28,8 @@ class MailDoctor
     public function sendMail($practice_id, $doctorProfileId, $from_name,
                              $from_mail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo=null)
+                             $hash, $plaintext = "", $replyTo = NULL,
+                             $expiryTime = NULL)
     {
         $job = new praccomm\DoctorMail();
         $job->practice_id = $practice_id;
@@ -37,6 +38,7 @@ class MailDoctor
         $job->from_address = $from_mail;
         $job->to_name = $to_name;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);

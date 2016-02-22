@@ -27,7 +27,8 @@ class MailGroup
     public function sendMail($groupId, $eventId, $fromName,
                              $fromMail, $toName = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo = NULL)
+                             $hash, $plaintext = "", $replyTo = NULL,
+                             $expiryTime = NULL)
     {
         $job = new praccomm\GroupMail();
         $job->group_id = $groupId;
@@ -36,6 +37,7 @@ class MailGroup
         $job->from_address = $fromMail;
         $job->to_name = $toName;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);
