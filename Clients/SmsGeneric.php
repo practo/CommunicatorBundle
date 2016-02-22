@@ -106,5 +106,24 @@ class SmsGeneric
         $result = $client->get("/genericsms/get_message_count_for_type", $params);
         return $result;
     }
+
+    /**
+     * Returns count of messages grouped by their status for given reference IDs
+     * Filtered on: message type
+     *
+     * @param array $referenceIds   - Array of reference ids
+     * @param array $smsTypes       - Array of SMS types
+     *
+     * @return array - Array of message counts grouped by delivery status
+     */
+    public function getMessageCountByReferenceIds($referenceIds, $smsTypes)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['reference_ids'] = $referenceIds;
+        $params['sms_types'] = $smsTypes;
+        $result = $client->get("/genericsms/get_message_count_by_reference_ids", $params);
+        return $result;
+    }
 }
 ?>
