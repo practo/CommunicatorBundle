@@ -57,6 +57,7 @@ class SmsGeneric
             'VN_APP_PROMOTION_SMS',
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
+            'OTP',
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
