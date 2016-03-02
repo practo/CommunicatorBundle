@@ -123,7 +123,8 @@ class MailGeneric
             'FEEDBACK_SURVEY_EMAIL',
             'TAB_BIAS_DAILY_REPORT',
             'TAB_BIAS_DETECTION_EMAIL',
-            'SCOUT_HOURLY_MAIL'
+            'SCOUT_HOURLY_MAIL',
+            'PHARMA_EMAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
