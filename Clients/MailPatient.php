@@ -28,7 +28,8 @@ class MailPatient
     public function sendMail($contactId, $practiceId, $fromName,
                              $fromMail, $to_name = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = null)
+                             $files, $hash, $plaintext = "", $replyTo = NULL,
+                             $expiryTime = NULL)
     {
         $this->validateMailType($type);
         $job = new praccomm\PatientMail();
@@ -38,6 +39,7 @@ class MailPatient
         $job->from_address = $fromMail;
         $job->to_name = $to_name;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);

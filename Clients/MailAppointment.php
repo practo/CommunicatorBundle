@@ -27,7 +27,8 @@ class MailAppointment
     public function sendMail($appointmentId, $fromName,
                              $fromMail, $toName = "", $to, $cc = "",
                              $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo = NULL)
+                             $hash, $plaintext = "", $replyTo = NULL,
+                             $enableBanner = false, $expiryTime = NULL)
     {
         $job = new praccomm\AppointmentMail();
         $job->appointment_id = $appointmentId;
@@ -35,6 +36,8 @@ class MailAppointment
         $job->from_address = $fromMail;
         $job->to_name = $toName;
         $job->to_address = $to;
+        $job->expiry_time = $expiryTime;
+        $job->enable_banner = $enableBanner;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);
