@@ -124,7 +124,7 @@ class MailGeneric
             'TAB_BIAS_DAILY_REPORT',
             'TAB_BIAS_DETECTION_EMAIL',
             'SCOUT_HOURLY_MAIL',
-            'PHARMA_EMAIL'
+            'PHARMA_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
