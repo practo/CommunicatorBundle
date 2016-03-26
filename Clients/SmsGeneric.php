@@ -86,25 +86,27 @@ class SmsGeneric
 
     /**
      * Returns count of messages grouped by their delivery status
-     * Filtered on: date, message type
+     * Filtered on: date, message type, reference type
      *
-     * @param string $messageType - Type of the message
-     * @param string $startDate   - Start Date
-     * @param string $endDate     - End Date
-     * @param array  $status      - Array of status
+     * @param string $startDate      - Start Date
+     * @param string $endDate        - End Date
+     * @param array  $messageTypes   - Array of Message types
+     * @param array  $referenceTypes - Array of Reference types
      *
      * @return array - Array of message counts grouped by delivery status
      */
-    public function getMessageCountByType($messageType, $startDate, $endDate, $status)
+    public function getMessageCountByTypes($startDate, $endDate, $messageTypes, $referenceTypes)
     {
         $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
         $params = [
-            'message_type' => $messageType,
-            'start_date'   => $startDate,
-            'end_date'     => $endDate,
-            'status'       => $status
+            'start_date'      => $startDate,
+            'end_date'        => $endDate,
+            'message_types'   => $messageTypes,
+            'reference_types' => $referenceTypes
         ];
-        $result = $client->get("/genericsms/get_message_count_for_type", $params);
+
+        $result = $client->get('/genericsms/get_message_count_for_types', $params);
+
         return $result;
     }
 
