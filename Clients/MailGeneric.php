@@ -134,25 +134,26 @@ class MailGeneric
 
     /**
      * Returns count of mails grouped by their delivery status
-     * Filtered on: date, mail type
+     * Filtered on: date, mail type, reference type
      *
-     * @param string $mailType       - Type of the mail
      * @param string $startDate      - Start Date
      * @param string $endDate        - End Date
-     * @param array  $deliveryStatus - Array of delivery status
+     * @param array  $mailTypes      - Array of Mail types
+     * @param array  $referenceTypes - Array of Reference types
      *
      * @return array - Array of Mail counts grouped by delivery status
      */
-    public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
+    public function getMailCountByTypes($startDate, $endDate, $mailTypes, $referenceTypes)
     {
         $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
         $params = [
-            'mail_type'       => $mailType,
             'start_date'      => $startDate,
             'end_date'        => $endDate,
-            'delivery_status' => $deliveryStatus
+            'mail_types'      => $mailTypes,
+            'reference_types' => $referenceTypes
         ];
-        $result = $client->get("/genericmail/get_mail_count_for_type", $params);
+        $result = $client->get('/genericmail/get_mail_count_for_types', $params);
+
         return $result;
     }
 }
