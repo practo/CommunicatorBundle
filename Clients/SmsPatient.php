@@ -252,7 +252,8 @@ class SmsPatient
         $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
         $params = [
             'patient_mobile' => $mobile,
-            'message_type' => $messageType
+            'message_type' => $messageType,
+            'app_name' => $this->_appName
         ];
         $result = $client->get('/patientsms/get_last_message_for_mobile', $params);
 
