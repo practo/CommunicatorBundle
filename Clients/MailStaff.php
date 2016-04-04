@@ -187,6 +187,8 @@ class MailStaff
           return \praccomm\StaffEmailType::LAB_ORDERS;
         case "V6_UPGRADE":
           return \praccomm\StaffEmailType::V6_UPGRADE;
+        case "SHARE_SETTINGS_UPDATE":
+          return \praccomm\StaffEmailType::SHARE_SETTINGS_UPDATE;
         default:
           throw new \Exception("Invalid message type");
       }
