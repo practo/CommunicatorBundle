@@ -62,6 +62,7 @@ final class StaffEmailType {
   const EXPIRING_BATCHES = 14;
   const TOTP_ENABLED = 15;
   const LAB_ORDERS = 16;
+  const SHARE_SETTINGS_UPDATE = 17;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -79,6 +80,7 @@ final class StaffEmailType {
     14 => 'EXPIRING_BATCHES',
     15 => 'TOTP_ENABLED',
     16 => 'LAB_ORDERS',
+    17 => 'SHARE_SETTINGS_UPDATE',
   );
 }
 
