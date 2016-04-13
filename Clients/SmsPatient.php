@@ -238,5 +238,25 @@ class SmsPatient
         }
     }
 
+    /**
+     * Returns the last SMS sent to a patient.
+     * Filters using mobile number and message type.
+     *
+     * @param string $mobile      - Mobile number of the patient
+     * @param string $messageType - e.g. CONFIRMATION
+     *
+     * @return array
+     */
+    public function getLastMessageByMobile($mobile, $messageType)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['patient_mobile'] = $mobile;
+        $params['message_type'] = $messageType;
+        $params['app_name'] = $this->_appName;
+        $result = $client->get('/patientsms/get_last_message_for_mobile', $params);
+
+        return $result;
+    }
 }
 ?>
