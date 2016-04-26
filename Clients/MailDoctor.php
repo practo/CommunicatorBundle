@@ -175,6 +175,8 @@ class MailDoctor
               return \praccomm\DoctorEmailType::RESCHEDULE;
             case "BILLS_REPORT":
               return \praccomm\DoctorEmailType::BILLS_REPORT;
+            case "TERMS_CONFIRMATION":
+              return \praccomm\DoctorEmailType::TERMS_CONFIRMATION;
             default:
               throw new \Exception("Invalid message type");
         }
