@@ -29,7 +29,7 @@ class MailGeneric
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL)
+                             $expiryTime = NULL, $appName = null)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
@@ -60,6 +60,9 @@ class MailGeneric
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
+        if ($appName) {
+            $job->app_name = Helper::getValidAppName($appName);
+        }
         $job->email_type = strtoupper($type);
         $job->date = time();
         $job->reply_to = $replyTo;
@@ -124,7 +127,21 @@ class MailGeneric
             'TAB_BIAS_DAILY_REPORT',
             'TAB_BIAS_DETECTION_EMAIL',
             'SCOUT_HOURLY_MAIL',
-            'PHARMA_MAIL'
+            'PHARMA_MAIL',
+            'RAY_REPORT_APPOINTMENTS',
+            'RAY_REPORT_APPOINTMENTS_SUMMARY',
+            'RAY_REPORT_DAILY_SUMMARY',
+            'RAY_REPORT_EXPENSE',
+            'RAY_REPORT_EXPENSE_SUMMARY',
+            'RAY_REPORT_INVOICE',
+            'RAY_REPORT_INVOICE_SUMMARY',
+            'RAY_REPORT_PATIENTS',
+            'RAY_REPORT_PATIENTS_SUMMARY',
+            'RAY_REPORT_PAYMENT',
+            'RAY_REPORT_PAYMENTS_SUMMARY',
+            'RAY_REPORT_PAYMENT_DETAILS_SUMMARY',
+            'RAY_REPORT_TREATMENTS',
+            'RAY_REPORT_TREATMENTS_SUMMARY'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
