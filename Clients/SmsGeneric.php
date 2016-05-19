@@ -58,6 +58,7 @@ class SmsGeneric
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'CONSULT_DOCTOR_REPLY_SMS',
+            'ORDER_SMS',
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
