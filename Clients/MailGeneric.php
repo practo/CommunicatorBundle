@@ -118,6 +118,7 @@ class MailGeneric
             'FABRIC_DQS_REPORT',
             'SURVEY_VERIFICATION_EMAIL',
             'FIT_GENERIC_MAIL',
+            'FIT_EDITOR_FEEDBACK_MAIL',
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
