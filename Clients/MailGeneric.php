@@ -60,7 +60,9 @@ class MailGeneric
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
-        $job->created_by = $createdBy;
+        if ($createdBy) {
+            $job->created_by = $createdBy;
+        }
         if ($appName) {
             $job->app_name = Helper::getValidAppName($appName);
         }
