@@ -146,7 +146,8 @@ class MailGeneric
             'RAY_REPORT_PAYMENT_DETAILS_SUMMARY',
             'RAY_REPORT_TREATMENTS',
             'RAY_REPORT_TREATMENTS_SUMMARY',
-            'DOCTOR_NO_SHOW'
+            'DOCTOR_NO_SHOW',
+            'REACH_DAILY_ROI_EMAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
