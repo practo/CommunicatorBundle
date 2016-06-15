@@ -29,7 +29,7 @@ class MailGeneric
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL, $appName = null)
+                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
@@ -60,6 +60,7 @@ class MailGeneric
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
+        $job->created_by = $createdBy;
         if ($appName) {
             $job->app_name = Helper::getValidAppName($appName);
         }
