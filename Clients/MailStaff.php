@@ -12,14 +12,12 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class MailStaff extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -81,8 +79,8 @@ class MailStaff extends Base
         $job->hash = $hash;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -101,15 +99,15 @@ class MailStaff extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -119,7 +117,7 @@ class MailStaff extends Base
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -130,7 +128,7 @@ class MailStaff extends Base
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -140,7 +138,7 @@ class MailStaff extends Base
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -151,7 +149,7 @@ class MailStaff extends Base
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['staff_mail_id'] = $mailId;
         $result = $client->get("/staffmail/get_mail_by_id", $params);

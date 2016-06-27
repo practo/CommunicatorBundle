@@ -83,7 +83,7 @@ abstract class AbstractQueue
      *
      * @param string
      */
-    protected function setDomain($domain=null) {
+    public function setDomain($domain=null) {
         $this->domain = $domain;
         if (!$this->domain && $this->request instanceof Request) {
             $this->domain = $this->request->getSchemeAndHttpHost();
@@ -101,9 +101,9 @@ abstract class AbstractQueue
         $parts = parse_url($domain);
         $subdomain = explode('.', $parts['host'])[0];
         $subdomain = explode('-', $subdomain);
-        $queueName = $this->$queueName;
+        $queueName = $this->queueName;
         if (isset($subdomain[1])) {
-            $queueName = $this->$queueName . '-' . $subdomain[1];
+            $queueName .= '-' . $subdomain[1];
         }
         return $this->queuePrefix . $queueName;
     }

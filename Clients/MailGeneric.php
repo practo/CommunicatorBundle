@@ -14,12 +14,10 @@ class MailGeneric extends Base
 {
     private $_appName;
     private $_queue;
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -86,8 +84,8 @@ class MailGeneric extends Base
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -106,8 +104,8 @@ class MailGeneric extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -170,7 +168,7 @@ class MailGeneric extends Base
      */
     public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = [
             'mail_type'       => $mailType,
             'start_date'      => $startDate,

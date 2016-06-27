@@ -5,25 +5,34 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Base
 {
-	private $_domain;
+	protected $_domain;
+	protected $request;
 
-	public function setDomain($domain=null) {
+	public function setRequest($request)
+	{
+		$this->request = $request;
+		if ($request instanceof Request) {
+			$this->_domain = $this->request->getSchemeAndHttpHost();
+		}
+	}
+
+	public function setDomain($domain=null)
+	{
 		$this->_domain = $domain;
-		if (!$this->_domain && $this->request instanceof Request) {
-            $this->_domain = $this->request->getSchemeAndHttpHost();
-        }
 	}
 
 	public function getCommunicatorUri() {
-		$domain = $this->_domain
-		if (!$domain && $this->request instanceof Request) {
-			$domain = $this->request->getSchemeAndHttpHost();
-		}
+		$domain = $this->_domain;
 		$parts = parse_url($domain);
 		$host_parts = explode('.', $parts['host']);
 		$subdomain = $host_parts[0];
 		$subdomain = explode('-', $subdomain);
-		$uri = 'https://communicator-' . $subdomain[1] . $host_parts[1] . $host_parts[2];
+		$uri = $parts['scheme'] . '://communicator';
+		if (isset($subdomain[1])) {
+			$uri .= '-' . $subdomain[1];
+		}
+
+		$uri .= '.' . $host_parts[1] . '.' . $host_parts[2];
 		return $uri;
 	}
 }

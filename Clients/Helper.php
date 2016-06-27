@@ -51,7 +51,7 @@ class Helper
         }
         else
         {
-            throw new \Exception('Invalid application name. Has to be one of' +
+            throw new \Exception('Invalid application name. Has to be one of' .
                                 ' RAY, HELLO, FABRIC, EPICENTER');
         }
     }

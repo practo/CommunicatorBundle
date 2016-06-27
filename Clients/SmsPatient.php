@@ -12,14 +12,12 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsPatient extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -57,8 +55,8 @@ class SmsPatient extends Base
             }
         }
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -75,8 +73,8 @@ class SmsPatient extends Base
         $job->operator_code = $opCode;
         $job->sms_type = 'patient';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -84,7 +82,7 @@ class SmsPatient extends Base
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -114,7 +112,7 @@ class SmsPatient extends Base
             $end_ts = $end;
         }
 
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -126,7 +124,7 @@ class SmsPatient extends Base
 
     public function getMessagesByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -138,7 +136,7 @@ class SmsPatient extends Base
     public function getMessagesByDeliveryStatus($pid, $startDate, $endDate,
                                                 $smsTypes, $status)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -152,7 +150,7 @@ class SmsPatient extends Base
     public function getMessagesByFailureReason($pid, $startDate,
                                                $endDate, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -164,7 +162,7 @@ class SmsPatient extends Base
 
     public function getMessagesByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -174,7 +172,7 @@ class SmsPatient extends Base
 
     public function getMessagesByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -186,7 +184,7 @@ class SmsPatient extends Base
     public function getMessagesByCidGroupedByApp($pid, $cid,
                                                  $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -198,7 +196,7 @@ class SmsPatient extends Base
 
     public function getRetriedMessagesForId($smsId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['sms_id'] = $smsId;
         $result = $client->get("/patientsms/get_retried_messages_for_smsid", $params);
@@ -250,7 +248,7 @@ class SmsPatient extends Base
      */
     public function getLastMessageByMobile($mobile, $messageType)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['patient_mobile'] = $mobile;
         $params['message_type'] = $messageType;
