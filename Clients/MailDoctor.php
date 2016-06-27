@@ -9,17 +9,16 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing doctors
  */
-class MailDoctor
+class MailDoctor extends Base
 {
     private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri,
-                                $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -82,6 +81,7 @@ class MailDoctor
         $job->mail_type = 'doctor';
         $jsonifiedJob = json_encode($job);
         return $this->_queue
+                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -102,6 +102,7 @@ class MailDoctor
         $jsonifiedJob = json_encode($job);
         $queueName = $this->_updateMailQueue;
         return $this->_queue
+                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }

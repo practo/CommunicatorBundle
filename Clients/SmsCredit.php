@@ -9,15 +9,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing doctors
  */
-class SmsCredit
+class SmsCredit extends Base
 {
     private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri, $apiSecretKey)
+    public function __construct($queue, $apiSecretKey)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
     }
@@ -34,6 +34,7 @@ class SmsCredit
         $job->wallet_credit = $walletCredit;
         $jsonifiedJob = json_encode($job);
         return $this->_queue
+                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SMS_CREDIT_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }

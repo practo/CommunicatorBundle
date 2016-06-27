@@ -2,6 +2,8 @@
 
 namespace Practo\CommunicatorBundle\Queue;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Abstract Queue
  */
@@ -9,6 +11,7 @@ abstract class AbstractQueue
 {
     private $queueName;
     private $queuePrefix = '';
+    private $domain;
 
     const SEND_MAIL_QUEUE              = 'mail_sender';
     const UPDATE_MAIL_QUEUE            = 'mail_updater';
@@ -76,13 +79,33 @@ abstract class AbstractQueue
     }
 
     /**
+     * Set Host
+     *
+     * @param string
+     */
+    protected function setDomain($domain=null) {
+        $this->domain = $domain;
+        if (!$this->domain && $this->request instanceof Request) {
+            $this->domain = $this->request->getSchemeAndHttpHost();
+        }
+    }
+
+    /**
      * Get Queue Name
      *
      * @return string
      */
     public function getQueueName()
     {
-        return $this->queuePrefix . $this->queueName;
+        $domain = $this->domain;
+        $parts = parse_url($domain);
+        $subdomain = explode('.', $parts['host'])[0];
+        $subdomain = explode('-', $subdomain);
+        $queueName = $this->$queueName;
+        if (isset($subdomain[1])) {
+            $queueName = $this->$queueName . '-' . $subdomain[1];
+        }
+        return $this->queuePrefix . $queueName;
     }
 
     /**

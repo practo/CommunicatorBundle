@@ -5,20 +5,22 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
+use Practo\CommunicatorBundle\Clients\Base;
+
 
 /**
  * Clinet for messaging doctors
  */
-class SmsGroup
+class SmsGroup extends Base
 {
     private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    private function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
+    private function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
+        $this->_communicatorBaseUri = $this->getCommunicatorUri();
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -38,6 +40,7 @@ class SmsGroup
         $job->app_name = $this->_appName;
         $jsonifiedJob = json_encode($job);
         return $this->_queue
+                    ->setDomain($this->_domain)
                     ->setQueueName(Queue::SEND_GROUP_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
