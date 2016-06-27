@@ -60,6 +60,7 @@ class SmsGeneric
             'CONSULT_DOCTOR_REPLY_SMS',
             'ORDER_SMS',
             'GUARANTEE_CLAIM',
+            'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY'
         );
         if (!in_array($type, $allowedTypes, true)) {
