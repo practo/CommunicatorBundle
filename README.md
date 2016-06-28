@@ -97,3 +97,27 @@ There are no release tags for this bundle. If you want to update, please use com
 ```bash
 $ composer update --lock
 ```
+
+* Below is snippet to send doctor sms:
+```php
+$sms = $this->container->get('practo_communicator.sms_doctor');
+$sms>sendSms(
+             $reference_id, $reference_type,
+             $name, $to, $messageType, $body,
+             $notes = null, $expiryTime = null
+            );
+
+```
+
+* Below is snippet to send staff mail:
+```bash
+$mailStaff = $this->container->get('practo_communicator.mail_staff');
+$mailStaff->sendMail(
+                     $fromName, $fromMail, $toName = "", $to,
+                     $cc = "", $bcc = "", $subject, $body, $type,
+                     $files, $hash, $plaintext = "", $replyTo = NULL,
+                     $reference_id = NULL, $reference_type = NULL,
+                     $expiryTime = NULL, $appName = null)s = null, $expiryTime = null
+            );
+```
+```
