@@ -147,7 +147,8 @@ class MailGeneric
             'RAY_REPORT_TREATMENTS',
             'RAY_REPORT_TREATMENTS_SUMMARY',
             'DOCTOR_NO_SHOW',
-            'REACH_DAILY_ROI_EMAIL'
+            'REACH_DAILY_ROI_EMAIL',
+            'FABRIC_BLUEBOOK_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
