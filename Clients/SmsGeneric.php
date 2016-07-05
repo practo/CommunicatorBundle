@@ -61,7 +61,8 @@ class SmsGeneric
             'ORDER_SMS',
             'GUARANTEE_CLAIM',
             'FIT_RAY_SHARE_SMS',
-            'VN_CALL_SUMMARY'
+            'VN_CALL_SUMMARY',
+            'DX_ORDER_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
