@@ -171,8 +171,8 @@ class SQSQueue extends AbstractQueue
                     throw $e;
                 }
             }
+            $message->setId($messageId);
         }
-        $message->setId($messageId);
     }
 
     /**
