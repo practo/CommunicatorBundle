@@ -59,6 +59,7 @@ class SmsGeneric
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'CONSULT_DOCTOR_REPLY_SMS',
             'ORDER_SMS',
+            'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
             'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY',
