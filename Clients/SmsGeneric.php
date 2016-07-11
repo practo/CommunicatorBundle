@@ -59,7 +59,7 @@ class SmsGeneric
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'CONSULT_DOCTOR_REPLY_SMS',
             'ORDER_SMS',
-            'CANCELLATION_SMS_ERROR_RESPONSE',
+            'SMS_ERROR_RESPONSE',
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
