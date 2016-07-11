@@ -29,7 +29,7 @@ class MailGeneric
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL, $appName = null)
+                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
@@ -60,6 +60,9 @@ class MailGeneric
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
+        if ($createdBy) {
+            $job->created_by = $createdBy;
+        }
         if ($appName) {
             $job->app_name = Helper::getValidAppName($appName);
         }
@@ -118,6 +121,7 @@ class MailGeneric
             'FABRIC_DQS_REPORT',
             'SURVEY_VERIFICATION_EMAIL',
             'FIT_GENERIC_MAIL',
+            'FIT_EDITOR_FEEDBACK_MAIL',
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
@@ -141,7 +145,10 @@ class MailGeneric
             'RAY_REPORT_PAYMENTS_SUMMARY',
             'RAY_REPORT_PAYMENT_DETAILS_SUMMARY',
             'RAY_REPORT_TREATMENTS',
-            'RAY_REPORT_TREATMENTS_SUMMARY'
+            'RAY_REPORT_TREATMENTS_SUMMARY',
+            'DOCTOR_NO_SHOW',
+            'REACH_DAILY_ROI_EMAIL',
+            'FABRIC_BLUEBOOK_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
