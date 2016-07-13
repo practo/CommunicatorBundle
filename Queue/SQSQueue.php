@@ -14,14 +14,17 @@ class SQSQueue extends AbstractQueue
     protected $scheme;
     protected $region;
     protected $accountId;
+    protected $spoolDir;
 
     /**
      * Constructor
      *
      * @param string $uri - Uri. Eg: http://sqs.ap-southeast-1.amazonaws.com/71203182391283/sample-queue
+     * @param string $spoolDir - Spool Directory
      */
-    public function __construct($uri)
+    public function __construct($uri, $spoolDir=null)
     {
+        $this->spoolDir = $spoolDir;
         $parts = parse_url($uri);
         $this->scheme = @$parts['scheme']?:'https';
         $hParts = explode('.', $parts['host'], 3);
@@ -134,25 +137,42 @@ class SQSQueue extends AbstractQueue
             // TODO: Post warning in sentry
             $delay = 900;
         }
-        try {
-            $messageId = $this->sqs->sendMessage(array(
-                'QueueUrl' => $this->getQueueUrl(),
-                'MessageBody' => base64_encode(strval($message)),
-                'DelaySeconds' => $delay?:0
+        if ($this->spoolDir) {
+            if (!file_exists($this->spoolDir)) {
+                mkdir($this->spoolDir);
+            }
+            $filename = str_replace('.', '', microtime(true)) . $this->getRandomString(10);
+            $payload = implode("\t", array(
+                $this->region,
+                $this->getQueueUrl(),
+                base64_encode(strval($message)),
+                $delay,
+                $this->getVisibilityTimeout()
             ));
-        } catch (SqsException $e) {
-            if ($e->getAwsErrorCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
-                $this->createQueueIfNotExists($this->getQueueName());
+            file_put_contents($this->spoolDir . '/' . $filename, $payload);
+            rename($this->spoolDir . '/' . $filename, $this->spoolDir . '/' . $filename . '.v1message');
+        }
+        else {
+            try {
                 $messageId = $this->sqs->sendMessage(array(
                     'QueueUrl' => $this->getQueueUrl(),
                     'MessageBody' => base64_encode(strval($message)),
                     'DelaySeconds' => $delay?:0
                 ));
-            } else {
-                throw $e;
+            } catch (SqsException $e) {
+                if ($e->getAwsErrorCode() === 'AWS.SimpleQueueService.NonExistentQueue') {
+                    $this->createQueueIfNotExists($this->getQueueName());
+                    $messageId = $this->sqs->sendMessage(array(
+                        'QueueUrl' => $this->getQueueUrl(),
+                        'MessageBody' => base64_encode(strval($message)),
+                        'DelaySeconds' => $delay?:0
+                    ));
+                } else {
+                    throw $e;
+                }
             }
+            $message->setId($messageId);
         }
-        $message->setId($messageId);
     }
 
     /**
@@ -166,5 +186,22 @@ class SQSQueue extends AbstractQueue
             'QueueUrl' => $this->getQueueUrl(),
             'ReceiptHandle' => $message->getHandle()
         ));
+    }
+
+    /**
+     * Get Random String
+     *
+     * @param Integer $count - length of the required random string
+     */
+    protected function getRandomString($count)
+    {
+        // This string MUST stay FS safe, avoid special chars
+        $base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
+        $ret = '';
+        $strlen = strlen($base);
+        for ($i = 0; $i < $count; ++$i) {
+            $ret .= $base[((int) rand(0, $strlen - 1))];
+        }
+        return $ret;
     }
 }

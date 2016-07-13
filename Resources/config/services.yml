@@ -27,6 +27,7 @@ parameters:
     communicator.update_appointment_sms_queue: appointment_sms_updater
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
+    legacy_queue.sqs_spool_dir: ~
 
     #communicator_config
     communicator.base_uri: %communicator.base_uri%
