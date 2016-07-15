@@ -60,6 +60,7 @@ class SmsGeneric extends Base
             'ORDER_SMS',
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
+            'FEEDBACK_NOTIFICATION_SMS',
             'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY',
             'DX_ORDER_SMS'
