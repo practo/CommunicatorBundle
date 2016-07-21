@@ -1342,6 +1342,7 @@ class GenericSMS {
   public $cost = null;
   public $expiry_time = null;
   public $notes = null;
+  public $message_category = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
