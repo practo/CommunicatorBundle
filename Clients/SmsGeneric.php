@@ -15,6 +15,23 @@ class SmsGeneric extends Base
     private $_appName;
     private $_queue;
     private $_apiSecretKey;
+    private $valid_message_categories = array(
+    'WEEKLY_ROI_SMS'=> 'TRANSACTIONAL',
+    'VN_DETAILS'=> 'TRANSACTIONAL',
+    'SURVEY_SMS'=> 'TRANSACTIONAL',
+    'MARKETING_APP_LINK_SMS'=> 'TRANSACTIONAL',
+    'VN_APP_PROMOTION_SMS'=> 'PROMOTIONAL',
+    'SURVEY_VERIFICATION_SMS'=> 'TRANSACTIONAL',
+    'QIKWELL_APPOINTMENT_REMINDER_SMS'=> 'TRANSACTIONAL',
+    'CONSULT_DOCTOR_REPLY_SMS'=> 'TRANSACTIONAL',
+    'ORDER_SMS'=> 'TRANSACTIONAL',
+    'GUARANTEE_CLAIM'=> 'TRANSACTIONAL',
+    'FIT_RAY_SHARE_SMS'=> 'PROMOTIONAL',
+    'VN_CALL_SUMMARY'=> 'TRANSACTIONAL',
+    'DX_ORDER_SMS'=> 'TRANSACTIONAL',
+    'SMS_ERROR_RESPONSE'=> 'TRANSACTIONAL',
+    'FEEDBACK_NOTIFICATION_SMS'=> 'TRANSACTIONAL'
+    );
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
@@ -28,7 +45,9 @@ class SmsGeneric extends Base
                             $notes = null, $expiryTime = null)
     {
         $this->validateSmsType(strtoupper($messageType));
+        $category = $this->getMessageCategory(strtoupper($messageType));
         $job = new praccomm\GenericSms();
+        $job->message_category = $category;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->name = $name;
@@ -48,26 +67,14 @@ class SmsGeneric extends Base
 
     private function validateSmsType($type)
     {
-        $allowedTypes = array(
-            'WEEKLY_ROI_SMS',
-            'VN_DETAILS',
-            'SURVEY_SMS',
-            'MARKETING_APP_LINK_SMS',
-            'VN_APP_PROMOTION_SMS',
-            'SURVEY_VERIFICATION_SMS',
-            'QIKWELL_APPOINTMENT_REMINDER_SMS',
-            'CONSULT_DOCTOR_REPLY_SMS',
-            'ORDER_SMS',
-            'SMS_ERROR_RESPONSE',
-            'GUARANTEE_CLAIM',
-            'FEEDBACK_NOTIFICATION_SMS',
-            'FIT_RAY_SHARE_SMS',
-            'VN_CALL_SUMMARY',
-            'DX_ORDER_SMS'
-        );
-        if (!in_array($type, $allowedTypes, true)) {
+        if (!array_key_exists($type, $valid_message_categories)) {
             throw new \Exception("Invalid message type");
         }
+    }
+
+    private function getMessageCategory($type)
+    {
+        return $valid_message_categories[$type];
     }
 
     public function getMessageLogBySurveyId($surveyId)
