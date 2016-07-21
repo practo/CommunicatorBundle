@@ -1415,6 +1415,9 @@ class GenericSMS {
       if (isset($vals['notes'])) {
         $this->notes = $vals['notes'];
       }
+      if (isset($vals['message_category'])) {
+        $this->message_category = $vals['message_category'];
+      }
     }
   }
 
