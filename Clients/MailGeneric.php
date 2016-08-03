@@ -116,6 +116,7 @@ class MailGeneric extends Base
             'FABRIC_ROI_REPORT',
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
+            'MERGE_FAILED',
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
