@@ -57,6 +57,7 @@ class SmsGeneric extends Base
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'CONSULT_DOCTOR_REPLY_SMS',
+            'CONSULT_GENERIC_SMS',
             'ORDER_SMS',
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
