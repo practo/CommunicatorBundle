@@ -1342,6 +1342,7 @@ class GenericSMS {
   public $cost = null;
   public $expiry_time = null;
   public $notes = null;
+  public $sender_id = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1413,6 +1414,9 @@ class GenericSMS {
       }
       if (isset($vals['notes'])) {
         $this->notes = $vals['notes'];
+      }
+      if (isset($vals['sender_id'])) {
+        $this->sender_id = $vals['sender_id'];
       }
     }
   }

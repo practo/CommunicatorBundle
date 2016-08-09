@@ -25,7 +25,7 @@ class SmsGeneric extends Base
 
     public function sendSms($reference_id, $reference_type,
                             $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null)
+                            $notes = null, $expiryTime = null, $sender_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
@@ -39,6 +39,7 @@ class SmsGeneric extends Base
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic';
+        $job->sender_id = $sender_id;
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
