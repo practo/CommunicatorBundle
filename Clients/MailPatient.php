@@ -9,17 +9,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing patients
  */
-class MailPatient
+class MailPatient extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri,
-                                $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -82,6 +79,7 @@ class MailPatient
         $job->hash = $hash;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         $this->_queue
              ->setQueueName(Queue::SEND_MAIL_QUEUE)
              ->sendMessage($jsonified_job, 10);
@@ -103,6 +101,7 @@ class MailPatient
         $job->spam_data = $spam_data;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         $this->_queue
              ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
              ->sendMessage($jsonified_job, 10);
@@ -110,7 +109,7 @@ class MailPatient
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -138,7 +137,7 @@ class MailPatient
         {
             $end_ts = $end;
         }
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -150,7 +149,7 @@ class MailPatient
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -161,7 +160,7 @@ class MailPatient
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -171,7 +170,7 @@ class MailPatient
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -182,7 +181,7 @@ class MailPatient
 
     public function getMailByCidGroupedByApp($pid, $cid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -194,7 +193,7 @@ class MailPatient
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['patient_mail_id'] = $mailId;
         $result = $client->get("/patientmail/get_mail_by_id", $params);

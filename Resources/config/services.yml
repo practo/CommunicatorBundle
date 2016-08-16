@@ -27,6 +27,7 @@ parameters:
     communicator.update_appointment_sms_queue: appointment_sms_updater
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
+    legacy_queue.sqs_spool_dir: ~
 
     #communicator_config
     communicator.base_uri: %communicator.base_uri%
@@ -37,92 +38,105 @@ services:
     class: %practo_communicator.mail_patient.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_doctor:
     class: %practo_communicator.mail_doctor.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_staff:
     class: %practo_communicator.mail_staff.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_appointment:
     class: %practo_communicator.mail_appointment.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_group:
     class: %practo_communicator.mail_group.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_generic:
     class: %practo_communicator.mail_generic.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_generic:
     class: %practo_communicator.sms_generic.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - RAY
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_appointment:
     class: %practo_communicator.sms_appointment.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_group:
     class: %practo_communicator.sms_group.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
       - FABRIC
+    calls:
+        - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:
       - @practo_communicator.queue
-      - %communicator.base_uri%
       - %communicator.api.secret%
+    calls:
+      - [ setRequest, [ '@?request=' ]]
   practo_communicator.queue_factory:
     class: Practo\CommunicatorBundle\Queue\QueueFactory
     calls:
