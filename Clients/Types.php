@@ -103,6 +103,7 @@ final class DoctorSMSType {
   const PVR_EMERGENCY = 12;
   const PVR_VOICEMAIL = 13;
   const PVR_CALL = 14;
+  const BLOCKCALENDAR = 15;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CANCELLATION',
@@ -118,6 +119,7 @@ final class DoctorSMSType {
     12 => 'PVR_EMERGENCY',
     13 => 'PVR_VOICEMAIL',
     14 => 'PVR_CALL',
+    15 => 'BLOCKCALENDAR'
   );
 }
 
