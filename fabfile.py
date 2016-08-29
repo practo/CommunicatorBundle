@@ -60,11 +60,23 @@ def convert_tab_spaces():
     )
 
 
-@sniff(severity='major', timing='fast')
-def php_coding_check():
-    # Run coding standards check
+@sniff(severity='minor')
+def fix_psr2_violations():
     info('Running coding standards check...')
-    return local('phpcs --standard=Symfony2 . --ignore=genphp,vendor')
+    with settings(warn_only=True):
+        result = local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcs --standard=PSR2"
+        )
+    if result.failed:
+        local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcbf --standard=PSR2"
+        )
 
 
 @sniff(severity='major', timing='fast')
