@@ -15,8 +15,8 @@ class CommunicatorClient
 
     protected function generateNonce()
     {
-        return time() . '|' . substr(str_shuffle(
-            str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
+        $str = str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3);
+        return time() . '|' . substr(str_shuffle($str), 0, 20);
     }
 
     public function get($endpoint, $request_params)
