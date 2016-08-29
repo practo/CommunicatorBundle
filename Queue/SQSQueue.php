@@ -165,7 +165,7 @@ class SQSQueue extends AbstractQueue
             ));
             $status = file_put_contents($this->spoolDir.'/'.$jobDir.'/'.$filename, $payload);
             if ($status === false) {
-                throw new \Exception('File put contents failed. Dir=>'.$this->spoolDir.'/'.$jobDir.'/'.$filename.'. Payload=> '.json_encode($payload))
+                throw new \Exception('File put contents failed. Dir=>'.$this->spoolDir.'/'.$jobDir.'/'.$filename.'. Payload=> '.json_encode($payload));
             }
             rename($this->spoolDir.'/'.$jobDir.'/'.$filename, $this->spoolDir.'/'.$jobDir.'/'.$filename.'.v1message');
         }
