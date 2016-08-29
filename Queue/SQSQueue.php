@@ -5,9 +5,6 @@ namespace Practo\CommunicatorBundle\Queue;
 use Aws\Sqs\SqsClient;
 use Aws\Sqs\Exception\SqsException;
 
-const BASE64_EXPAND_RATIO = 1.37;
-const MAX_JOB_SIZE = 262144;
-
 /**
  * SQS Queue
  */
@@ -18,6 +15,9 @@ class SQSQueue extends AbstractQueue
     protected $region;
     protected $accountId;
     protected $spoolDir;
+
+    const BASE64_EXPAND_RATIO = 1.37;
+    const MAX_JOB_SIZE = 262144;
 
     /**
      * Constructor
