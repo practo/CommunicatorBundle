@@ -6,7 +6,7 @@ require_once __DIR__.'/Types.php';
 
 class Helper
 {
-    static function getMailDeliveryStatus($status)
+    public static function getMailDeliveryStatus($status)
     {
         switch ($status) {
             case 'DELIVERED':
@@ -24,7 +24,7 @@ class Helper
         }
     }
 
-    static function getSMSDeliveryStatus($status)
+    public static function getSMSDeliveryStatus($status)
     {
         switch ($status) {
             case 'DELIVERED':
@@ -40,7 +40,7 @@ class Helper
         }
     }
 
-    static function getValidAppName($appName)
+    public static function getValidAppName($appName)
     {
         $apps = array("RAY", "HELLO", "FABRIC", "EPICENTER");
         $appNameUpper = strtoupper($appName);

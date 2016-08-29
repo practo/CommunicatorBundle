@@ -60,7 +60,7 @@ def convert_tab_spaces():
     )
 
 
-@sniff(severity='minor')
+@sniff(severity='major', timing='fast')
 def fix_psr2_violations():
     info('Running coding standards check...')
     result = local(
@@ -77,13 +77,3 @@ def fix_psr2_violations():
             "xargs -0 phpcbf --standard=PSR2"
         )
 
-
-@sniff(severity='major', timing='fast')
-def check_var_dump():
-    info('Checking for var_dump, echo or die statements...')
-    #return local("! git grep 'var_dump'")
-    return local(
-        "! git ls-files -z | "
-        "grep -PZz '\.php$' | "
-        "xargs -0 egrep -n 'var_dump|echo|die' | grep -v 'NOCHECK'"
-    )
