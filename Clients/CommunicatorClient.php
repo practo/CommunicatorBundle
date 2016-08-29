@@ -30,7 +30,7 @@ class CommunicatorClient
         $api_url = $api_url."?data=".json_encode($request_params);
         $ch = curl_init($api_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $headers = array(
             'nonce: '.$nonce,
             'X-AUTH-TOKEN: '.$auth_token
@@ -68,7 +68,7 @@ class CommunicatorClient
         $api_url = $communicatorBaseUri.$endpoint;
         $ch = curl_init($api_url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $headers = array(
             'nonce: '.$nonce,
             'X-AUTH-TOKEN: '.$auth_token,

@@ -78,7 +78,6 @@ def fix_psr2_violations():
             "grep -PZz '.*\.(php|phtml)$' | "
             "xargs -0 phpcbf --standard=PSR2"
         )
-    if result.failed:
-        sys.exit(1)
-    return result
+    if not result.failed:
+        return result
 
