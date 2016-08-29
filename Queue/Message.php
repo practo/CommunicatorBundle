@@ -17,7 +17,7 @@ class Message
      * @param string $messageText - Message Text
      * @param string $messageId   - Message Id
      */
-    public function __construct($messageText, $messageId=null)
+    public function __construct($messageText, $messageId = null)
     {
         $this->messageText = strval($messageText);
         $this->messageId = $messageId;

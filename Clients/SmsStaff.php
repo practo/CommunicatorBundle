@@ -22,10 +22,18 @@ class SmsStaff extends Base
         $this->_queue = $queue;
     }
 
-    public function sendSms($practice_id, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
-                            $expiryTime = null, $secondaryMobile = null)
-    {
+    public function sendSms(
+        $practice_id,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $expiryTime = null,
+        $secondaryMobile = null
+    ) {
+
         $job = new praccomm\StaffSms();
         $job->practice_id = $practice_id;
         $job->name = $name;
@@ -36,13 +44,11 @@ class SmsStaff extends Base
         $job->message_type = $this->getSMSType($type);
         $job->app_name = $this->_appName;
         $job->sms_type = 'staff';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             $job->failure_reason = 'SMSDISABLED';
         }
@@ -53,9 +59,15 @@ class SmsStaff extends Base
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
+
         $job = new praccomm\StaffSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->staff_sms_id = $key;
@@ -93,9 +105,14 @@ class SmsStaff extends Base
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate,
-                                                $endDate, $smsTypes, $status)
-    {
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
+
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
@@ -107,9 +124,13 @@ class SmsStaff extends Base
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
+
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
@@ -152,39 +173,37 @@ class SmsStaff extends Base
 
     private function getSMSType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "BULK":
-              return praccomm\StaffSMSType::BULK;
+                return praccomm\StaffSMSType::BULK;
             case "CUSTOM":
-              return praccomm\StaffSMSType::CUSTOM;
+                return praccomm\StaffSMSType::CUSTOM;
             case "ONLINE_APPOINTMENT":
-              return praccomm\StaffSMSType::ONLINE_APPOINTMENT;
+                return praccomm\StaffSMSType::ONLINE_APPOINTMENT;
             case "REMINDER":
-              return praccomm\StaffSMSType::REMINDER;
+                return praccomm\StaffSMSType::REMINDER;
             case "SYSTEM":
-              return praccomm\StaffSMSType::SYSTEM;
+                return praccomm\StaffSMSType::SYSTEM;
             case "PVR_APPOINTMENT":
-              return praccomm\StaffSMSType::PVR_APPOINTMENT;
+                return praccomm\StaffSMSType::PVR_APPOINTMENT;
             case "PVR_CLINICDETAILS":
-              return praccomm\StaffSMSType::PVR_CLINICDETAILS;
+                return praccomm\StaffSMSType::PVR_CLINICDETAILS;
             case "PVR_MISSED":
-              return praccomm\StaffSMSType::PVR_MISSED;
+                return praccomm\StaffSMSType::PVR_MISSED;
             case "PVR_EMERGENCY":
-              return praccomm\StaffSMSType::PVR_EMERGENCY;
+                return praccomm\StaffSMSType::PVR_EMERGENCY;
             case "PVR_VOICEMAIL":
-              return praccomm\StaffSMSType::PVR_VOICEMAIL;
+                return praccomm\StaffSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
-              return praccomm\StaffSMSType::PVR_CALL;
+                return praccomm\StaffSMSType::PVR_CALL;
             case "TOTP_ENABLED":
-              return praccomm\StaffSMSType::TOTP_ENABLED;
+                return praccomm\StaffSMSType::TOTP_ENABLED;
             case "LAB_ORDERS":
-              return praccomm\StaffSMSType::LAB_ORDERS;
+                return praccomm\StaffSMSType::LAB_ORDERS;
             case "SAVE_AND_ORDER":
-              return praccomm\StaffSMSType::SAVE_AND_ORDER;
+                return praccomm\StaffSMSType::SAVE_AND_ORDER;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }
-?>

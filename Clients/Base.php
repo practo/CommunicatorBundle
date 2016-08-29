@@ -16,12 +16,13 @@ class Base
         }
     }
 
-    public function setDomain($domain=null)
+    public function setDomain($domain = null)
     {
         $this->_domain = $domain;
     }
 
-    public function getCommunicatorUri() {
+    public function getCommunicatorUri()
+    {
         $domain = $this->_domain;
         $parts = parse_url($domain);
         $host_parts = explode('.', $parts['host']);
@@ -36,5 +37,3 @@ class Base
         return $uri;
     }
 }
-
-?>

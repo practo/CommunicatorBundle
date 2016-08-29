@@ -121,8 +121,7 @@ class SmsCredit extends Base
 
     private function getCurrency($curr)
     {
-        switch($curr)
-        {
+        switch ($curr) {
             case "INR":
                 return praccomm\Currency::INR;
             case "USD":

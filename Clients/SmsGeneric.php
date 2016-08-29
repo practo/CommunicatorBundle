@@ -23,10 +23,18 @@ class SmsGeneric extends Base
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null, $sender_id = null)
-    {
+    public function sendSms(
+        $reference_id,
+        $reference_type,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $notes = null,
+        $expiryTime = null,
+        $sender_id = null
+    ) {
+
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
@@ -135,4 +143,3 @@ class SmsGeneric extends Base
         return $result;
     }
 }
-?>

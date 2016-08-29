@@ -63,13 +63,12 @@ def convert_tab_spaces():
 @sniff(severity='minor')
 def fix_psr2_violations():
     info('Running coding standards check...')
-    with settings(warn_only=True):
-        result = local(
-            "git ls-files -z | "
-            "grep -vZz '/genphp/' | "
-            "grep -PZz '.*\.(php|phtml)$' | "
-            "xargs -0 phpcs --standard=PSR2"
-        )
+    result = local(
+        "git ls-files -z | "
+        "grep -vZz '/genphp/' | "
+        "grep -PZz '.*\.(php|phtml)$' | "
+        "xargs -0 phpcs --standard=PSR2"
+    )
     if result.failed:
         local(
             "git ls-files -z | "

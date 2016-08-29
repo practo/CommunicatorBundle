@@ -22,7 +22,7 @@ class SQSQueue extends AbstractQueue
      * @param string $uri - Uri. Eg: http://sqs.ap-southeast-1.amazonaws.com/71203182391283/sample-queue
      * @param string $spoolDir - Spool Directory
      */
-    public function __construct($uri, $spoolDir=null)
+    public function __construct($uri, $spoolDir = null)
     {
         $this->spoolDir = $spoolDir;
         $parts = parse_url($uri);
@@ -131,7 +131,7 @@ class SQSQueue extends AbstractQueue
      * @param Message $message - Message
      * @param integer $delay   - Delay
      */
-    protected function doSendMessage(Message $message, $delay=null)
+    protected function doSendMessage(Message $message, $delay = null)
     {
         if ($delay > 900) {
             // TODO: Post warning in sentry
@@ -151,8 +151,7 @@ class SQSQueue extends AbstractQueue
             ));
             file_put_contents($this->spoolDir . '/' . $filename, $payload);
             rename($this->spoolDir . '/' . $filename, $this->spoolDir . '/' . $filename . '.v1message');
-        }
-        else {
+        } else {
             try {
                 $messageId = $this->sqs->sendMessage(array(
                     'QueueUrl' => $this->getQueueUrl(),

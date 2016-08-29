@@ -6,7 +6,6 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
-
 /**
  * Clinet for messaging doctors
  */
@@ -23,9 +22,16 @@ class SmsGroup extends Base
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($groupId, $name, $to, $messageType,
-                            $body, $eventId, $expiryTime = null)
-    {
+    public function sendSms(
+        $groupId,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $eventId,
+        $expiryTime = null
+    ) {
+
         $job = new praccomm\GroupSms();
         $job->group_id = $groupId;
         $job->name = $name;
@@ -54,18 +60,17 @@ class SmsGroup extends Base
 
     private function getSMSType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "VERIFICATION":
-              return praccomm\GroupSMSType::INVITE;
+                return praccomm\GroupSMSType::INVITE;
             case "REQUEST":
-              return praccomm\GroupSMSType::NEW_EVENT;
+                return praccomm\GroupSMSType::NEW_EVENT;
             case "CONFIRMATION":
-              return praccomm\GroupSMSType::EVENT_CANCELLATION;
+                return praccomm\GroupSMSType::EVENT_CANCELLATION;
             case "CANCELLATION":
-              return praccomm\GroupSMSType::EVENT_CONFIRMATION;
+                return praccomm\GroupSMSType::EVENT_CONFIRMATION;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }

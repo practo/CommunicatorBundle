@@ -23,11 +23,20 @@ class SmsPatient extends Base
         $this->_queue = $queue;
     }
 
-    public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
-                            $dndFail = false, $expiryTime = null,
-                            $secondaryMobile = null)
-    {
+    public function sendSms(
+        $practiceId,
+        $contactId,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $dndFail = false,
+        $expiryTime = null,
+        $secondaryMobile = null
+    ) {
+
         $this->validateSMSType($type);
         $job = new praccomm\PatientSms();
         $job->practice_id = $practiceId;
@@ -40,13 +49,11 @@ class SmsPatient extends Base
         $job->message_text = $body;
         $job->app_name = $this->_appName;
         $job->sms_type = 'patient';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             if ($dndFail) {
                 $job->failure_reason = 'DND_FAIL';
@@ -61,9 +68,15 @@ class SmsPatient extends Base
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
+
         $job = new praccomm\PatientSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->patient_sms_id = $key;
@@ -91,24 +104,22 @@ class SmsPatient extends Base
         return $result;
     }
 
-    public function searchSmsByContactId($pid, $cid,
-                                         $start = NULL, $end = NULL)
-    {
-        if(is_null($start) and !is_int($start))
-        {
+    public function searchSmsByContactId(
+        $pid,
+        $cid,
+        $start = null,
+        $end = null
+    ) {
+
+        if (is_null($start) and !is_int($start)) {
             $start_ts = mktime(0, 0, 0, 1, 2, 1970);
-        }
-        else
-        {
+        } else {
             $start_ts = $start;
         }
 
-        if(is_null($end) and !is_int($end))
-        {
+        if (is_null($end) and !is_int($end)) {
             $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-        }
-        else
-        {
+        } else {
             $end_ts = $end;
         }
 
@@ -133,9 +144,14 @@ class SmsPatient extends Base
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate, $endDate,
-                                                $smsTypes, $status)
-    {
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
+
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
@@ -147,9 +163,13 @@ class SmsPatient extends Base
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
+
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
@@ -181,9 +201,13 @@ class SmsPatient extends Base
         return $result;
     }
 
-    public function getMessagesByCidGroupedByApp($pid, $cid,
-                                                 $startDate, $endDate)
-    {
+    public function getMessagesByCidGroupedByApp(
+        $pid,
+        $cid,
+        $startDate,
+        $endDate
+    ) {
+
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
@@ -258,4 +282,3 @@ class SmsPatient extends Base
         return $result;
     }
 }
-?>

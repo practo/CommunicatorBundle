@@ -22,12 +22,25 @@ class MailGroup extends Base
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendMail($groupId, $eventId, $fromName,
-                             $fromMail, $toName = "", $to, $cc = "",
-                             $bcc = "", $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo = NULL,
-                             $expiryTime = NULL)
-    {
+    public function sendMail(
+        $groupId,
+        $eventId,
+        $fromName,
+        $fromMail,
+        $toName = "",
+        $to,
+        $cc = "",
+        $bcc = "",
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $expiryTime = null
+    ) {
+
         $job = new praccomm\GroupMail();
         $job->group_id = $groupId;
         $job->event_id = $eventId;
@@ -36,20 +49,14 @@ class MailGroup extends Base
         $job->to_name = $toName;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
@@ -61,10 +68,8 @@ class MailGroup extends Base
         $job->reply_to = $replyTo;
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -82,10 +87,16 @@ class MailGroup extends Base
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
+
         $job = new praccomm\GroupMail();
         $job->hash = $hash;
         $job->delivery_status = getMailDeliveryStatus($status);
@@ -125,22 +136,21 @@ class MailGroup extends Base
 
     private function getMailType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "INVITE":
-              return \praccomm\GroupMailType::INVITE;
+                return \praccomm\GroupMailType::INVITE;
             case "NEW_EVENT":
-              return \praccomm\GroupMailType::NEW_EVENT;
+                return \praccomm\GroupMailType::NEW_EVENT;
             case "EVENT_CANCELLATION":
-              return \praccomm\GroupMailType::EVENT_CANCELLATION;
+                return \praccomm\GroupMailType::EVENT_CANCELLATION;
             case "EVENT_CONFIRMATION":
-              return \praccomm\GroupMailType::EVENT_CONFIRMATION;
+                return \praccomm\GroupMailType::EVENT_CONFIRMATION;
             case "EVENT_ATTENDANCE_CANCELLATION":
-              return \praccomm\GroupMailType::EVENT_ATTENDANCE_CANCELLATION;
+                return \praccomm\GroupMailType::EVENT_ATTENDANCE_CANCELLATION;
             case "EVENT_ATTENDANCE_CONFIRMATION":
-              return \praccomm\GroupMailType::EVENT_ATTENDANCE_CONFIRMATION;
+                return \praccomm\GroupMailType::EVENT_ATTENDANCE_CONFIRMATION;
             default:
-              throw new \Exception("Invalid mail type");
+                throw new \Exception("Invalid mail type");
         }
     }
 }

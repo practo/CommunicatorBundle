@@ -2,21 +2,25 @@
 
 namespace Practo\CommunicatorBundle\Clients;
 
-class CommunicatorClient {
+class CommunicatorClient
+{
     private $_communicator_base_uri;
     private $_communicator_api_key;
 
-    public function __construct($communicator_base_uri, $communicator_api_key) {
+    public function __construct($communicator_base_uri, $communicator_api_key)
+    {
         $this->_communicator_base_uri = $communicator_base_uri;
         $this->_communicator_api_key = $communicator_api_key;
     }
 
-    protected function generateNonce(){
+    protected function generateNonce()
+    {
         return time() . '|' . substr(str_shuffle(
             str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
     }
 
-    public function get($endpoint, $request_params) {
+    public function get($endpoint, $request_params)
+    {
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -26,7 +30,7 @@ class CommunicatorClient {
         $api_url = $api_url."?data=".json_encode($request_params);
         $ch = curl_init($api_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1 );
         $headers = array(
             'nonce: '.$nonce,
             'X-AUTH-TOKEN: '.$auth_token
@@ -37,26 +41,25 @@ class CommunicatorClient {
         $errorMessage = '';
 
         if (false !== $featureSet) {
-            $featureSet = json_decode($featureSet, True);
-            if($responseCode === 200){
+            $featureSet = json_decode($featureSet, true);
+            if ($responseCode === 200) {
                 $result = $featureSet['result'];
                 return $result;
-            }
-            else{
+            } else {
                 $errorMessage = $responseCode.': '. $featureSet['message'];
             }
-        }
-        else{
+        } else {
             $errorMessage = curl_error($ch);
         }
 
         curl_close($ch);
-        if($errorMessage){
+        if ($errorMessage) {
             throw new \Exception($errorMessage);
         }
     }
 
-    public function post($endpoint, $request_params) {
+    public function post($endpoint, $request_params)
+    {
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -65,7 +68,7 @@ class CommunicatorClient {
         $api_url = $communicatorBaseUri.$endpoint;
         $ch = curl_init($api_url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1 );
         $headers = array(
             'nonce: '.$nonce,
             'X-AUTH-TOKEN: '.$auth_token,
@@ -80,21 +83,19 @@ class CommunicatorClient {
         $errorMessage = '';
 
         if (false !== $featureSet) {
-            $featureSet = json_decode($featureSet, True);
-            if($responseCode === 200){
+            $featureSet = json_decode($featureSet, true);
+            if ($responseCode === 200) {
                 $result = $featureSet['result'];
                 return $result;
-            }
-            else{
+            } else {
                 $errorMessage = $responseCode.': '. $featureSet['message'];
             }
-        }
-        else{
+        } else {
             $errorMessage = curl_error($ch);
         }
 
         curl_close($ch);
-        if($errorMessage){
+        if ($errorMessage) {
             throw new \Exception($errorMessage);
         }
     }

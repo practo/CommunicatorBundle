@@ -22,12 +22,25 @@ class MailPatient extends Base
         $this->_queue = $queue;
     }
 
-    public function sendMail($contactId, $practiceId, $fromName,
-                             $fromMail, $to_name = "", $to, $cc = "",
-                             $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $expiryTime = NULL)
-    {
+    public function sendMail(
+        $contactId,
+        $practiceId,
+        $fromName,
+        $fromMail,
+        $to_name = "",
+        $to,
+        $cc = "",
+        $bcc = "",
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $expiryTime = null
+    ) {
+
         $this->validateMailType($type);
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
@@ -37,20 +50,14 @@ class MailPatient extends Base
         $job->to_name = $to_name;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
@@ -63,10 +70,8 @@ class MailPatient extends Base
 
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -85,10 +90,16 @@ class MailPatient extends Base
              ->sendMessage($jsonified_job, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
+
         $job = new praccomm\PatientMail();
         $job->hash = $hash;
         $job->delivery_status = Helper::getMailDeliveryStatus($status);
@@ -117,24 +128,22 @@ class MailPatient extends Base
         return $result;
     }
 
-    public function searchMailByContactId($pid, $cid,
-                                          $start = NULL, $end = NULL)
-    {
-        if(is_null($start) and !is_int($start))
-        {
+    public function searchMailByContactId(
+        $pid,
+        $cid,
+        $start = null,
+        $end = null
+    ) {
+
+        if (is_null($start) and !is_int($start)) {
             $start_ts = mktime(0, 0, 0, 1, 2, 1970);
-        }
-        else
-        {
+        } else {
             $start_ts = $start;
         }
 
-        if(is_null($end) and !is_int($end))
-        {
+        if (is_null($end) and !is_int($end)) {
             $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-        }
-        else
-        {
+        } else {
             $end_ts = $end;
         }
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
@@ -247,4 +256,3 @@ class MailPatient extends Base
         }
     }
 }
-?>
