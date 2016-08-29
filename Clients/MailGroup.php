@@ -11,15 +11,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class MailGroup extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     private function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
     public function sendMail(
@@ -62,7 +62,7 @@ class MailGroup extends Base
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->date = time();
         $job->email_type = $this->getMailType($type);
         $job->reply_to = $replyTo;
@@ -81,8 +81,8 @@ class MailGroup extends Base
         $job->hash = $hash;
         $job->mail_type = 'group';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -107,15 +107,15 @@ class MailGroup extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'group';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
     public function getMailsByGroupId($groupId, $mailTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['group_id'] = $groupId;
         $params['mail_types'] = $mailTypes;
@@ -125,7 +125,7 @@ class MailGroup extends Base
 
     public function getMailsByEventId($groupId, $eventId, $mailTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['group_id'] = $groupId;
         $params['event_id'] = $eventId;

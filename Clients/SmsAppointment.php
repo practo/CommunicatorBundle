@@ -11,15 +11,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsAppointment extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
     public function sendSms(
@@ -41,11 +41,11 @@ class SmsAppointment extends Base
         $job->message_text = $body;
         $job->notes = $notes;
         $job->message_type = $this->getSMSType($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -53,7 +53,7 @@ class SmsAppointment extends Base
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['appointment_id'] = $apptId;
         $params['sms_types'] = $smsTypes;

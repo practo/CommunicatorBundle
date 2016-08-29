@@ -66,6 +66,8 @@ def fix_psr2_violations():
     result = local(
         "git ls-files -z | "
         "grep -vZz '/genphp/' | "
+        "grep -PZvz Clients/Types.php |"
+        "grep -PZvz Clients/Helper.php |"
         "grep -PZz '.*\.(php|phtml)$' | "
         "xargs -0 phpcs --standard=PSR2"
     )
@@ -76,4 +78,7 @@ def fix_psr2_violations():
             "grep -PZz '.*\.(php|phtml)$' | "
             "xargs -0 phpcbf --standard=PSR2"
         )
+    if result.failed:
+        sys.exit(1)
+    return result
 

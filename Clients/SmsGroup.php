@@ -11,15 +11,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsGroup extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     private function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
     public function sendSms(
@@ -40,17 +40,17 @@ class SmsGroup extends Base
         $job->event_id = $eventId;
         $job->message_text = $body;
         $job->message_type = $this->getSMSType($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_GROUP_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
     public function getMessagesByGroupId($groupId, $smsTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['group_id'] = $groupId;
         $params['sms_types'] = $smsTypes;

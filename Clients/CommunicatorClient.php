@@ -4,13 +4,13 @@ namespace Practo\CommunicatorBundle\Clients;
 
 class CommunicatorClient
 {
-    private $_communicator_base_uri;
-    private $_communicator_api_key;
+    private $communicator_base_uri;
+    private $communicator_api_key;
 
     public function __construct($communicator_base_uri, $communicator_api_key)
     {
-        $this->_communicator_base_uri = $communicator_base_uri;
-        $this->_communicator_api_key = $communicator_api_key;
+        $this->communicator_base_uri = $communicator_base_uri;
+        $this->communicator_api_key = $communicator_api_key;
     }
 
     protected function generateNonce()
@@ -22,8 +22,8 @@ class CommunicatorClient
     public function get($endpoint, $request_params)
     {
         $nonce = $this->generateNonce();
-        $communicatorBaseUri = $this->_communicator_base_uri;
-        $api_secret_key = $this->_communicator_api_key;
+        $communicatorBaseUri = $this->communicator_base_uri;
+        $api_secret_key = $this->communicator_api_key;
         $auth_token = hash('sha256', $api_secret_key.$nonce);
 
         $api_url = $communicatorBaseUri.$endpoint;
@@ -61,8 +61,8 @@ class CommunicatorClient
     public function post($endpoint, $request_params)
     {
         $nonce = $this->generateNonce();
-        $communicatorBaseUri = $this->_communicator_base_uri;
-        $api_secret_key = $this->_communicator_api_key;
+        $communicatorBaseUri = $this->communicator_base_uri;
+        $api_secret_key = $this->communicator_api_key;
         $auth_token = hash('sha256', $api_secret_key.$nonce);
 
         $api_url = $communicatorBaseUri.$endpoint;

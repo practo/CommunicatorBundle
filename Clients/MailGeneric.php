@@ -12,15 +12,15 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class MailGeneric extends Base
 {
-    private $_appName;
-    private $_queue;
-    private $_apiSecretKey;
+    private $appName;
+    private $queue;
+    private $apiSecretKey;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
     public function sendMail(
@@ -66,7 +66,7 @@ class MailGeneric extends Base
         $job->plaintext = $plaintext;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         if ($createdBy) {
             $job->created_by = $createdBy;
         }
@@ -91,8 +91,8 @@ class MailGeneric extends Base
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -117,8 +117,8 @@ class MailGeneric extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -183,7 +183,7 @@ class MailGeneric extends Base
      */
     public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = [
             'mail_type'       => $mailType,
             'start_date'      => $startDate,
