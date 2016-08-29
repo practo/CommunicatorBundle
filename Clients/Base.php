@@ -5,36 +5,36 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Base
 {
-	protected $_domain;
-	protected $request;
+    protected $_domain;
+    protected $request;
 
-	public function setRequest($request)
-	{
-		$this->request = $request;
-		if ($request instanceof Request) {
-			$this->_domain = $this->request->getSchemeAndHttpHost();
-		}
-	}
+    public function setRequest($request)
+    {
+        $this->request = $request;
+        if ($request instanceof Request) {
+            $this->_domain = $this->request->getSchemeAndHttpHost();
+        }
+    }
 
-	public function setDomain($domain=null)
-	{
-		$this->_domain = $domain;
-	}
+    public function setDomain($domain=null)
+    {
+        $this->_domain = $domain;
+    }
 
-	public function getCommunicatorUri() {
-		$domain = $this->_domain;
-		$parts = parse_url($domain);
-		$host_parts = explode('.', $parts['host']);
-		$subdomain = $host_parts[0];
-		$subdomain = explode('-', $subdomain);
-		$uri = $parts['scheme'] . '://communicator';
-		if (isset($subdomain[1])) {
-			$uri .= '-' . $subdomain[1];
-		}
+    public function getCommunicatorUri() {
+        $domain = $this->_domain;
+        $parts = parse_url($domain);
+        $host_parts = explode('.', $parts['host']);
+        $subdomain = $host_parts[0];
+        $subdomain = explode('-', $subdomain);
+        $uri = $parts['scheme'] . '://communicator';
+        if (isset($subdomain[1])) {
+            $uri .= '-' . $subdomain[1];
+        }
 
-		$uri .= '.' . $host_parts[1] . '.' . $host_parts[2];
-		return $uri;
-	}
+        $uri .= '.' . $host_parts[1] . '.' . $host_parts[2];
+        return $uri;
+    }
 }
 
 ?>

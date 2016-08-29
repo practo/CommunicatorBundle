@@ -1,5 +1,4 @@
 from fabpolish import polish, sniff, info, local
-from fabpolish.contrib import find_merge_conflict_leftovers
 
 
 @sniff(severity='major', timing='fast')
