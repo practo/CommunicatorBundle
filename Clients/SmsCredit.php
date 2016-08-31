@@ -47,6 +47,15 @@ class SmsCredit extends Base
         return $result;
     }
 
+    public function clearPractoCredit($practiceId)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $practiceId;
+        $result = $client->post("/smscredit/reset_practo_credit", $params);
+        return $result;
+    }
+
     public function addWalletCredit($practiceId, $credit)
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
