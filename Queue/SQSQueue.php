@@ -1,5 +1,4 @@
 <?php
-
 namespace Practo\CommunicatorBundle\Queue;
 
 use Aws\Sqs\SqsClient;
@@ -15,7 +14,8 @@ class SQSQueue extends AbstractQueue
     protected $region;
     protected $accountId;
     protected $spoolDir;
-
+    const BASE64_EXPAND_RATIO = 1.37;
+    const MAX_JOB_SIZE = 262144;
     /**
      * Constructor
      *
@@ -39,7 +39,6 @@ class SQSQueue extends AbstractQueue
                 'secret' => $accessSecret
             )
         ));
-
         if (($path = ltrim(@$parts['path'], '/'))) {
             $pParts = explode('/', $path, 2);
             $this->accountId = $pParts[0];
@@ -52,7 +51,6 @@ class SQSQueue extends AbstractQueue
             }
         }
     }
-
     /**
      * Create Queue if not already present
      *
@@ -80,12 +78,10 @@ class SQSQueue extends AbstractQueue
             throw $e;
         }
     }
-
     protected function getQueueUrl()
     {
         return "{$this->scheme}://sqs.{$this->region}.amazonaws.com/{$this->accountId}/{$this->getQueueName()}";
     }
-
     /**
      * Receive Message
      *
@@ -121,10 +117,8 @@ class SQSQueue extends AbstractQueue
         $data = $data[0];
         $message = new Message(base64_decode($data['Body']), $data['MessageId']);
         $message->setHandle($data['ReceiptHandle']);
-
         return $message;
     }
-
     /**
      * Do Send Message
      *
@@ -141,6 +135,18 @@ class SQSQueue extends AbstractQueue
             if (!file_exists($this->spoolDir)) {
                 mkdir($this->spoolDir);
             }
+            if (empty(strval($message))) {
+                throw new \Exception('Error in '.$this->getQueueName().'. The message body can not be empty.');
+            }
+            if (strlen(strval($message)) * self::BASE64_EXPAND_RATIO > self::MAX_JOB_SIZE) {
+                $msg = 'One or more parameters are invalid. Reason: Message must be shorter than 262144 bytes.';
+                throw new \Exception($msg);
+            }
+            $currentTime = time();
+            $jobDir = intval($currentTime/100);
+            if (!file_exists($this->spoolDir.'/'.$jobDir)) {
+                mkdir($this->spoolDir.'/'.$jobDir);
+            }
             $filename = str_replace('.', '', microtime(true)) . $this->getRandomString(10);
             $payload = implode("\t", array(
                 $this->region,
@@ -149,8 +155,13 @@ class SQSQueue extends AbstractQueue
                 $delay,
                 $this->getVisibilityTimeout()
             ));
-            file_put_contents($this->spoolDir . '/' . $filename, $payload);
-            rename($this->spoolDir . '/' . $filename, $this->spoolDir . '/' . $filename . '.v1message');
+            $status = file_put_contents($this->spoolDir.'/'.$jobDir.'/'.$filename, $payload);
+            if ($status === false) {
+                $msg = 'File put contents failed. Dir';
+                $msg = $msg.'=> '.$this->spoolDir.'/'.$jobDir.'/'.$filename.'. Payload=> '.json_encode($payload);
+                throw new \Exception();
+            }
+            rename($this->spoolDir.'/'.$jobDir.'/'.$filename, $this->spoolDir.'/'.$jobDir.'/'.$filename.'.v1message');
         } else {
             try {
                 $messageId = $this->sqs->sendMessage(array(
@@ -173,7 +184,6 @@ class SQSQueue extends AbstractQueue
             $message->setId($messageId);
         }
     }
-
     /**
      * Delete Message
      *
@@ -186,7 +196,6 @@ class SQSQueue extends AbstractQueue
             'ReceiptHandle' => $message->getHandle()
         ));
     }
-
     /**
      * Get Random String
      *
