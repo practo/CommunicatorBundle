@@ -190,6 +190,8 @@ class MailStaff extends Base
           return \praccomm\StaffEmailType::SHARE_SETTINGS_UPDATE;
         case "SAVE_AND_ORDER":
           return praccomm\StaffEmailType::SAVE_AND_ORDER;
+        case "EXPORT_FILES":
+          return praccomm\StaffEmailType::EXPORT_FILES;
         default:
           throw new \Exception("Invalid message type");
       }
