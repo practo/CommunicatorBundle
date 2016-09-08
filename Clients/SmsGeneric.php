@@ -57,6 +57,7 @@ class SmsGeneric extends Base
             'VN_APP_PROMOTION_SMS',
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
+            'OTP',
             'CONSULT_DOCTOR_REPLY_SMS',
             'CONSULT_GENERIC_SMS',
             'ORDER_SMS',
