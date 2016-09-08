@@ -12,23 +12,38 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class MailGeneric extends Base
 {
-    private $_appName;
-    private $_queue;
-    private $_apiSecretKey;
+    private $appName;
+    private $queue;
+    private $apiSecretKey;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendMail($fromName, $fromMail, $toName = "", $to,
-                             $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
-    {
+    public function sendMail(
+        $fromName,
+        $fromMail,
+        $toName,
+        $to,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $reference_id = null,
+        $reference_type = null,
+        $expiryTime = null,
+        $appName = null,
+        $createdBy = null
+    ) {
+
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
         $job->from_name = $fromName;
@@ -36,20 +51,14 @@ class MailGeneric extends Base
         $job->to_name = $toName;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
@@ -57,7 +66,7 @@ class MailGeneric extends Base
         $job->plaintext = $plaintext;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         if ($createdBy) {
             $job->created_by = $createdBy;
         }
@@ -69,10 +78,8 @@ class MailGeneric extends Base
         $job->reply_to = $replyTo;
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -84,16 +91,22 @@ class MailGeneric extends Base
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
+
         $job = new praccomm\GenericMail();
         $job->hash = $hash;
         $job->delivery_status = getMailDeliveryStatus($status);
@@ -104,8 +117,8 @@ class MailGeneric extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -170,7 +183,7 @@ class MailGeneric extends Base
      */
     public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = [
             'mail_type'       => $mailType,
             'start_date'      => $startDate,

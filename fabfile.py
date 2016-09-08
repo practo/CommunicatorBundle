@@ -62,18 +62,23 @@ def convert_tab_spaces():
 
 
 @sniff(severity='major', timing='fast')
-def php_coding_check():
-    # Run coding standards check
+def fix_psr2_violations():
     info('Running coding standards check...')
-    return local('phpcs --standard=Symfony2 . --ignore=genphp,vendor')
-
-
-@sniff(severity='major', timing='fast')
-def check_var_dump():
-    info('Checking for var_dump, echo or die statements...')
-    #return local("! git grep 'var_dump'")
-    return local(
-        "! git ls-files -z | "
-        "grep -PZz '\.php$' | "
-        "xargs -0 egrep -n 'var_dump|echo|die' | grep -v 'NOCHECK'"
+    result = local(
+        "git ls-files -z | "
+        "grep -vZz '/genphp/' | "
+        "grep -PZvz Clients/Types.php |"
+        "grep -PZvz Clients/Helper.php |"
+        "grep -PZz '.*\.(php|phtml)$' | "
+        "xargs -0 phpcs --standard=PSR2"
     )
+    if result.failed:
+        local(
+            "git ls-files -z | "
+            "grep -vZz '/genphp/' | "
+            "grep -PZz '.*\.(php|phtml)$' | "
+            "xargs -0 phpcbf --standard=PSR2"
+        )
+    if not result.failed:
+        return result
+

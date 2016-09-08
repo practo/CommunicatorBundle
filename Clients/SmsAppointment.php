@@ -11,21 +11,28 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsAppointment extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($appointmentId, $name, $to, $personType,
-                            $messageType, $body, $notes = null,
-                            $expiryTime = null)
-    {
+    public function sendSms(
+        $appointmentId,
+        $name,
+        $to,
+        $personType,
+        $messageType,
+        $body,
+        $notes = null,
+        $expiryTime = null
+    ) {
+
         $job = new praccomm\AppointmentSms();
         $job->appointment_id = $appointmentId;
         $job->name = $name;
@@ -34,11 +41,11 @@ class SmsAppointment extends Base
         $job->message_text = $body;
         $job->notes = $notes;
         $job->message_type = $this->getSMSType($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -46,7 +53,7 @@ class SmsAppointment extends Base
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['appointment_id'] = $apptId;
         $params['sms_types'] = $smsTypes;
@@ -56,43 +63,41 @@ class SmsAppointment extends Base
 
     private function getSMSType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "VERIFICATION":
-              return praccomm\AppointmentSMSType::VERIFICATION;
+                return praccomm\AppointmentSMSType::VERIFICATION;
             case "REQUEST":
-              return praccomm\AppointmentSMSType::REQUEST;
+                return praccomm\AppointmentSMSType::REQUEST;
             case "CONFIRMATION":
-              return praccomm\AppointmentSMSType::CONFIRMATION;
+                return praccomm\AppointmentSMSType::CONFIRMATION;
             case "CANCELLATION":
-              return praccomm\AppointmentSMSType::CANCELLATION;
+                return praccomm\AppointmentSMSType::CANCELLATION;
             case "RESCHEDULE":
-              return praccomm\AppointmentSMSType::RESCHEDULE;
+                return praccomm\AppointmentSMSType::RESCHEDULE;
             case "TEST":
-              return praccomm\AppointmentSMSType::TEST;
+                return praccomm\AppointmentSMSType::TEST;
             case "PASSED_ON":
-              return praccomm\AppointmentSMSType::PASSED_ON;
+                return praccomm\AppointmentSMSType::PASSED_ON;
             case "WALK_IN":
-              return praccomm\AppointmentSMSType::WALK_IN;
+                return praccomm\AppointmentSMSType::WALK_IN;
             case "PENDING":
-              return praccomm\AppointmentSMSType::PENDING;
+                return praccomm\AppointmentSMSType::PENDING;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 
     private function getPersonType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "PATIENT":
-              return praccomm\PersonType::PATIENT;
+                return praccomm\PersonType::PATIENT;
             case "STAFF":
-              return praccomm\PersonType::STAFF;
+                return praccomm\PersonType::STAFF;
             case "DOCTOR":
-              return praccomm\PersonType::DOCTOR;
+                return praccomm\PersonType::DOCTOR;
             default:
-              throw new \Exception("Invalid person type");
+                throw new \Exception("Invalid person type");
         }
     }
 }

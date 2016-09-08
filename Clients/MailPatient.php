@@ -11,23 +11,36 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class MailPatient extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_appName = Helper::getValidAppName($appName);
-        $this->_queue = $queue;
+        $this->apiSecretKey = $apiSecretKey;
+        $this->appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
     }
 
-    public function sendMail($contactId, $practiceId, $fromName,
-                             $fromMail, $to_name = "", $to, $cc = "",
-                             $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $expiryTime = NULL)
-    {
+    public function sendMail(
+        $contactId,
+        $practiceId,
+        $fromName,
+        $fromMail,
+        $to_name,
+        $to,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $expiryTime = null
+    ) {
+
         $this->validateMailType($type);
         $job = new praccomm\PatientMail();
         $job->patient_contact_id = $contactId;
@@ -37,36 +50,28 @@ class MailPatient extends Base
         $job->to_name = $to_name;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->date = time();
         $job->email_type = $type;
         $job->reply_to = $replyTo;
 
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -79,16 +84,22 @@ class MailPatient extends Base
         $job->hash = $hash;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        $this->_queue
+        $this->queue->setDomain($this->domain);
+        $this->queue
              ->setQueueName(Queue::SEND_MAIL_QUEUE)
              ->sendMessage($jsonified_job, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
+
         $job = new praccomm\PatientMail();
         $job->hash = $hash;
         $job->delivery_status = Helper::getMailDeliveryStatus($status);
@@ -101,15 +112,15 @@ class MailPatient extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'patient';
         $jsonified_job = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        $this->_queue
+        $this->queue->setDomain($this->domain);
+        $this->queue
              ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
              ->sendMessage($jsonified_job, 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -117,27 +128,25 @@ class MailPatient extends Base
         return $result;
     }
 
-    public function searchMailByContactId($pid, $cid,
-                                          $start = NULL, $end = NULL)
-    {
-        if(is_null($start) and !is_int($start))
-        {
+    public function searchMailByContactId(
+        $pid,
+        $cid,
+        $start = null,
+        $end = null
+    ) {
+
+        if (is_null($start) and !is_int($start)) {
             $start_ts = mktime(0, 0, 0, 1, 2, 1970);
-        }
-        else
-        {
+        } else {
             $start_ts = $start;
         }
 
-        if(is_null($end) and !is_int($end))
-        {
+        if (is_null($end) and !is_int($end)) {
             $end_ts = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-        }
-        else
-        {
+        } else {
             $end_ts = $end;
         }
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -149,7 +158,7 @@ class MailPatient extends Base
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -160,7 +169,7 @@ class MailPatient extends Base
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -170,7 +179,7 @@ class MailPatient extends Base
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -181,7 +190,7 @@ class MailPatient extends Base
 
     public function getMailByCidGroupedByApp($pid, $cid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['cid'] = $cid;
@@ -193,7 +202,7 @@ class MailPatient extends Base
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['patient_mail_id'] = $mailId;
         $result = $client->get("/patientmail/get_mail_by_id", $params);
@@ -247,4 +256,3 @@ class MailPatient extends Base
         }
     }
 }
-?>

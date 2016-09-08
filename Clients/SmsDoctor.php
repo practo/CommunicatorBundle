@@ -6,27 +6,35 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
-
 /**
  * Mail clinet for mailing doctors
  */
 class SmsDoctor extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_appName = Helper::getValidAppName($appName);
-        $this->_queue = $queue;
+        $this->apiSecretKey = $apiSecretKey;
+        $this->appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
     }
 
-    public function sendSms($practiceId, $doctorProfileId, $name, $to, $type,
-                            $body, $unverified = false, $smsDisabled = false,
-                            $expiryTime = null, $secondaryMobile = null)
-    {
+    public function sendSms(
+        $practiceId,
+        $doctorProfileId,
+        $name,
+        $to,
+        $type,
+        $body,
+        $unverified = false,
+        $smsDisabled = false,
+        $expiryTime = null,
+        $secondaryMobile = null
+    ) {
+
         $job = new praccomm\DoctorSms();
         $job->practice_id = $practiceId;
         $job->doctor_profile_id = $doctorProfileId;
@@ -36,28 +44,32 @@ class SmsDoctor extends Base
         $job->expiry_time = $expiryTime;
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->sms_type = 'doctor';
-        if($unverified)
-        {
+        if ($unverified) {
             $job->status = 'FAILED';
             $job->failure_reason = 'MOBILEVERIFICATION';
         }
-        if($smsDisabled)
-        {
+        if ($smsDisabled) {
             $job->status = 'FAILED';
             $job->failure_reason = 'SMSDISABLED';
         }
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateSms($key, $status, $deliveryTime,
-                              $operator, $opReply, $opCode)
-    {
+    public function updateSms(
+        $key,
+        $status,
+        $deliveryTime,
+        $operator,
+        $opReply,
+        $opCode
+    ) {
+
         $job = new praccomm\DoctorSms();
         $job->status = Helper::getSMSDeliveryStatus($status);
         $job->doctor_sms_id = $key;
@@ -67,8 +79,8 @@ class SmsDoctor extends Base
         $job->operator_code = $opCode;
         $job->sms_type = 'doctor';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -76,7 +88,7 @@ class SmsDoctor extends Base
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -87,7 +99,7 @@ class SmsDoctor extends Base
 
     public function getFailedMessages($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -96,10 +108,15 @@ class SmsDoctor extends Base
         return $result;
     }
 
-    public function getMessagesByDeliveryStatus($pid, $startDate,
-                                                $endDate, $smsTypes, $status)
-    {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+    public function getMessagesByDeliveryStatus(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes,
+        $status
+    ) {
+
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -110,10 +127,14 @@ class SmsDoctor extends Base
         return $result;
     }
 
-    public function getMessagesByFailureReason($pid, $startDate,
-                                               $endDate, $smsTypes)
-    {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+    public function getMessagesByFailureReason(
+        $pid,
+        $startDate,
+        $endDate,
+        $smsTypes
+    ) {
+
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -125,7 +146,7 @@ class SmsDoctor extends Base
 
     public function getMessagesByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -135,7 +156,7 @@ class SmsDoctor extends Base
 
     public function getMessagesByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -146,7 +167,7 @@ class SmsDoctor extends Base
 
     public function getRetriedMessagesForId($smsId)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['sms_id'] = $smsId;
         $result = $client->get("/doctorsms/get_retried_messages_for_smsid", $params);
@@ -156,41 +177,39 @@ class SmsDoctor extends Base
 
     private function getSMSType($type)
     {
-        switch($type)
-        {
+        switch ($type) {
             case "BULK":
-              return praccomm\DoctorSMSType::BULK;
+                return praccomm\DoctorSMSType::BULK;
             case "CANCELLATION":
-              return praccomm\DoctorSMSType::CANCELLATION;
+                return praccomm\DoctorSMSType::CANCELLATION;
             case "CONFIRMATION":
-              return praccomm\DoctorSMSType::CONFIRMATION;
+                return praccomm\DoctorSMSType::CONFIRMATION;
             case "CUSTOM":
-              return praccomm\DoctorSMSType::CUSTOM;
+                return praccomm\DoctorSMSType::CUSTOM;
             case "ONLINE_APPOINTMENT":
-              return praccomm\DoctorSMSType::APPOINTMENT;
+                return praccomm\DoctorSMSType::APPOINTMENT;
             case "REMINDER":
-              return praccomm\DoctorSMSType::REMINDER;
+                return praccomm\DoctorSMSType::REMINDER;
             case "RESCHEDULE":
-              return praccomm\DoctorSMSType::RESCHEDULE;
+                return praccomm\DoctorSMSType::RESCHEDULE;
             case "SYSTEM":
-              return praccomm\DoctorSMSType::SYSTEM;
+                return praccomm\DoctorSMSType::SYSTEM;
             case "PVR_APPOINTMENT":
-              return praccomm\DoctorSMSType::PVR_APPOINTMENT;
+                return praccomm\DoctorSMSType::PVR_APPOINTMENT;
             case "PVR_CLINICDETAILS":
-              return praccomm\DoctorSMSType::PVR_CLINICDETAILS;
+                return praccomm\DoctorSMSType::PVR_CLINICDETAILS;
             case "PVR_MISSED":
-              return praccomm\DoctorSMSType::PVR_MISSED;
+                return praccomm\DoctorSMSType::PVR_MISSED;
             case "PVR_EMERGENCY":
-              return praccomm\DoctorSMSType::PVR_EMERGENCY;
+                return praccomm\DoctorSMSType::PVR_EMERGENCY;
             case "PVR_VOICEMAIL":
-              return praccomm\DoctorSMSType::PVR_VOICEMAIL;
+                return praccomm\DoctorSMSType::PVR_VOICEMAIL;
             case "PVR_CALL":
-              return praccomm\DoctorSMSType::PVR_CALL;
+                return praccomm\DoctorSMSType::PVR_CALL;
             case "BLOCKCALENDAR":
-              return praccomm\DoctorSMSType::BLOCKCALENDAR;
+                return praccomm\DoctorSMSType::BLOCKCALENDAR;
             default:
-              throw new \Exception("Invalid message type");
+                throw new \Exception("Invalid message type");
         }
     }
 }
-?>

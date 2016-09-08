@@ -12,21 +12,29 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class SmsGeneric extends Base
 {
-    private $_appName;
-    private $_queue;
-    private $_apiSecretKey;
+    private $appName;
+    private $queue;
+    private $apiSecretKey;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->apiSecretKey = $apiSecretKey;
+        $this->queue = $queue;
+        $this->appName = Helper::getValidAppName($appName);
     }
 
-    public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null, $sender_id = null)
-    {
+    public function sendSms(
+        $reference_id,
+        $reference_type,
+        $name,
+        $to,
+        $messageType,
+        $body,
+        $notes = null,
+        $expiryTime = null,
+        $sender_id = null
+    ) {
+
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
@@ -37,12 +45,12 @@ class SmsGeneric extends Base
         $job->message_text = $body;
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->sms_type = 'generic';
         $job->sender_id = $sender_id;
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
@@ -75,7 +83,7 @@ class SmsGeneric extends Base
 
     public function getMessageLogBySurveyId($surveyId)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['reference_id'] = $surveyId;
         $params['sms_types'] = array('SURVEY_SMS');
@@ -85,7 +93,7 @@ class SmsGeneric extends Base
 
     public function isMsgSentOfTypeForRecipient($messageType, $mobile)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['message_type'] = $messageType;
         $params['mobile'] = $mobile;
@@ -106,7 +114,7 @@ class SmsGeneric extends Base
      */
     public function getMessageCountByType($messageType, $startDate, $endDate, $status)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = [
             'message_type' => $messageType,
             'start_date'   => $startDate,
@@ -128,7 +136,7 @@ class SmsGeneric extends Base
      */
     public function getMessageCountByReferenceIds($referenceIds, $smsTypes)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['reference_ids'] = $referenceIds;
         $params['sms_types'] = $smsTypes;
@@ -136,4 +144,3 @@ class SmsGeneric extends Base
         return $result;
     }
 }
-?>

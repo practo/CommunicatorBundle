@@ -6,29 +6,41 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
-
 /**
  * Mail clinet for mailing staff
  */
 class MailStaff extends Base
 {
-    private $_apiSecretKey;
-    private $_appName;
-    private $_queue;
+    private $apiSecretKey;
+    private $appName;
+    private $queue;
 
     public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_apiSecretKey = $apiSecretKey;
-        $this->_appName = Helper::getValidAppName($appName);
-        $this->_queue = $queue;
+        $this->apiSecretKey = $apiSecretKey;
+        $this->appName = Helper::getValidAppName($appName);
+        $this->queue = $queue;
     }
 
-    public function sendMail($practiceId, $staffProfileId, $fromName, $fromMail,
-                             $to_name = "", $to, $cc = "", $bcc = "",
-                             $subject, $body, $type, $files,
-                             $hash, $plaintext = "", $replyTo=NULL,
-                             $expiryTime = NULL)
-    {
+    public function sendMail(
+        $practiceId,
+        $staffProfileId,
+        $fromName,
+        $fromMail,
+        $to_name,
+        $to,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $type,
+        $files,
+        $hash,
+        $plaintext = "",
+        $replyTo = null,
+        $expiryTime = null
+    ) {
+
         $job = new praccomm\StaffMail();
         $job->practice_id = $practiceId;
         $job->staff_profile_id = $staffProfileId;
@@ -37,36 +49,28 @@ class MailStaff extends Base
         $job->to_name = $to_name;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        if(is_string($cc) && !empty($cc))
-        {
+        if (is_string($cc) && !empty($cc)) {
             $job->cc = array($cc);
-        }
-        else
-        {
+        } else {
             $job->cc = $cc;
         }
-        if(is_string($bcc) && !empty($bcc))
-        {
+        if (is_string($bcc) && !empty($bcc)) {
             $job->bcc = array($bcc);
-        }
-        else
-        {
+        } else {
             $job->bcc = $bcc;
         }
         $job->subject = $subject;
         $job->body = $body;
         $job->plaintext = $plaintext;
-        $job->app_name = $this->_appName;
+        $job->app_name = $this->appName;
         $job->date = time();
         $job->email_type = $this->getMailType($type);
         $job->reply_to = $replyTo;
 
         $i = 0;
         $attachments = array();
-        if ($files)
-        {
-            foreach($files as $fname=>$loc)
-            {
+        if ($files) {
+            foreach ($files as $fname => $loc) {
                 $att = new praccomm\Attachment();
                 $att->name = $fname;
                 $att->location = $loc;
@@ -79,16 +83,22 @@ class MailStaff extends Base
         $job->hash = $hash;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    public function updateMail($hash, $status, $messageId,
-                               $open_time, $open_bounce_data,
-                               $unsubscribe_data, $spam_data)
-    {
+    public function updateMail(
+        $hash,
+        $status,
+        $messageId,
+        $open_time,
+        $open_bounce_data,
+        $unsubscribe_data,
+        $spam_data
+    ) {
+
         $job = new praccomm\StaffMail();
         $job->hash = $hash;
         $job->delivery_status = Helper::getMailDeliveryStatus($status);
@@ -99,15 +109,15 @@ class MailStaff extends Base
         $job->spam_data = $spam_data;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
+        $this->queue->setDomain($this->domain);
+        return $this->queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -117,7 +127,7 @@ class MailStaff extends Base
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -128,7 +138,7 @@ class MailStaff extends Base
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -138,7 +148,7 @@ class MailStaff extends Base
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -149,7 +159,7 @@ class MailStaff extends Base
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->apiSecretKey);
         $params = array();
         $params['staff_mail_id'] = $mailId;
         $result = $client->get("/staffmail/get_mail_by_id", $params);
@@ -158,41 +168,39 @@ class MailStaff extends Base
 
     private function getMailType($type)
     {
-      switch($type)
-      {
-        case "ACCOUNT_MAILS":
-          return \praccomm\StaffEmailType::ACCOUNT_MAILS;
-        case "EXPENSES_REPORT":
-          return \praccomm\StaffEmailType::EXPENSES_REPORT;
-        case "INCOME_REPORT":
-          return \praccomm\StaffEmailType::INCOME_REPORT;
-        case "ACCOUNT_INVITE":
-          return \praccomm\StaffEmailType::ACCOUNT_INVITE;
-        case "ONLINE_APPOINTMENT":
-          return \praccomm\StaffEmailType::ONLINE_APPOINTMENT;
-        case "REMINDER":
-          return \praccomm\StaffEmailType::REMINDER;
-        case "SUMMARY_FOLLOWUPBIRTHDAY":
-          return \praccomm\StaffEmailType::SUMMARY_FOLLOWUPBIRTHDAY;
-        case "ACCOUNT_DELETE":
-          return \praccomm\StaffEmailType::ACCOUNT_DELETE;
-        case "BILLS_REPORT":
-          return \praccomm\StaffEmailType::BILLS_REPORT;
-        case "LOW_STOCK":
-          return \praccomm\StaffEmailType::LOW_STOCK;
-        case "TOTP_ENABLED":
-          return \praccomm\StaffEmailType::TOTP_ENABLED;
-        case "LAB_ORDERS":
-          return \praccomm\StaffEmailType::LAB_ORDERS;
-        case "V6_UPGRADE":
-          return \praccomm\StaffEmailType::V6_UPGRADE;
-        case "SHARE_SETTINGS_UPDATE":
-          return \praccomm\StaffEmailType::SHARE_SETTINGS_UPDATE;
-        case "SAVE_AND_ORDER":
-          return praccomm\StaffEmailType::SAVE_AND_ORDER;
-        default:
-          throw new \Exception("Invalid message type");
-      }
+        switch ($type) {
+            case "ACCOUNT_MAILS":
+                return \praccomm\StaffEmailType::ACCOUNT_MAILS;
+            case "EXPENSES_REPORT":
+                return \praccomm\StaffEmailType::EXPENSES_REPORT;
+            case "INCOME_REPORT":
+                return \praccomm\StaffEmailType::INCOME_REPORT;
+            case "ACCOUNT_INVITE":
+                return \praccomm\StaffEmailType::ACCOUNT_INVITE;
+            case "ONLINE_APPOINTMENT":
+                return \praccomm\StaffEmailType::ONLINE_APPOINTMENT;
+            case "REMINDER":
+                return \praccomm\StaffEmailType::REMINDER;
+            case "SUMMARY_FOLLOWUPBIRTHDAY":
+                return \praccomm\StaffEmailType::SUMMARY_FOLLOWUPBIRTHDAY;
+            case "ACCOUNT_DELETE":
+                return \praccomm\StaffEmailType::ACCOUNT_DELETE;
+            case "BILLS_REPORT":
+                return \praccomm\StaffEmailType::BILLS_REPORT;
+            case "LOW_STOCK":
+                return \praccomm\StaffEmailType::LOW_STOCK;
+            case "TOTP_ENABLED":
+                return \praccomm\StaffEmailType::TOTP_ENABLED;
+            case "LAB_ORDERS":
+                return \praccomm\StaffEmailType::LAB_ORDERS;
+            case "V6_UPGRADE":
+                return \praccomm\StaffEmailType::V6_UPGRADE;
+            case "SHARE_SETTINGS_UPDATE":
+                return \praccomm\StaffEmailType::SHARE_SETTINGS_UPDATE;
+            case "SAVE_AND_ORDER":
+                return praccomm\StaffEmailType::SAVE_AND_ORDER;
+            default:
+                throw new \Exception("Invalid message type");
+        }
     }
 }
-?>

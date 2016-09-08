@@ -28,7 +28,7 @@ class QueueFactory extends ContainerAware
             ($hParts = explode('.', $parts['host'], 3)) &&
             ($hParts[0] == 'sqs' && $hParts[2] == 'amazonaws.com')) {
             return new SQSQueue($uri, $sqsSpoolDir);
-        } else if ($parts['scheme'] == 'beanstalk') {
+        } elseif ($parts['scheme'] == 'beanstalk') {
             return new BeanstalkQueue($uri);
         } else {
             throw new \Exception('Unsupported uri scheme');
