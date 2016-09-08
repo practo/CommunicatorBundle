@@ -9,17 +9,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing doctors
  */
-class MailDoctor
+class MailDoctor extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri,
-                                $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -81,6 +78,7 @@ class MailDoctor
         $job->hash = $hash;
         $job->mail_type = 'doctor';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -101,6 +99,7 @@ class MailDoctor
         $job->mail_type = 'doctor';
         $jsonifiedJob = json_encode($job);
         $queueName = $this->_updateMailQueue;
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -108,7 +107,7 @@ class MailDoctor
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -118,7 +117,7 @@ class MailDoctor
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -129,7 +128,7 @@ class MailDoctor
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -139,7 +138,7 @@ class MailDoctor
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -150,7 +149,7 @@ class MailDoctor
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['doc_mail_id'] = $mailId;
         $result = $client->get("/doctormail/get_mail_by_id", $params);
@@ -175,6 +174,8 @@ class MailDoctor
               return \praccomm\DoctorEmailType::RESCHEDULE;
             case "BILLS_REPORT":
               return \praccomm\DoctorEmailType::BILLS_REPORT;
+            case "TERMS_CONFIRMATION":
+              return \praccomm\DoctorEmailType::TERMS_CONFIRMATION;
             default:
               throw new \Exception("Invalid message type");
         }

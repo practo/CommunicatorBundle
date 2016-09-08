@@ -10,16 +10,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Client for generic sms
  */
-class SmsGeneric
+class SmsGeneric extends Base
 {
     private $_appName;
     private $_queue;
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
 
-    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -27,7 +25,7 @@ class SmsGeneric
 
     public function sendSms($reference_id, $reference_type,
                             $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null)
+                            $notes = null, $expiryTime = null, $sender_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
@@ -41,7 +39,9 @@ class SmsGeneric
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic';
+        $job->sender_id = $sender_id;
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_GENERIC_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -58,6 +58,15 @@ class SmsGeneric
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'OTP',
+            'CONSULT_DOCTOR_REPLY_SMS',
+            'CONSULT_GENERIC_SMS',
+            'ORDER_SMS',
+            'SMS_ERROR_RESPONSE',
+            'GUARANTEE_CLAIM',
+            'FEEDBACK_NOTIFICATION_SMS',
+            'FIT_RAY_SHARE_SMS',
+            'VN_CALL_SUMMARY',
+            'DX_ORDER_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
@@ -66,7 +75,7 @@ class SmsGeneric
 
     public function getMessageLogBySurveyId($surveyId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['reference_id'] = $surveyId;
         $params['sms_types'] = array('SURVEY_SMS');
@@ -76,7 +85,7 @@ class SmsGeneric
 
     public function isMsgSentOfTypeForRecipient($messageType, $mobile)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['message_type'] = $messageType;
         $params['mobile'] = $mobile;
@@ -97,7 +106,7 @@ class SmsGeneric
      */
     public function getMessageCountByType($messageType, $startDate, $endDate, $status)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = [
             'message_type' => $messageType,
             'start_date'   => $startDate,
@@ -119,7 +128,7 @@ class SmsGeneric
      */
     public function getMessageCountByReferenceIds($referenceIds, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['reference_ids'] = $referenceIds;
         $params['sms_types'] = $smsTypes;

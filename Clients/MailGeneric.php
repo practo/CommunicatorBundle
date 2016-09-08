@@ -10,16 +10,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Client for sending generic mails
  */
-class MailGeneric
+class MailGeneric extends Base
 {
     private $_appName;
     private $_queue;
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
 
-    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -29,7 +27,7 @@ class MailGeneric
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL)
+                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericMail();
@@ -60,6 +58,12 @@ class MailGeneric
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->app_name = $this->_appName;
+        if ($createdBy) {
+            $job->created_by = $createdBy;
+        }
+        if ($appName) {
+            $job->app_name = Helper::getValidAppName($appName);
+        }
         $job->email_type = strtoupper($type);
         $job->date = time();
         $job->reply_to = $replyTo;
@@ -80,6 +84,7 @@ class MailGeneric
         $job->hash = $hash;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -99,6 +104,7 @@ class MailGeneric
         $job->spam_data = $spam_data;
         $job->mail_type = 'generic';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -110,11 +116,13 @@ class MailGeneric
             'FABRIC_ROI_REPORT',
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
+            'MERGE_FAILED',
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
             'SURVEY_VERIFICATION_EMAIL',
             'FIT_GENERIC_MAIL',
+            'FIT_EDITOR_FEEDBACK_MAIL',
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
@@ -122,7 +130,26 @@ class MailGeneric
             'FEEDBACK_DAILY_HEALTH_EMAIL',
             'FEEDBACK_SURVEY_EMAIL',
             'TAB_BIAS_DAILY_REPORT',
-            'TAB_BIAS_DETECTION_EMAIL'
+            'TAB_BIAS_DETECTION_EMAIL',
+            'SCOUT_HOURLY_MAIL',
+            'PHARMA_MAIL',
+            'RAY_REPORT_APPOINTMENTS',
+            'RAY_REPORT_APPOINTMENTS_SUMMARY',
+            'RAY_REPORT_DAILY_SUMMARY',
+            'RAY_REPORT_EXPENSE',
+            'RAY_REPORT_EXPENSE_SUMMARY',
+            'RAY_REPORT_INVOICE',
+            'RAY_REPORT_INVOICE_SUMMARY',
+            'RAY_REPORT_PATIENTS',
+            'RAY_REPORT_PATIENTS_SUMMARY',
+            'RAY_REPORT_PAYMENT',
+            'RAY_REPORT_PAYMENTS_SUMMARY',
+            'RAY_REPORT_PAYMENT_DETAILS_SUMMARY',
+            'RAY_REPORT_TREATMENTS',
+            'RAY_REPORT_TREATMENTS_SUMMARY',
+            'DOCTOR_NO_SHOW',
+            'REACH_DAILY_ROI_EMAIL',
+            'FABRIC_BLUEBOOK_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
@@ -143,7 +170,7 @@ class MailGeneric
      */
     public function getMailCountByType($mailType, $startDate, $endDate, $deliveryStatus)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = [
             'mail_type'       => $mailType,
             'start_date'      => $startDate,
