@@ -66,7 +66,8 @@ class SmsGeneric extends Base
             'FEEDBACK_NOTIFICATION_SMS',
             'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY',
-            'DX_ORDER_SMS'
+            'DX_ORDER_SMS',
+            'FEEDBACK_STATUS_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
