@@ -231,6 +231,7 @@ class SmsPatient
             'PATIENT_LAB_ORDERS',
             'ANNIVERSARY',
             'LENS_REPLACEMENT_REMINDER',
+            'D2P_REMINDER',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
