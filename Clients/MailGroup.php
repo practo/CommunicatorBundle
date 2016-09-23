@@ -9,16 +9,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Clinet for sending group mails
  */
-class MailGroup
+class MailGroup extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    private function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
+    private function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -78,6 +76,7 @@ class MailGroup
         $job->hash = $hash;
         $job->mail_type = 'group';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -97,6 +96,7 @@ class MailGroup
         $job->spam_data = $spam_data;
         $job->mail_type = 'group';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -104,7 +104,7 @@ class MailGroup
 
     public function getMailsByGroupId($groupId, $mailTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['group_id'] = $groupId;
         $params['mail_types'] = $mailTypes;
@@ -114,7 +114,7 @@ class MailGroup
 
     public function getMailsByEventId($groupId, $eventId, $mailTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['group_id'] = $groupId;
         $params['event_id'] = $eventId;

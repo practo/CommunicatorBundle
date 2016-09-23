@@ -9,16 +9,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing doctors
  */
-class SmsStaff
+class SmsStaff extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri, $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -49,6 +47,7 @@ class SmsStaff
             $job->failure_reason = 'SMSDISABLED';
         }
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -66,6 +65,7 @@ class SmsStaff
         $job->operator_code = $opCode;
         $job->sms_type = 'staff';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -73,7 +73,7 @@ class SmsStaff
 
     public function searchSmsByPracticeId($pid, $sendDate, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -84,7 +84,7 @@ class SmsStaff
 
     public function getMessagesByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -96,7 +96,7 @@ class SmsStaff
     public function getMessagesByDeliveryStatus($pid, $startDate,
                                                 $endDate, $smsTypes, $status)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -110,7 +110,7 @@ class SmsStaff
     public function getMessagesByFailureReason($pid, $startDate,
                                                $endDate, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -122,7 +122,7 @@ class SmsStaff
 
     public function getMessagesByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -132,7 +132,7 @@ class SmsStaff
 
     public function getMessagesByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -143,7 +143,7 @@ class SmsStaff
 
     public function getRetriedMessagesForId($smsId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['sms_id'] = $smsId;
         $result = $client->get("/staffsms/get_retried_messages_for_smsid", $params);
@@ -180,6 +180,8 @@ class SmsStaff
               return praccomm\StaffSMSType::TOTP_ENABLED;
             case "LAB_ORDERS":
               return praccomm\StaffSMSType::LAB_ORDERS;
+            case "SAVE_AND_ORDER":
+              return praccomm\StaffSMSType::SAVE_AND_ORDER;
             default:
               throw new \Exception("Invalid message type");
         }

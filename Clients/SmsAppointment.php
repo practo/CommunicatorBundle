@@ -9,17 +9,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Clinet for messaging doctors
  */
-class SmsAppointment
+class SmsAppointment extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri,
-                                $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
         $this->_appName = Helper::getValidAppName($appName);
@@ -40,6 +37,7 @@ class SmsAppointment
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_APPOINTMENT_SMS_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -48,7 +46,7 @@ class SmsAppointment
 
     public function getMessagesByAppointmentId($apptId, $smsTypes)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['appointment_id'] = $apptId;
         $params['sms_types'] = $smsTypes;

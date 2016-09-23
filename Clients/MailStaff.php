@@ -10,17 +10,14 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing staff
  */
-class MailStaff
+class MailStaff extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_appName;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri,
-                                $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $appName)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_appName = Helper::getValidAppName($appName);
         $this->_queue = $queue;
@@ -82,6 +79,7 @@ class MailStaff
         $job->hash = $hash;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -101,6 +99,7 @@ class MailStaff
         $job->spam_data = $spam_data;
         $job->mail_type = 'staff';
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -108,7 +107,7 @@ class MailStaff
 
     public function searchMailByPracticeId($pid, $sendDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['send_date'] = $sendDate;
@@ -118,7 +117,7 @@ class MailStaff
 
     public function getMailByDateRange($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -129,7 +128,7 @@ class MailStaff
 
     public function getMailByApplication($startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['start_date'] = $startDate;
         $params['end_date'] = $endDate;
@@ -139,7 +138,7 @@ class MailStaff
 
     public function getMailByPidGroupedByApp($pid, $startDate, $endDate)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $params['start_date'] = $startDate;
@@ -150,7 +149,7 @@ class MailStaff
 
     public function getMailById($mailId)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['staff_mail_id'] = $mailId;
         $result = $client->get("/staffmail/get_mail_by_id", $params);
@@ -189,6 +188,8 @@ class MailStaff
           return \praccomm\StaffEmailType::V6_UPGRADE;
         case "SHARE_SETTINGS_UPDATE":
           return \praccomm\StaffEmailType::SHARE_SETTINGS_UPDATE;
+        case "SAVE_AND_ORDER":
+          return praccomm\StaffEmailType::SAVE_AND_ORDER;
         default:
           throw new \Exception("Invalid message type");
       }

@@ -9,15 +9,13 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Mail clinet for mailing doctors
  */
-class SmsCredit
+class SmsCredit extends Base
 {
-    private $_communicatorBaseUri;
     private $_apiSecretKey;
     private $_queue;
 
-    public function __construct($queue, $communicatorBaseUri, $apiSecretKey)
+    public function __construct($queue, $apiSecretKey)
     {
-        $this->_communicatorBaseUri = $communicatorBaseUri;
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
     }
@@ -33,6 +31,7 @@ class SmsCredit
         $job->hello_plan = $helloPlan;
         $job->wallet_credit = $walletCredit;
         $jsonifiedJob = json_encode($job);
+        $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SMS_CREDIT_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
@@ -40,7 +39,7 @@ class SmsCredit
 
     public function insertPractoCredit($practiceId, $credit)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['amount'] = $credit;
@@ -50,7 +49,7 @@ class SmsCredit
 
     public function addWalletCredit($practiceId, $credit)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['amount'] = $credit;
@@ -60,7 +59,7 @@ class SmsCredit
 
     public function deductCredit($practiceId, $credit)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['amount'] = $credit;
@@ -78,7 +77,7 @@ class SmsCredit
      */
     public function deductWalletCredit($practiceId, $credit)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['amount'] = $credit;
@@ -96,7 +95,7 @@ class SmsCredit
      */
     public function deductHelloCallCost($practiceId, $callDurationInMins)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['call_duration_mins'] = $callDurationInMins;
@@ -113,7 +112,7 @@ class SmsCredit
      */
     public function getCredits($pid)
     {
-        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $pid;
         $result = $client->get("/smscredit/get_credit", $params);

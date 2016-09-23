@@ -65,6 +65,7 @@ final class StaffEmailType {
   const TOTP_ENABLED = 15;
   const LAB_ORDERS = 16;
   const SHARE_SETTINGS_UPDATE = 17;
+  const SAVE_AND_ORDER = 18;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -83,6 +84,7 @@ final class StaffEmailType {
     15 => 'TOTP_ENABLED',
     16 => 'LAB_ORDERS',
     17 => 'SHARE_SETTINGS_UPDATE',
+    18 => 'SAVE_AND_ORDER'
   );
 }
 
@@ -101,6 +103,7 @@ final class DoctorSMSType {
   const PVR_EMERGENCY = 12;
   const PVR_VOICEMAIL = 13;
   const PVR_CALL = 14;
+  const BLOCKCALENDAR = 15;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CANCELLATION',
@@ -116,6 +119,7 @@ final class DoctorSMSType {
     12 => 'PVR_EMERGENCY',
     13 => 'PVR_VOICEMAIL',
     14 => 'PVR_CALL',
+    15 => 'BLOCKCALENDAR'
   );
 }
 
@@ -161,6 +165,7 @@ final class StaffSMSType {
   const PVR_CALL = 11;
   const TOTP_ENABLED = 12;
   const LAB_ORDERS = 13;
+  const SAVE_AND_ORDER = 14;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CUSTOM',
@@ -175,6 +180,7 @@ final class StaffSMSType {
     11 => 'PVR_CALL',
     12 => 'TOTP_ENABLED',
     13 => 'LAB_ORDERS',
+    14 => 'SAVE_AND_ORDER'
   );
 }
 
@@ -1338,6 +1344,7 @@ class GenericSMS {
   public $cost = null;
   public $expiry_time = null;
   public $notes = null;
+  public $sender_id = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1409,6 +1416,9 @@ class GenericSMS {
       }
       if (isset($vals['notes'])) {
         $this->notes = $vals['notes'];
+      }
+      if (isset($vals['sender_id'])) {
+        $this->sender_id = $vals['sender_id'];
       }
     }
   }
