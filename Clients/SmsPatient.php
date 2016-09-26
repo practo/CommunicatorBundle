@@ -230,6 +230,7 @@ class SmsPatient extends Base
             'PATIENT_LAB_ORDERS',
             'ANNIVERSARY',
             'LENS_REPLACEMENT_REMINDER',
+            'PATIENT_SMS_BLACKLISTED'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
