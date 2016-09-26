@@ -47,7 +47,8 @@ class SmsCredit extends Base
         return $result;
     }
 
-    public function clearPractoCredit($practiceId)
+    // This resets practo credit (free credit) to 0
+    public function resetPractoCredit($practiceId)
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
