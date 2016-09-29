@@ -149,7 +149,8 @@ class MailGeneric extends Base
             'RAY_REPORT_TREATMENTS_SUMMARY',
             'DOCTOR_NO_SHOW',
             'REACH_DAILY_ROI_EMAIL',
-            'FABRIC_BLUEBOOK_MAIL'
+            'FABRIC_BLUEBOOK_MAIL',
+            'OLA_BOOK_COUPON_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
