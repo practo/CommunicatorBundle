@@ -68,6 +68,7 @@ class SmsGeneric extends Base
             'VN_CALL_SUMMARY',
             'DX_ORDER_SMS',
             'FEEDBACK_STATUS_SMS',
+            'APPOINTMENT_SUMMARY',
             'OLA_BOOK_COUPON_SMS',
             'VN_OTUSIDE_PRACTICE_HOURS_SMS'
         );
