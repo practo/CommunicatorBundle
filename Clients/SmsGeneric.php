@@ -69,7 +69,7 @@ class SmsGeneric extends Base
             'DX_ORDER_SMS',
             'FEEDBACK_STATUS_SMS',
             'APPOINTMENT_SUMMARY',
-            'OLA_BOOK_COUPON_SMS',
+            'APPOINMENT_COUPON_CODE_SMS',
             'VN_OTUSIDE_PRACTICE_HOURS_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {

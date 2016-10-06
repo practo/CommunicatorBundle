@@ -150,7 +150,7 @@ class MailGeneric extends Base
             'DOCTOR_NO_SHOW',
             'REACH_DAILY_ROI_EMAIL',
             'FABRIC_BLUEBOOK_MAIL',
-            'OLA_BOOK_COUPON_MAIL'
+            'APPOINMENT_COUPON_CODE_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
