@@ -1,4 +1,4 @@
-<?php
+yy<?php
 
 namespace Practo\CommunicatorBundle\Clients;
 
@@ -150,7 +150,7 @@ class MailGeneric extends Base
             'DOCTOR_NO_SHOW',
             'REACH_DAILY_ROI_EMAIL',
             'FABRIC_BLUEBOOK_MAIL',
-            'APPOINMENT_COUPON_CODE_MAIL',
+            'APPOINTMENT_COUPON_CODE_MAIL',
             'APPOINTMENT_REMINDER_MAIL'
         );
 
