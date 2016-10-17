@@ -68,7 +68,11 @@ class SmsGeneric extends Base
             'VN_CALL_SUMMARY',
             'DX_ORDER_SMS',
             'FEEDBACK_STATUS_SMS',
-            'APPOINTMENT_SUMMARY'
+            'APPOINTMENT_SUMMARY',
+            'APPOINTMENT_COUPON_CODE_SMS',
+            'VN_OUTSIDE_PRACTICE_HOURS_SMS',
+            'APPOINTMENT_REMINDER_SMS',
+            'PAYTM_OFFERS_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
