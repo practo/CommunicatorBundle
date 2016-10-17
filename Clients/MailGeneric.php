@@ -1,4 +1,4 @@
-yy<?php
+<?php
 
 namespace Practo\CommunicatorBundle\Clients;
 
