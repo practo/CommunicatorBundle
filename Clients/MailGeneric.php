@@ -116,6 +116,7 @@ class MailGeneric extends Base
             'FABRIC_ROI_REPORT',
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
+            'MERGE_FAILED',
             'VN_DETAILS',
             'ALERT_BAD_HEALTH',
             'FABRIC_DQS_REPORT',
@@ -146,9 +147,12 @@ class MailGeneric extends Base
             'RAY_REPORT_PAYMENT_DETAILS_SUMMARY',
             'RAY_REPORT_TREATMENTS',
             'RAY_REPORT_TREATMENTS_SUMMARY',
+            'RAY_REPORT_INVENTORY_TIMELINE',
             'DOCTOR_NO_SHOW',
             'REACH_DAILY_ROI_EMAIL',
-            'FABRIC_BLUEBOOK_MAIL'
+            'FABRIC_BLUEBOOK_MAIL',
+            'APPOINTMENT_COUPON_CODE_MAIL',
+            'APPOINTMENT_REMINDER_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {

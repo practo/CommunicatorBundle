@@ -16,6 +16,9 @@ class SQSQueue extends AbstractQueue
     protected $accountId;
     protected $spoolDir;
 
+    const BASE64_EXPAND_RATIO = 1.37;
+    const MAX_JOB_SIZE = 262144;
+
     /**
      * Constructor
      *
@@ -141,6 +144,17 @@ class SQSQueue extends AbstractQueue
             if (!file_exists($this->spoolDir)) {
                 mkdir($this->spoolDir);
             }
+            if (empty(strval($message))) {
+                throw new \Exception('Error in '.$this->getQueueName().'. The message body can not be empty.');
+            }
+            if (strlen(strval($message)) * self::BASE64_EXPAND_RATIO > self::MAX_JOB_SIZE) {
+                throw new \Exception('One or more parameters are invalid. Reason: Message must be shorter than 262144 bytes.');
+            }
+            $currentTime = time();
+            $jobDir = intval($currentTime/100);
+            if (!file_exists($this->spoolDir.'/'.$jobDir)) {
+                mkdir($this->spoolDir.'/'.$jobDir);
+            }
             $filename = str_replace('.', '', microtime(true)) . $this->getRandomString(10);
             $payload = implode("\t", array(
                 $this->region,
@@ -149,8 +163,11 @@ class SQSQueue extends AbstractQueue
                 $delay,
                 $this->getVisibilityTimeout()
             ));
-            file_put_contents($this->spoolDir . '/' . $filename, $payload);
-            rename($this->spoolDir . '/' . $filename, $this->spoolDir . '/' . $filename . '.v1message');
+            $status = file_put_contents($this->spoolDir.'/'.$jobDir.'/'.$filename, $payload);
+            if ($status === false) {
+                throw new \Exception('File put contents failed. Dir=>'.$this->spoolDir.'/'.$jobDir.'/'.$filename.'. Payload=> '.json_encode($payload));
+            }
+            rename($this->spoolDir.'/'.$jobDir.'/'.$filename, $this->spoolDir.'/'.$jobDir.'/'.$filename.'.v1message');
         }
         else {
             try {

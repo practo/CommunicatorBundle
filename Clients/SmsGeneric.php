@@ -25,7 +25,7 @@ class SmsGeneric extends Base
 
     public function sendSms($reference_id, $reference_type,
                             $name, $to, $messageType, $body,
-                            $notes = null, $expiryTime = null)
+                            $notes = null, $expiryTime = null, $sender_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
@@ -39,6 +39,7 @@ class SmsGeneric extends Base
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic';
+        $job->sender_id = $sender_id;
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
@@ -56,14 +57,28 @@ class SmsGeneric extends Base
             'VN_APP_PROMOTION_SMS',
             'SURVEY_VERIFICATION_SMS',
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
+            'OTP',
             'CONSULT_DOCTOR_REPLY_SMS',
+            'CONSULT_GENERIC_SMS',
             'ORDER_SMS',
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
             'FEEDBACK_NOTIFICATION_SMS',
             'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY',
-            'DX_ORDER_SMS'
+            'DX_ORDER_SMS',
+            'FEEDBACK_STATUS_SMS',
+            'APPOINTMENT_SUMMARY',
+            'APPOINTMENT_COUPON_CODE_SMS',
+            'VN_OUTSIDE_PRACTICE_HOURS_SMS',
+            'APPOINTMENT_REMINDER_SMS',
+            'PAYTM_OFFERS_SMS',
+            'VN_MONETIZATION_ANSWERED_CALL_SMS',
+            'VN_MONETIZATION_MISSED_CALL_SMS',
+            'VN_MONETIZATION_DAILY_SMS',
+            'VN_MONETIZATION_WEEKLY_SMS',
+            'VN_MONETIZATION_MONTHLY_SMS',
+            'VN_MONETIZATION_RENEWAL_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
