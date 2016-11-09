@@ -176,6 +176,8 @@ class MailDoctor extends Base
               return \praccomm\DoctorEmailType::BILLS_REPORT;
             case "TERMS_CONFIRMATION":
               return \praccomm\DoctorEmailType::TERMS_CONFIRMATION;
+            case "SHARE_SETTINGS_UPDATE":
+              return \praccomm\DoctorEmailType::SHARE_SETTINGS_UPDATE;
             default:
               throw new \Exception("Invalid message type");
         }

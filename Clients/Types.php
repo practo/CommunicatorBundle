@@ -35,6 +35,7 @@ final class DoctorEmailType {
   const RESCHEDULE = 6;
   const BILLS_REPORT = 7;
   const TERMS_CONFIRMATION = 8;
+  const SHARE_SETTINGS_UPDATE = 9;
   static public $__names = array(
     1 => 'CANCELLATION',
     2 => 'CONFIRMATION',
@@ -44,6 +45,7 @@ final class DoctorEmailType {
     6 => 'RESCHEDULE',
     7 => 'BILLS_REPORT',
     8 => 'TERMS_CONFIRMATION',
+    9 => 'SHARE_SETTINGS_UPDATE',
   );
 }
 
