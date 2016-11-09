@@ -152,7 +152,11 @@ class MailGeneric extends Base
             'REACH_DAILY_ROI_EMAIL',
             'FABRIC_BLUEBOOK_MAIL',
             'APPOINTMENT_COUPON_CODE_MAIL',
-            'APPOINTMENT_REMINDER_MAIL'
+            'APPOINTMENT_REMINDER_MAIL',
+            'APPOINTMENT_PAYMENT_CONFIRMED',
+            'APPOINTMENT_PAYMENT_FAILED',
+            'APPOINTMENT_REFUND_COMPLETED',
+            'APPOINTMENT_REFUND_FAILED'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
