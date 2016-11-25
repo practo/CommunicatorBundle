@@ -69,6 +69,7 @@ final class StaffEmailType {
   const SHARE_SETTINGS_UPDATE = 17;
   const SAVE_AND_ORDER = 18;
   const EXPORT_FILES = 19;
+  const ONLINE_TRANSACTION_SUMMARY = 20;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -88,7 +89,8 @@ final class StaffEmailType {
     16 => 'LAB_ORDERS',
     17 => 'SHARE_SETTINGS_UPDATE',
     18 => 'SAVE_AND_ORDER',
-    19 => 'EXPORT_FILES'
+    19 => 'EXPORT_FILES',
+    20 => 'ONLINE_TRANSACTION_SUMMARY'
   );
 }
 
