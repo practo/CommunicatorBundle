@@ -194,8 +194,8 @@ class MailStaff extends Base
           return praccomm\StaffEmailType::EXPORT_FILES;
         case 'ONLINE_TRANSACTION_SUMMARY':
           return praccomm\StaffEmailType::ONLINE_TRANSACTION_SUMMARY;
-        case 'EXPIRING_STOCK':
-          return praccomm\StaffEmailType::EXPIRING_STOCK;
+        case 'EXPIRING_BATCHES':
+          return praccomm\StaffEmailType::EXPIRING_BATCHES;
         default:
           throw new \Exception("Invalid message type");
       }
