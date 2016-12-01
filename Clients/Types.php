@@ -187,6 +187,7 @@ final class StaffSMSType {
     11 => 'PVR_CALL',
     12 => 'TOTP_ENABLED',
     13 => 'LAB_ORDERS',
+    14 => 'SAVE_AND_ORDER',
     15 => 'PAYMENT'
   );
 }
