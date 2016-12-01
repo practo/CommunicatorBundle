@@ -172,6 +172,7 @@ final class StaffSMSType {
   const TOTP_ENABLED = 12;
   const LAB_ORDERS = 13;
   const SAVE_AND_ORDER = 14;
+  const PAYMENT = 15;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CUSTOM',
@@ -186,7 +187,7 @@ final class StaffSMSType {
     11 => 'PVR_CALL',
     12 => 'TOTP_ENABLED',
     13 => 'LAB_ORDERS',
-    14 => 'SAVE_AND_ORDER'
+    15 => 'PAYMENT'
   );
 }
 

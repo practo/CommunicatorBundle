@@ -182,6 +182,8 @@ class SmsStaff extends Base
               return praccomm\StaffSMSType::LAB_ORDERS;
             case "SAVE_AND_ORDER":
               return praccomm\StaffSMSType::SAVE_AND_ORDER;
+            case 'PAYMENT':
+                return praccomm\StaffSMSType::PAYMENT;
             default:
               throw new \Exception("Invalid message type");
         }
