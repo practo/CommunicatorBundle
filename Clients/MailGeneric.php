@@ -153,7 +153,8 @@ class MailGeneric extends Base
             'FABRIC_BLUEBOOK_MAIL',
             'APPOINTMENT_COUPON_CODE_MAIL',
             'APPOINTMENT_REMINDER_MAIL',
-            'SPACE_WORKFLOW_MAIL'
+            'SPACE_WORKFLOW_MAIL',
+            'CROWDSOURCE_DOCTOR_PROOF'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
