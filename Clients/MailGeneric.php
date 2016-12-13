@@ -153,10 +153,13 @@ class MailGeneric extends Base
             'FABRIC_BLUEBOOK_MAIL',
             'APPOINTMENT_COUPON_CODE_MAIL',
             'APPOINTMENT_REMINDER_MAIL',
+            'SPACE_WORKFLOW_MAIL',
+            'CROWDSOURCE_DOCTOR_PROOF',
             'APPOINTMENT_PAYMENT_CONFIRMED',
             'APPOINTMENT_PAYMENT_FAILED',
             'APPOINTMENT_REFUND_COMPLETED',
-            'APPOINTMENT_REFUND_FAILED'
+            'APPOINTMENT_REFUND_FAILED',
+            'APPOINTMENT_FAILED_PAYMENT_CONFIRMED'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
