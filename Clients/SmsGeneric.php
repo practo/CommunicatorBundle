@@ -82,7 +82,8 @@ class SmsGeneric extends Base
             'APPOINTMENT_PAYMENT_CONFIRMED',
             'APPOINTMENT_PAYMENT_FAILED',
             'APPOINTMENT_REFUND_COMPLETED',
-            'APPOINTMENT_REFUND_FAILED'
+            'APPOINTMENT_REFUND_FAILED',
+            'APPOINTMENT_FAILED_PAYMENT_CONFIRMED'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
