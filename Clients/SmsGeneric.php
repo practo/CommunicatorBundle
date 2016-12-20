@@ -78,7 +78,9 @@ class SmsGeneric extends Base
             'VN_MONETIZATION_DAILY_SMS',
             'VN_MONETIZATION_WEEKLY_SMS',
             'VN_MONETIZATION_MONTHLY_SMS',
-            'VN_MONETIZATION_RENEWAL_SMS'
+            'VN_MONETIZATION_RENEWAL_SMS',
+            'VN_REACH_ANSWERED_CALL_SMS',
+            'VN_REACH_MISSED_CALL_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
