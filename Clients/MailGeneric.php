@@ -154,7 +154,11 @@ class MailGeneric extends Base
             'APPOINTMENT_COUPON_CODE_MAIL',
             'APPOINTMENT_REMINDER_MAIL',
             'SPACE_WORKFLOW_MAIL',
-            'CROWDSOURCE_DOCTOR_PROOF'
+            'CROWDSOURCE_DOCTOR_PROOF',
+            'REACH_REFUND_INITIATION_WITH_KYCLINK',
+            'REACH_REFUND_INITIATION',
+            'REACH_REFUND_SUCCESS',
+            'REACH_REFUND_FAILURE'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
