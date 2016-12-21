@@ -80,7 +80,12 @@ class SmsGeneric extends Base
             'VN_MONETIZATION_MONTHLY_SMS',
             'VN_MONETIZATION_RENEWAL_SMS',
             'VN_REACH_ANSWERED_CALL_SMS',
-            'VN_REACH_MISSED_CALL_SMS'
+            'VN_REACH_MISSED_CALL_SMS',
+            'APPOINTMENT_PAYMENT_CONFIRMED',
+            'APPOINTMENT_PAYMENT_FAILED',
+            'APPOINTMENT_REFUND_COMPLETED',
+            'APPOINTMENT_REFUND_FAILED',
+            'APPOINTMENT_FAILED_PAYMENT_CONFIRMED'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");

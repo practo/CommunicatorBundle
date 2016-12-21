@@ -158,7 +158,12 @@ class MailGeneric extends Base
             'REACH_REFUND_INITIATION_WITH_KYCLINK',
             'REACH_REFUND_INITIATION',
             'REACH_REFUND_SUCCESS',
-            'REACH_REFUND_FAILURE'
+            'REACH_REFUND_FAILURE',
+            'APPOINTMENT_PAYMENT_CONFIRMED',
+            'APPOINTMENT_PAYMENT_FAILED',
+            'APPOINTMENT_REFUND_COMPLETED',
+            'APPOINTMENT_REFUND_FAILED',
+            'APPOINTMENT_FAILED_PAYMENT_CONFIRMED'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
