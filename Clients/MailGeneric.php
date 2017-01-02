@@ -164,7 +164,7 @@ class MailGeneric extends Base
             'APPOINTMENT_REFUND_COMPLETED',
             'APPOINTMENT_REFUND_FAILED',
             'APPOINTMENT_FAILED_PAYMENT_CONFIRMED',
-	    'CLAIM_PROFILE_FLOW_MAIL'
+            'CLAIM_PROFILE_FLOW_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
