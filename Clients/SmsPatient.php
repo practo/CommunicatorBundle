@@ -231,6 +231,7 @@ class SmsPatient extends Base
             'ANNIVERSARY',
             'LENS_REPLACEMENT_REMINDER',
             'D2P_REMINDER',
+            'RECONFIRMATION',
         );
 
         if (!in_array($type, $allowedTypes, true)) {
