@@ -43,7 +43,7 @@ class Helper
 
     static function getValidAppName($appName)
     {
-        $apps = array("RAY", "HELLO", "FABRIC", "EPICENTER");
+        $apps = array("RAY", "HELLO", "FABRIC", "EPICENTER", "ORDER", "FIT", "CONSULT", "PAYMENTS");
         $appNameUpper = strtoupper($appName);
         if(in_array($appNameUpper, $apps))
         {
@@ -52,7 +52,7 @@ class Helper
         else
         {
             throw new \Exception('Invalid application name. Has to be one of' .
-                                ' RAY, HELLO, FABRIC, EPICENTER');
+                                ' RAY, HELLO, FABRIC, EPICENTER, ORDER, FIT, CONSULT, PAYMENTS');
         }
     }
 }
