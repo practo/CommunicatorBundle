@@ -69,6 +69,7 @@ Communicator has 4 required parameters, add them to your `parameters.yml`
 communicator.queue.uri: beanstalk://localhost/
 communicator.base_uri: replace-with-communicator-url
 communicator.api.secret: replace-with-communicator-api-secret
+communicator.api.app_name: replace-with-application-name
 communicator.s3.bucket: attachment-bucket-name
 ```
 
