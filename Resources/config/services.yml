@@ -39,7 +39,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_doctor:
@@ -47,7 +47,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_staff:
@@ -55,7 +55,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_appointment:
@@ -63,7 +63,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_group:
@@ -71,7 +71,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_generic:
@@ -79,7 +79,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_patient:
@@ -87,7 +87,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_doctor:
@@ -95,7 +95,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_generic:
@@ -103,7 +103,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_staff:
@@ -111,7 +111,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - RAY
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_appointment:
@@ -119,7 +119,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_group:
@@ -127,7 +127,7 @@ services:
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
-      - FABRIC
+      - %communicator.api.app_name%
     calls:
         - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_credit:
