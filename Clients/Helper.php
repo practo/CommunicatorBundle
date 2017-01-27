@@ -43,7 +43,7 @@ class Helper
 
     static function getValidAppName($appName)
     {
-        $apps = array("RAY", "HELLO", "FABRIC", "EPICENTER", "ORDER", "FIT", "CONSULT", "PAYMENTS", "ORDER");
+        $apps = array("RAY", "HELLO", "FABRIC", "EPICENTER", "ORDER", "FIT", "CONSULT", "PAYMENTS", "ORDER", "EPICENTER_API");
         $appNameUpper = strtoupper($appName);
         if(in_array($appNameUpper, $apps))
         {
