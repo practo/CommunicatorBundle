@@ -239,6 +239,7 @@ class MailPatient extends Base
             'LAB_ORDER_RESULT',
             'ANNIVERSARY',
             'LIFESTYLE_ADVISORY',
+            'DENTAL_CHART',
             'CHART'
         );
 
