@@ -104,6 +104,33 @@ class SmsGeneric extends Base
         return $result;
     }
 
+    /**
+     * Get Messages by referenceId and referenceType
+     *
+     * @param string $referenceId   - Reference Id
+     * @param string $referenceType - Reference Type
+     * @param array  $smsTypes      - SMS Types
+     * @param string $startDate     - Starting Date
+     * @param string $endDate       - Ending Date
+     *
+     * @return Array
+     */
+    public function getMessagesByReferenceIdAndType($referenceId, $referenceType, $smsTypes,
+        $startDate, $endDate)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = array(
+            'reference_type' => $referenceType,
+            'reference_id'   => $referenceId,
+            'start_date'     => $startDate,
+            'sms_types'      => $smsTypes,
+            'end_date'       => $endDate
+        );
+        $result = $client->get("/genericsms/get_messages_by_ref_id_and_type", $params);
+
+        return $result;
+    }
+
     public function isMsgSentOfTypeForRecipient($messageType, $mobile)
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
