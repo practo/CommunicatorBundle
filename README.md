@@ -121,7 +121,6 @@ $mailStaff->sendMail(
                      $expiryTime = NULL, $appName = null)s = null, $expiryTime = null
             );
 ```
-```
 
 FAQ
 ===
