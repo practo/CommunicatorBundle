@@ -126,7 +126,8 @@ FAQ
 ===
 
 * Getting error pheanstalk_pheanstalk not found 
-Two ways to solve it.
+
+There are two ways to solve it.
 
 1. Use version ~2.1 of pheanstalk.
 2. In communicatatorbundle change pheanstalk_pheanstalk  to pheanstalk/pheanstalk.
