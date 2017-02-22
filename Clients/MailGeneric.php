@@ -166,7 +166,8 @@ class MailGeneric extends Base
             'APPOINTMENT_REFUND_FAILED',
             'APPOINTMENT_FAILED_PAYMENT_CONFIRMED',
             'CLAIM_PROFILE_FLOW_MAIL',
-            'TATKAL_NOTIFICATION_MAIL'
+            'TATKAL_NOTIFICATION_MAIL',
+            'PARTNER_PUBLISH_NOTIFICATION_EMAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
