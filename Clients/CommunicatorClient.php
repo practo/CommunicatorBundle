@@ -21,10 +21,12 @@ class CommunicatorClient {
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
         $auth_token = hash('sha256', $api_secret_key.$nonce);
-
-        $api_url = $communicatorBaseUri.$endpoint;
-        $api_url = $api_url."?data=".json_encode($request_params);
-        $ch = curl_init($api_url);
+        
+        $ch = curl_init();
+        $request_params = curl_escape($ch, json_encode($request_params));
+        $api_url = $communicatorBaseUri.$endpoint . "?data=" . $request_params;
+        
+        curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
         $headers = array(
