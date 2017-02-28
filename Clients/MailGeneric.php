@@ -168,7 +168,7 @@ class MailGeneric extends Base
             'CLAIM_PROFILE_FLOW_MAIL',
             'TATKAL_NOTIFICATION_MAIL',
             'PARTNER_PUBLISH_NOTIFICATION_EMAIL',
-            'BOOK_GENERIC_NOTIFICATION
+            'BOOK_GENERIC_NOTIFICATION'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
