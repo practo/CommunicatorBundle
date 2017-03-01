@@ -87,6 +87,7 @@ class SmsGeneric extends Base
             'APPOINTMENT_REFUND_FAILED',
             'APPOINTMENT_FAILED_PAYMENT_CONFIRMED',
             'CLAIM_PROFILE_FLOW_SMS',
+            'TATKAL_NOTIFICATION_SMS',
             'APPOINTMENT_PNS'
         );
         if (!in_array($type, $allowedTypes, true)) {
@@ -101,6 +102,33 @@ class SmsGeneric extends Base
         $params['reference_id'] = $surveyId;
         $params['sms_types'] = array('SURVEY_SMS');
         $result = $client->get("/genericsms/get_messages_by_reference_id", $params);
+        return $result;
+    }
+
+    /**
+     * Get Messages by referenceId and referenceType
+     *
+     * @param string $referenceId   - Reference Id
+     * @param string $referenceType - Reference Type
+     * @param array  $smsTypes      - SMS Types
+     * @param string $startDate     - Starting Date
+     * @param string $endDate       - Ending Date
+     *
+     * @return Array
+     */
+    public function getMessagesByReferenceIdAndType($referenceId, $referenceType, $smsTypes,
+        $startDate, $endDate)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = array(
+            'reference_type' => $referenceType,
+            'reference_id'   => $referenceId,
+            'start_date'     => $startDate,
+            'sms_types'      => $smsTypes,
+            'end_date'       => $endDate
+        );
+        $result = $client->get("/genericsms/get_messages_by_ref_id_and_type", $params);
+
         return $result;
     }
 
