@@ -88,7 +88,8 @@ class SmsGeneric extends Base
             'APPOINTMENT_FAILED_PAYMENT_CONFIRMED',
             'CLAIM_PROFILE_FLOW_SMS',
             'TATKAL_NOTIFICATION_SMS',
-            'APPOINTMENT_PNS'
+            'APPOINTMENT_PNS_DEFAULT',
+            'APPOINTMENT_PNS_THIRD'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
