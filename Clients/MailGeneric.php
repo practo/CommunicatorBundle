@@ -126,7 +126,7 @@ class MailGeneric extends Base
             'CONSULT_GENERIC_MAIL',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
-            'QIKWELL_APPOINTMENT_REMINDER_MAIL',
+            'APPOINTMENT_REMINDER_MAIL',
             'FEEDBACK_DAILY_HEALTH_EMAIL',
             'FEEDBACK_SURVEY_EMAIL',
             'TAB_BIAS_DAILY_REPORT',
