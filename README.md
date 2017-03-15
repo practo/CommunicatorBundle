@@ -121,4 +121,13 @@ $mailStaff->sendMail(
                      $expiryTime = NULL, $appName = null)s = null, $expiryTime = null
             );
 ```
-```
+
+FAQ
+===
+
+* Getting error pheanstalk_pheanstalk not found 
+
+There are two ways to solve it.
+
+1. Use version ~2.1 of pheanstalk.
+2. In communicatatorbundle change pheanstalk_pheanstalk  to pheanstalk/pheanstalk.
