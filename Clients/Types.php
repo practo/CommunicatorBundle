@@ -36,6 +36,7 @@ final class DoctorEmailType {
   const BILLS_REPORT = 7;
   const TERMS_CONFIRMATION = 8;
   const SHARE_SETTINGS_UPDATE = 9;
+  const MY_DOCTORS_SETTINGS_UPDATE = 10;
   static public $__names = array(
     1 => 'CANCELLATION',
     2 => 'CONFIRMATION',
@@ -46,6 +47,7 @@ final class DoctorEmailType {
     7 => 'BILLS_REPORT',
     8 => 'TERMS_CONFIRMATION',
     9 => 'SHARE_SETTINGS_UPDATE',
+    10 => 'MY_DOCTORS_SETTINGS_UPDATE'
   );
 }
 
@@ -70,6 +72,7 @@ final class StaffEmailType {
   const SAVE_AND_ORDER = 18;
   const EXPORT_FILES = 19;
   const ONLINE_TRANSACTION_SUMMARY = 20;
+  const MY_DOCTORS_SETTINGS_UPDATE = 21;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -90,7 +93,8 @@ final class StaffEmailType {
     17 => 'SHARE_SETTINGS_UPDATE',
     18 => 'SAVE_AND_ORDER',
     19 => 'EXPORT_FILES',
-    20 => 'ONLINE_TRANSACTION_SUMMARY'
+    20 => 'ONLINE_TRANSACTION_SUMMARY',
+    21 => 'MY_DOCTORS_SETTINGS_UPDATE'
   );
 }
 
