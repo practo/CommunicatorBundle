@@ -169,7 +169,8 @@ class MailGeneric extends Base
             'TATKAL_NOTIFICATION_MAIL',
             'PARTNER_PUBLISH_NOTIFICATION_EMAIL',
             'BOOK_GENERIC_NOTIFICATION',
-            'APPOINTMENT_PNS'
+            'APPOINTMENT_PNS',
+            'ENTERPRISE_REPORT'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
