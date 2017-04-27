@@ -1441,6 +1441,198 @@ class GenericSMS {
 
 }
 
+class GenericTransactionalSMS {
+  public $id = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $name = null;
+  public $mobile = null;
+  public $message_text = null;
+  public $message_type = null;
+  public $delivery_time = null;
+  public $status = null;
+  public $failure_reason = null;
+  public $attempt = null;
+  public $operator = null;
+  public $operator_reply = null;
+  public $operator_code = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $app_name = null;
+  public $currency = null;
+  public $cost = null;
+  public $expiry_time = null;
+  public $notes = null;
+  public $sender_id = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['id'])) {
+        $this->id = $vals['id'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['delivery_time'])) {
+        $this->delivery_time = $vals['delivery_time'];
+      }
+      if (isset($vals['status'])) {
+        $this->status = $vals['status'];
+      }
+      if (isset($vals['failure_reason'])) {
+        $this->failure_reason = $vals['failure_reason'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['operator'])) {
+        $this->operator = $vals['operator'];
+      }
+      if (isset($vals['operator_reply'])) {
+        $this->operator_reply = $vals['operator_reply'];
+      }
+      if (isset($vals['operator_code'])) {
+        $this->operator_code = $vals['operator_code'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['currency'])) {
+        $this->currency = $vals['currency'];
+      }
+      if (isset($vals['cost'])) {
+        $this->cost = $vals['cost'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['notes'])) {
+        $this->notes = $vals['notes'];
+      }
+      if (isset($vals['sender_id'])) {
+        $this->sender_id = $vals['sender_id'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericTransactionalSMS';
+  }
+
+}
+
+class GenericPromotionalSMS {
+  public $id = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $name = null;
+  public $mobile = null;
+  public $message_text = null;
+  public $message_type = null;
+  public $delivery_time = null;
+  public $status = null;
+  public $failure_reason = null;
+  public $attempt = null;
+  public $operator = null;
+  public $operator_code = null;
+  public $created_on = null;
+  public $app_name = null;
+  public $expiry_time = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['id'])) {
+        $this->id = $vals['id'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['delivery_time'])) {
+        $this->delivery_time = $vals['delivery_time'];
+      }
+      if (isset($vals['status'])) {
+        $this->status = $vals['status'];
+      }
+      if (isset($vals['failure_reason'])) {
+        $this->failure_reason = $vals['failure_reason'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['operator'])) {
+        $this->operator = $vals['operator'];
+      }
+      if (isset($vals['operator_code'])) {
+        $this->operator_code = $vals['operator_code'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericPromotionalSMS';
+  }
+
+}
+
 class GroupSMS {
   public $group_sms_id = null;
   public $group_id = null;
@@ -1977,6 +2169,297 @@ class GenericMail {
 
 }
 
+class GenericTransactionalMail {
+  public $generic_mail_id = null;
+  public $from_name = null;
+  public $from_address = null;
+  public $to_address = null;
+  public $cc = null;
+  public $bcc = null;
+  public $subject = null;
+  public $body = null;
+  public $date = null;
+  public $attachments = null;
+  public $email_type = null;
+  public $created_by = null;
+  public $created_on = null;
+  public $modified_by = null;
+  public $modified_on = null;
+  public $delivery_status = null;
+  public $email_provider = null;
+  public $message_id = null;
+  public $smtp_reply = null;
+  public $open_time = null;
+  public $open_bounce_data = null;
+  public $unsubscribe_data = null;
+  public $spam_data = null;
+  public $hash = null;
+  public $plaintext = null;
+  public $app_name = null;
+  public $to_name = null;
+  public $mail_type = null;
+  public $attempt = null;
+  public $reply_to = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $expiry_time = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['generic_mail_id'])) {
+        $this->generic_mail_id = $vals['generic_mail_id'];
+      }
+      if (isset($vals['from_name'])) {
+        $this->from_name = $vals['from_name'];
+      }
+      if (isset($vals['from_address'])) {
+        $this->from_address = $vals['from_address'];
+      }
+      if (isset($vals['to_address'])) {
+        $this->to_address = $vals['to_address'];
+      }
+      if (isset($vals['cc'])) {
+        $this->cc = $vals['cc'];
+      }
+      if (isset($vals['bcc'])) {
+        $this->bcc = $vals['bcc'];
+      }
+      if (isset($vals['subject'])) {
+        $this->subject = $vals['subject'];
+      }
+      if (isset($vals['body'])) {
+        $this->body = $vals['body'];
+      }
+      if (isset($vals['date'])) {
+        $this->date = $vals['date'];
+      }
+      if (isset($vals['attachments'])) {
+        $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['email_type'])) {
+        $this->email_type = $vals['email_type'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_on'])) {
+        $this->created_on = $vals['created_on'];
+      }
+      if (isset($vals['modified_by'])) {
+        $this->modified_by = $vals['modified_by'];
+      }
+      if (isset($vals['modified_on'])) {
+        $this->modified_on = $vals['modified_on'];
+      }
+      if (isset($vals['delivery_status'])) {
+        $this->delivery_status = $vals['delivery_status'];
+      }
+      if (isset($vals['email_provider'])) {
+        $this->email_provider = $vals['email_provider'];
+      }
+      if (isset($vals['message_id'])) {
+        $this->message_id = $vals['message_id'];
+      }
+      if (isset($vals['smtp_reply'])) {
+        $this->smtp_reply = $vals['smtp_reply'];
+      }
+      if (isset($vals['open_time'])) {
+        $this->open_time = $vals['open_time'];
+      }
+      if (isset($vals['open_bounce_data'])) {
+        $this->open_bounce_data = $vals['open_bounce_data'];
+      }
+      if (isset($vals['unsubscribe_data'])) {
+        $this->unsubscribe_data = $vals['unsubscribe_data'];
+      }
+      if (isset($vals['spam_data'])) {
+        $this->spam_data = $vals['spam_data'];
+      }
+      if (isset($vals['hash'])) {
+        $this->hash = $vals['hash'];
+      }
+      if (isset($vals['plaintext'])) {
+        $this->plaintext = $vals['plaintext'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['to_name'])) {
+        $this->to_name = $vals['to_name'];
+      }
+      if (isset($vals['mail_type'])) {
+        $this->mail_type = $vals['mail_type'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericTransactionalMail';
+  }
+
+}
+
+class GenericPromotionalMail {
+  public $generic_promotional_mail_id = null;
+  public $from_name = null;
+  public $from_address = null;
+  public $to_address = null;
+  public $cc = null;
+  public $bcc = null;
+  public $subject = null;
+  public $body = null;
+  public $attachments = null;
+  public $email_type = null;
+  public $created_at = null;
+  public $created_by = null;
+  public $delivery_status = null;
+  public $email_provider = null;
+  public $message_id = null;
+  public $smtp_reply = null;
+  public $open_time = null;
+  public $open_bounce_data = null;
+  public $unsubscribe_data = null;
+  public $spam_data = null;
+  public $hash = null;
+  public $plaintext = null;
+  public $app_name = null;
+  public $to_name = null;
+  public $mail_type = null;
+  public $attempt = null;
+  public $reply_to = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $expiry_time = null;
+  public $initiated_at = null;
+  public $sent_at = null;
+  public $delivered_at = null;
+
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['generic_mail_id'])) {
+        $this->generic_mail_id = $vals['generic_mail_id'];
+      }
+      if (isset($vals['from_name'])) {
+        $this->from_name = $vals['from_name'];
+      }
+      if (isset($vals['from_address'])) {
+        $this->from_address = $vals['from_address'];
+      }
+      if (isset($vals['to_address'])) {
+        $this->to_address = $vals['to_address'];
+      }
+      if (isset($vals['cc'])) {
+        $this->cc = $vals['cc'];
+      }
+      if (isset($vals['bcc'])) {
+        $this->bcc = $vals['bcc'];
+      }
+      if (isset($vals['subject'])) {
+        $this->subject = $vals['subject'];
+      }
+      if (isset($vals['body'])) {
+        $this->body = $vals['body'];
+      }
+      if (isset($vals['attachments'])) {
+        $this->attachments = $vals['attachments'];
+      }
+      if (isset($vals['email_type'])) {
+        $this->email_type = $vals['email_type'];
+      }
+      if (isset($vals['created_by'])) {
+        $this->created_by = $vals['created_by'];
+      }
+      if (isset($vals['created_at'])) {
+        $this->created_at = $vals['created_at'];
+      }
+      if (isset($vals['delivery_status'])) {
+        $this->delivery_status = $vals['delivery_status'];
+      }
+      if (isset($vals['email_provider'])) {
+        $this->email_provider = $vals['email_provider'];
+      }
+      if (isset($vals['message_id'])) {
+        $this->message_id = $vals['message_id'];
+      }
+      if (isset($vals['smtp_reply'])) {
+        $this->smtp_reply = $vals['smtp_reply'];
+      }
+      if (isset($vals['open_time'])) {
+        $this->open_time = $vals['open_time'];
+      }
+      if (isset($vals['open_bounce_data'])) {
+        $this->open_bounce_data = $vals['open_bounce_data'];
+      }
+      if (isset($vals['unsubscribe_data'])) {
+        $this->unsubscribe_data = $vals['unsubscribe_data'];
+      }
+      if (isset($vals['spam_data'])) {
+        $this->spam_data = $vals['spam_data'];
+      }
+      if (isset($vals['hash'])) {
+        $this->hash = $vals['hash'];
+      }
+      if (isset($vals['plaintext'])) {
+        $this->plaintext = $vals['plaintext'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['to_name'])) {
+        $this->to_name = $vals['to_name'];
+      }
+      if (isset($vals['mail_type'])) {
+        $this->mail_type = $vals['mail_type'];
+      }
+      if (isset($vals['attempt'])) {
+        $this->attempt = $vals['attempt'];
+      }
+      if (isset($vals['reply_to'])) {
+        $this->reply_to = $vals['reply_to'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['expiry_time'])) {
+        $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['initiated_at'])) {
+        $this->initiated_at = $vals['initiated_at'];
+      }
+      if (isset($vals['sent_at'])) {
+        $this->sent_at = $vals['sent_at'];
+      }
+      if (isset($vals['delivered_at'])) {
+        $this->delivered_at = $vals['delivered_at'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericPromotionalMail';
+  }
+
+}
+
 class SmsCredit {
   public $practice_id = null;
   public $credit = null;
@@ -2061,5 +2544,3 @@ class ApplicationException extends \Exception {
    }
 
 }
-
-

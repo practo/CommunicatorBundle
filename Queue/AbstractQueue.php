@@ -13,23 +13,25 @@ abstract class AbstractQueue
     private $queuePrefix = '';
     private $domain;
 
-    const SEND_MAIL_QUEUE              = 'mail_sender';
-    const UPDATE_MAIL_QUEUE            = 'mail_updater';
-    const SEND_APPOINTMENT_SMS_QUEUE   = 'appointment_sms_sender';
-    const UPDATE_APPOINTMENT_SMS_QUEUE = 'appointment_sms_updater';
-    const SEND_GROUP_SMS_QUEUE         = 'group_sms_sender';
-    const UPDATE_GROUP_SMS_QUEUE       = 'group_sms_updater';
-    const SEND_MAIL_ERROR_QUEUE        = 'mail_sender_error';
-    const UPDATE_MAIL_ERROR_QUEUE      = 'mail_updater_error';
-    const SEND_SMS_QUEUE               = 'sms_sender';
-    const UPDATE_SMS_QUEUE             = 'sms_updater';
-    const RESEND_SMS_QUEUE             = 'sms_resender';
-    const SEND_SMS_ERROR_QUEUE         = 'sms_sender_error';
-    const UPDATE_SMS_ERROR_QUEUE       = 'sms_updater_error';
-    const SMS_CREDIT_QUEUE             = 'credit_handler';
-    const METRIC_MONITOR               = 'metric_monitor';
-    const SEND_GENERIC_SMS_QUEUE       = 'generic_sms_sender';
-    const UPDATE_GENERIC_SMS_QUEUE     = 'generic_sms_updater';
+    const SEND_MAIL_QUEUE                     = 'mail_sender';
+    const SEND_GENERIC_PROMOTIONAL_MAIL_QUEUE = 'generic_promotional_mail_sender';
+    const SEND_GENERIC_PROMOTIONAL_SMS_QUEUE  = 'generic_promotional_sms_sender';
+    const UPDATE_MAIL_QUEUE                   = 'mail_updater';
+    const SEND_APPOINTMENT_SMS_QUEUE          = 'appointment_sms_sender';
+    const UPDATE_APPOINTMENT_SMS_QUEUE        = 'appointment_sms_updater';
+    const SEND_GROUP_SMS_QUEUE                = 'group_sms_sender';
+    const UPDATE_GROUP_SMS_QUEUE              = 'group_sms_updater';
+    const SEND_MAIL_ERROR_QUEUE               = 'mail_sender_error';
+    const UPDATE_MAIL_ERROR_QUEUE             = 'mail_updater_error';
+    const SEND_SMS_QUEUE                      = 'sms_sender';
+    const UPDATE_SMS_QUEUE                    = 'sms_updater';
+    const RESEND_SMS_QUEUE                    = 'sms_resender';
+    const SEND_SMS_ERROR_QUEUE                = 'sms_sender_error';
+    const UPDATE_SMS_ERROR_QUEUE              = 'sms_updater_error';
+    const SMS_CREDIT_QUEUE                    = 'credit_handler';
+    const METRIC_MONITOR                      = 'metric_monitor';
+    const SEND_GENERIC_SMS_QUEUE              = 'generic_sms_sender';
+    const UPDATE_GENERIC_SMS_QUEUE            = 'generic_sms_updater';
 
     /**
      * Receive Message
