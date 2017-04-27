@@ -86,7 +86,7 @@ class MailGenericPromotional extends Base
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setQueueName(Queue::SEND_GENERIC_PROMOTIONAL_SMS_QUEUE)
+                    ->setQueueName(Queue::SEND_GENERIC_PROMOTIONAL_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
@@ -106,7 +106,7 @@ class MailGenericPromotional extends Base
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setQueueName(Queue::SEND_GENERIC_PROMOTIONAL_SMS_QUEUE)
+                    ->setQueueName(Queue::SEND_GENERIC_PROMOTIONAL_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
