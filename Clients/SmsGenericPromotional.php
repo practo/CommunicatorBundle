@@ -25,7 +25,7 @@ class SmsGenericPromotional extends Base
 
     public function sendSms($reference_id, $reference_type,
                             $name, $to, $messageType, $body,
-                            $expiryTime = null)
+                            $initiated_at, $expiryTime = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericPromotionalSMS();
@@ -35,6 +35,7 @@ class SmsGenericPromotional extends Base
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
+        $job->initiated_at = $initiated_at;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic_promotional';

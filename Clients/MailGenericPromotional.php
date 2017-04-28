@@ -25,7 +25,7 @@ class MailGenericPromotional extends Base
 
     public function sendMail($fromName, $fromMail, $toName = "", $to,
                              $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
+                             $files, $hash, $initiated_at, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
                              $expiryTime = NULL, $appName = null, $createdBy = NULL)
     {
@@ -57,6 +57,7 @@ class MailGenericPromotional extends Base
         $job->plaintext = $plaintext;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
+        $job->initiated_at = $initiated_at;
         $job->app_name = $this->_appName;
         if ($createdBy) {
             $job->created_by = $createdBy;

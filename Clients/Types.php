@@ -1567,6 +1567,7 @@ class GenericPromotionalSMS {
   public $created_on = null;
   public $app_name = null;
   public $expiry_time = null;
+  public $initiated_at = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1620,6 +1621,9 @@ class GenericPromotionalSMS {
       }
       if (isset($vals['app_name'])) {
         $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['initiated_at'])) {
+        $this->initiated_at = $vals['initiated_at'];
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
