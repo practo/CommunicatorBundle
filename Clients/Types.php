@@ -73,6 +73,7 @@ final class StaffEmailType {
   const EXPORT_FILES = 19;
   const ONLINE_TRANSACTION_SUMMARY = 20;
   const MY_DOCTORS_SETTINGS_UPDATE = 21;
+  const VERSION_UPGRADES = 22;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -94,7 +95,8 @@ final class StaffEmailType {
     18 => 'SAVE_AND_ORDER',
     19 => 'EXPORT_FILES',
     20 => 'ONLINE_TRANSACTION_SUMMARY',
-    21 => 'MY_DOCTORS_SETTINGS_UPDATE'
+    21 => 'MY_DOCTORS_SETTINGS_UPDATE',
+    22 => 'VERSION_UPGRADES'
   );
 }
 

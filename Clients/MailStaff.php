@@ -198,6 +198,8 @@ class MailStaff extends Base
           return praccomm\StaffEmailType::EXPIRING_BATCHES;
         case "MY_DOCTORS_SETTINGS_UPDATE":
           return \praccomm\StaffEmailType::MY_DOCTORS_SETTINGS_UPDATE;
+        case "VERSION_UPGRADES":
+          return \praccomm\StaffEmailType::VERSION_UPGRADES;
         default:
           throw new \Exception("Invalid message type");
       }
