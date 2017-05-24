@@ -190,7 +190,7 @@ class MailGeneric extends Base
      * @return Array
      */
     public function getMailsByReferenceIdAndType($referenceId, $referenceType, $mailTypes,
-        $startDate, $endDate)
+                                                 $startDate, $endDate)
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array(
