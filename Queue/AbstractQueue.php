@@ -17,8 +17,6 @@ abstract class AbstractQueue
     const UPDATE_MAIL_QUEUE            = 'mail_updater';
     const SEND_APPOINTMENT_SMS_QUEUE   = 'appointment_sms_sender';
     const UPDATE_APPOINTMENT_SMS_QUEUE = 'appointment_sms_updater';
-    const SEND_GROUP_SMS_QUEUE         = 'group_sms_sender';
-    const UPDATE_GROUP_SMS_QUEUE       = 'group_sms_updater';
     const SEND_MAIL_ERROR_QUEUE        = 'mail_sender_error';
     const UPDATE_MAIL_ERROR_QUEUE      = 'mail_updater_error';
     const SEND_SMS_QUEUE               = 'sms_sender';
