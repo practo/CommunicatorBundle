@@ -1477,7 +1477,6 @@ class AppointmentMail {
   public $attempt = null;
   public $reply_to = null;
   public $expiry_time = null;
-  public $enable_banner = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1576,9 +1575,6 @@ class AppointmentMail {
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
-      }
-      if (isset($vals['enable_banner'])) {
-        $this->enable_banner = $vals['enable_banner'];
       }
     }
   }

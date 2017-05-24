@@ -35,7 +35,6 @@ class MailAppointment extends Base
         $job->to_name = $toName;
         $job->to_address = $to;
         $job->expiry_time = $expiryTime;
-        $job->enable_banner = $enableBanner;
         if(is_string($cc) && !empty($cc))
         {
             $job->cc = array($cc);
