@@ -132,8 +132,6 @@ abstract class AbstractQueue
             case self::UPDATE_MAIL_QUEUE:
             case self::SEND_APPOINTMENT_SMS_QUEUE:
             case self::UPDATE_APPOINTMENT_SMS_QUEUE:
-            case self::SEND_GROUP_SMS_QUEUE:
-            case self::UPDATE_GROUP_SMS_QUEUE:
             case self::SEND_MAIL_ERROR_QUEUE:
             case self::UPDATE_MAIL_ERROR_QUEUE:
             case self::SEND_SMS_QUEUE:
