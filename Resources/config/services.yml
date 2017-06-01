@@ -3,7 +3,6 @@ parameters:
     practo_communicator.mail_doctor.class: Practo\CommunicatorBundle\Clients\MailDoctor
     practo_communicator.mail_staff.class: Practo\CommunicatorBundle\Clients\MailStaff
     practo_communicator.mail_appointment.class: Practo\CommunicatorBundle\Clients\MailAppointment
-    practo_communicator.mail_group.class: Practo\CommunicatorBundle\Clients\MailGroup
     practo_communicator.mail_generic.class: Practo\CommunicatorBundle\Clients\MailGeneric
     practo_communicator.sms_doctor.class: Practo\CommunicatorBundle\Clients\SmsDoctor
     practo_communicator.sms_patient.class: Practo\CommunicatorBundle\Clients\SmsPatient
@@ -15,7 +14,6 @@ parameters:
     practo_communicator.sms_generic_transactional.class: Practo\CommunicatorBundle\Clients\SmsGenericTransactional
     practo_communicator.mail_generic_promotional.class: Practo\CommunicatorBundle\Clients\MailGenericPromotional
     practo_communicator.mail_generic_transactional.class: Practo\CommunicatorBundle\Clients\MailGenericTransactional
-    practo_communicator.sms_group.class: Practo\CommunicatorBundle\Clients\SmsGroup
 
 
     communicator.send_mail_queue: mail_sender
@@ -64,14 +62,6 @@ services:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.mail_appointment:
     class: %practo_communicator.mail_appointment.class%
-    arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
-    calls:
-      - [ setRequest, [ '@?request=' ]]
-  practo_communicator.mail_group:
-    class: %practo_communicator.mail_group.class%
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
@@ -158,14 +148,6 @@ services:
       - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
-  practo_communicator.sms_group:
-    class: %practo_communicator.sms_group.class%
-    arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
-    calls:
-        - [ setRequest, [ '@?request=' ]]
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:

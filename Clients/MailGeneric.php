@@ -170,12 +170,40 @@ class MailGeneric extends Base
             'PARTNER_PUBLISH_NOTIFICATION_EMAIL',
             'BOOK_GENERIC_NOTIFICATION',
             'APPOINTMENT_PNS',
-            'ENTERPRISE_REPORT'
+            'ENTERPRISE_REPORT',
+            'PROFILE_DATA_VERIFICATION'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
         }
+    }
+
+/**
+     * Get Mails by referenceId and referenceType
+     *
+     * @param string $referenceId   - Reference Id
+     * @param string $referenceType - Reference Type
+     * @param array  $mailTypes     - Mail Types
+     * @param string $startDate     - Starting Date
+     * @param string $endDate       - Ending Date
+     *
+     * @return Array
+     */
+    public function getMailsByReferenceIdAndType($referenceId, $referenceType, $mailTypes,
+                                                 $startDate, $endDate)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = array(
+            'reference_type' => $referenceType,
+            'reference_id'   => $referenceId,
+            'start_date'     => $startDate,
+            'mail_types'     => $mailTypes,
+            'end_date'       => $endDate
+        );
+        $result = $client->get("/genericmail/get_mails_by_ref_id_and_type", $params);
+
+        return $result;
     }
 
     /**

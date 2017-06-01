@@ -86,7 +86,7 @@ class MailGenericTransactional extends Base
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setQueueName(Queue::SEND_MAIL_QUEUE)
+                    ->setQueueName(Queue::SEND_GENERIC_TRANSACTIONAL_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
@@ -106,7 +106,7 @@ class MailGenericTransactional extends Base
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
-                    ->setQueueName(Queue::SEND_MAIL_QUEUE)
+                    ->setQueueName(Queue::SEND_GENERIC_TRANSACTIONAL_MAIL_QUEUE)
                     ->sendMessage($jsonifiedJob, 10);
     }
 
