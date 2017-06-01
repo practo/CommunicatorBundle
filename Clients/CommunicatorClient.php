@@ -73,9 +73,7 @@ class CommunicatorClient {
             'Content-type: application/json'
         );
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $data = array();
-        $data['data'] = $request_params;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errorMessage = '';
