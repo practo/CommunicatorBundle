@@ -38,7 +38,7 @@ class SmsGenericTransactional extends Base
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
-        $job->sms_type = 'generic';
+        $job->sms_type = 'generic_transactional';
         $job->sender_id = $sender_id;
         $job->initiated_at = date("Y-m-d H:i:s")
         $jsonifiedJob = json_encode($job);

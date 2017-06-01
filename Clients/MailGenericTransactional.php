@@ -82,7 +82,7 @@ class MailGenericTransactional extends Base
         }
         $job->attachments = $attachments;
         $job->hash = $hash;
-        $job->mail_type = 'generic';
+        $job->mail_type = 'generic_transactional';
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
