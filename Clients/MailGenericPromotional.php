@@ -113,7 +113,10 @@ class MailGenericPromotional extends Base
 
     private function validateMailType($type)
     {
-        $allowedTypes = array();
+        $allowedTypes = array(
+            'FIT_GENERIC_MAIL',
+            'FIT_EDITOR_FEEDBACK_MAIL'
+        );
 
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
