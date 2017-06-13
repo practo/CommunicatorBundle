@@ -38,7 +38,7 @@ class SmsGenericPromotional extends Base
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic_promotional';
-        $job->initiated_at = date("Y-m-d H:i:s")
+        $job->initiated_at = date("Y-m-d H:i:s");
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue

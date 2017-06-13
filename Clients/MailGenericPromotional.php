@@ -116,7 +116,9 @@ class MailGenericPromotional extends Base
         $allowedTypes = array(
             'APPOINTMENT_COUPON_CODE_MAIL',
             'TAB_BIAS_DAILY_REPORT',
-            'REACH_DAILY_ROI_EMAIL'
+            'REACH_DAILY_ROI_EMAIL',
+            'FIT_GENERIC_MAIL',
+            'FIT_EDITOR_FEEDBACK_MAIL'
         );
 
         if (!in_array($type, $allowedTypes, true)) {

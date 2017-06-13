@@ -40,7 +40,7 @@ class SmsGenericTransactional extends Base
         $job->app_name = $this->_appName;
         $job->sms_type = 'generic_transactional';
         $job->sender_id = $sender_id;
-        $job->initiated_at = date("Y-m-d H:i:s")
+        $job->initiated_at = date("Y-m-d H:i:s");
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
@@ -64,7 +64,6 @@ class SmsGenericTransactional extends Base
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
             'FEEDBACK_NOTIFICATION_SMS',
-            'FIT_RAY_SHARE_SMS',
             'VN_CALL_SUMMARY',
             'DX_ORDER_SMS',
             'FEEDBACK_STATUS_SMS',
