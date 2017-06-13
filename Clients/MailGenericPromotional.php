@@ -113,7 +113,11 @@ class MailGenericPromotional extends Base
 
     private function validateMailType($type)
     {
-        $allowedTypes = array();
+        $allowedTypes = array(
+            'APPOINTMENT_COUPON_CODE_MAIL',
+            'TAB_BIAS_DAILY_REPORT',
+            'REACH_DAILY_ROI_EMAIL'
+        );
 
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
