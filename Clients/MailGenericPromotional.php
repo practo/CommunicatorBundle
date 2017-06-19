@@ -114,6 +114,9 @@ class MailGenericPromotional extends Base
     private function validateMailType($type)
     {
         $allowedTypes = array(
+            'APPOINTMENT_COUPON_CODE_MAIL',
+            'TAB_BIAS_DAILY_REPORT',
+            'REACH_DAILY_ROI_EMAIL',
             'FIT_GENERIC_MAIL',
             'FIT_EDITOR_FEEDBACK_MAIL'
         );

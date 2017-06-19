@@ -51,6 +51,9 @@ class SmsGenericPromotional extends Base
         $allowedTypes = array(
           'VN_APP_PROMOTION_SMS',
           'FIT_RAY_SHARE_SMS',
+          'PAYTM_OFFERS_SMS',
+          'MARKETING_APP_LINK_SMS',
+          'APPOINTMENT_COUPON_CODE_SMS',
           'PHR_TAX_SAVING_NOTIFICATION_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
