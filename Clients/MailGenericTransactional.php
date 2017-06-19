@@ -165,7 +165,8 @@ class MailGenericTransactional extends Base
             'PARTNER_PUBLISH_NOTIFICATION_EMAIL',
             'BOOK_GENERIC_NOTIFICATION',
             'APPOINTMENT_PNS',
-            'ENTERPRISE_REPORT'
+            'ENTERPRISE_REPORT',
+            'PROFILE_DATA_VERIFICATION'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
