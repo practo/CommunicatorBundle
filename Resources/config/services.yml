@@ -14,7 +14,7 @@ parameters:
     practo_communicator.sms_generic_transactional.class: Practo\CommunicatorBundle\Clients\SmsGenericTransactional
     practo_communicator.mail_generic_promotional.class: Practo\CommunicatorBundle\Clients\MailGenericPromotional
     practo_communicator.mail_generic_transactional.class: Practo\CommunicatorBundle\Clients\MailGenericTransactional
-
+    practo_communicator.device_information.class: Practo\CommunicatorBundle\Clients\DeviceInformation
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -163,3 +163,9 @@ services:
     class: Practo\CommunicatorBundle\Queue\AbstractQueue
     factory_service: practo_communicator.queue_factory
     factory_method: get
+  practo_communicator.device_information:
+    class: %practo_communicator.device_information.class%
+    arguments:
+      - %communicator.api.secret%
+    calls:
+      - [ setRequest, [ '@?request=' ]]
