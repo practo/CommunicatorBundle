@@ -74,6 +74,8 @@ final class StaffEmailType {
   const ONLINE_TRANSACTION_SUMMARY = 20;
   const MY_DOCTORS_SETTINGS_UPDATE = 21;
   const VERSION_UPGRADES = 22;
+  const TRIAL_EXPIRY_REMINDER = 23;
+  const WELCOME_TO_RAY = 24;
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -96,7 +98,9 @@ final class StaffEmailType {
     19 => 'EXPORT_FILES',
     20 => 'ONLINE_TRANSACTION_SUMMARY',
     21 => 'MY_DOCTORS_SETTINGS_UPDATE',
-    22 => 'VERSION_UPGRADES'
+    22 => 'VERSION_UPGRADES',
+    23 => 'TRIAL_EXPIRY_REMINDER',
+    24 => 'WELCOME_TO_RAY'
   );
 }
 
