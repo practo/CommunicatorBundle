@@ -22,12 +22,13 @@ class SmsStaff extends Base
         $this->_queue = $queue;
     }
 
-    public function sendSms($practice_id, $name, $to, $type, $body,
+    public function sendSms($practice_id, $staffProfileId, $name, $to, $type, $body,
                             $unverified = false, $smsDisabled = false,
                             $expiryTime = null, $secondaryMobile = null)
     {
         $job = new praccomm\StaffSms();
         $job->practice_id = $practice_id;
+        $job->staff_profile_id = $staffProfileId;
         $job->name = $name;
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
