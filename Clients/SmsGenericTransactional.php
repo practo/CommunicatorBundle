@@ -87,7 +87,15 @@ class SmsGenericTransactional extends Base
             'TATKAL_NOTIFICATION_SMS',
             'APPOINTMENT_PNS_DEFAULT',
             'APPOINTMENT_PNS_THIRD',
-            'VN_COOL_OFF_SMS'
+            'VN_COOL_OFF_SMS',
+            'DNS_NOT_COUNTED_GC',
+            'DNS_MORE_THAN_ONE_GC_LEFT',
+            'DNS_LAST_GC_LEFT',
+            'DNS_DEACTIVATE_BOOK_FIRST',
+            'DNS_DEACTIVATE_BOOK_20_DAYS',
+            'DNS_RESTORE_BOOK',
+            'DNS_BOOK_RESTORED',
+            'BOOK_ACTIVATION'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");

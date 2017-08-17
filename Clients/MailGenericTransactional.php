@@ -167,7 +167,15 @@ class MailGenericTransactional extends Base
             'BOOK_GENERIC_NOTIFICATION',
             'APPOINTMENT_PNS',
             'ENTERPRISE_REPORT',
-            'PROFILE_DATA_VERIFICATION'
+            'PROFILE_DATA_VERIFICATION',
+            'DNS_NOT_COUNTED_GC',
+            'DNS_MORE_THAN_ONE_GC_LEFT',
+            'DNS_LAST_GC_LEFT',
+            'DNS_DEACTIVATE_BOOK_FIRST',
+            'DNS_DEACTIVATE_BOOK_20_DAYS',
+            'DNS_RESTORE_BOOK',
+            'DNS_BOOK_RESTORED',
+            'BOOK_ACTIVATION'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
