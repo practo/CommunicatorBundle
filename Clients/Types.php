@@ -2313,3 +2313,24 @@ class ApplicationException extends \Exception {
    }
 
 }
+
+class GenericPushNotification {
+  public $reference_id = null;
+  public $reference_type = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericPushNotification';
+  }
+
+}

@@ -15,6 +15,7 @@ parameters:
     practo_communicator.mail_generic_promotional.class: Practo\CommunicatorBundle\Clients\MailGenericPromotional
     practo_communicator.mail_generic_transactional.class: Practo\CommunicatorBundle\Clients\MailGenericTransactional
     practo_communicator.device_information.class: Practo\CommunicatorBundle\Clients\DeviceInformation
+    practo_communicator.push_notification_generic.class: Practo\CommunicatorBundle\Clients\PushNotificationGeneric
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -27,6 +28,7 @@ parameters:
     communicator.sms_credit: credit_handler
     communicator.send_appointment_sms_queue: appointment_sms_sender
     communicator.update_appointment_sms_queue: appointment_sms_updater
+    communicator.send_push_notification_queue: send_notification_task
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
     legacy_queue.sqs_spool_dir: ~
@@ -167,5 +169,13 @@ services:
     class: %practo_communicator.device_information.class%
     arguments:
       - %communicator.api.secret%
+    calls:
+      - [ setRequest, [ '@?request=' ]]
+  practo_communicator.push_notification_generic:
+    class: %practo_communicator.push_notification_generic.class%
+    arguments:
+      - @practo_communicator.queue
+      - %communicator.api.secret%
+      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
