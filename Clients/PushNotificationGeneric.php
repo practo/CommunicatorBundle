@@ -40,7 +40,7 @@ class PushNotificationGeneric extends Base
         $job->initiated_at = date("Y-m-d H:i:s");
         $job->account_id = $account_id;
         $job->data = $data;
-        
+
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
