@@ -23,23 +23,23 @@ class PushNotificationGeneric extends Base
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function sendPushNotification($fromName, $fromMail, $toName = "", $to,
-                             $cc = "", $bcc = "", $subject, $body, $type,
-                             $files, $hash, $plaintext = "", $replyTo = NULL,
-                             $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
+    public function sendPushNotification($reference_id, $reference_type, $type,
+                             $app_version, $account_id, $data)
     {
         $this->validateNotificationType(strtoupper($type));
         $job = new praccomm\GenericPushNotification();
 
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
+        $job->notification_type = strtoupper($type);
         $job->app_name = $this->_appName;
         if ($appName) {
             $job->app_name = Helper::getValidAppName($appName);
         }
-        
-        $job->date = time();
+        $job->app_version = $app_version;
+        $job->initiated_at = date("Y-m-d H:i:s");
+        $job->account_id = $account_id;
+        $job->data = $data;
         
         $jsonifiedJob = json_encode($job);
         $this->_queue->setDomain($this->_domain);
