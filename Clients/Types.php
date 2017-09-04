@@ -2314,13 +2314,10 @@ class ApplicationException extends \Exception {
 
 }
 
-class GenericPushNotification {
+class GenericTransactionalPushNotification {
   public $notification_type = null;
-  public $city = null;
-  public $app_version = null;
-  public $app_name = null;
-  public $last_active = null;
-  public $initiated_at = null;
+  public $service = null;
+  public $created_at = null;
   public $account_id = null;
   public $data = null;
   public $reference_id = null;
@@ -2331,20 +2328,11 @@ class GenericPushNotification {
       if (isset($vals['notification_type'])) {
         $this->notification_type = $vals['notification_type'];
       }
-      if (isset($vals['city'])) {
-        $this->city = $vals['city'];
+      if (isset($vals['service'])) {
+        $this->service = $vals['service'];
       }
-      if (isset($vals['app_version'])) {
-        $this->app_version = $vals['app_version'];
-      }
-      if (isset($vals['app_name'])) {
-        $this->app_name = $vals['app_name'];
-      }
-      if (isset($vals['last_active'])) {
-        $this->last_active = $vals['last_active'];
-      }
-      if (isset($vals['initiated_at'])) {
-        $this->initiated_at = $vals['initiated_at'];
+      if (isset($vals['created_at'])) {
+        $this->created_at = $vals['created_at'];
       }
       if (isset($vals['account_id'])) {
         $this->account_id = $vals['account_id'];
@@ -2362,7 +2350,7 @@ class GenericPushNotification {
   }
 
   public function getName() {
-    return 'GenericPushNotification';
+    return 'GenericTransactionalPushNotification';
   }
 
 }
