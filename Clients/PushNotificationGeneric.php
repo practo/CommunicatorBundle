@@ -112,9 +112,42 @@ class PushNotificationGeneric extends Base
         );
 
         $services = array(
-            'fabric',
-            'genesis',
-            'pharma',
-            'fit');
+            'pharma');
+
+        if (!array_key_exists($pushKeys['SERVICE'], $payload) ||
+            !in_array($pushKeys['SERVICE'], $services)) {
+            throw new \Exception("service is missing or invalid service");
+        }
+
+        if (!array_key_exists($pushKeys['APP_NAME'], $payload) ||
+            !in_array($pushKeys['APP_NAME'], $oneSignalApps)) {
+            throw new \Exception("app_name is missing or not allowed");
+        }
+        if (array_key_exists($pushKeys['REFERENCE_ID'], $payload) &&
+            !array_key_exists($pushKeys['REFERENCE_TYPE'], $payload)) {
+            throw new \Exception("reference_type is missing, but reference_id is present");
+        }
+
+        foreach ($payload as $key => $value) {
+            if (!in_array($key, $oneSignalAllowedKeys)) {
+                throw new \Exception("Invalid key: $key");
+            }
+            if ($key != $pushKeys['DATA'] && is_array($value)) {
+                if (!in_array($key, $jsonKeys)) {
+                    throw new \Exception("Key should not be in json: $key");
+                }
+                if (!in_array($pushKeys['VALUE'], $value) ||
+                    !in_array($pushKeys['RELATION'], $value)) {
+                    throw new \Exception("Value or Relation missing in: $key");
+                } else if ((in_array($pushKeys['RELATION'], $value)) &&
+                    !in_array($value[$pushKeys['RELATION']], $oneSignalRelations)) {
+                        throw new \Exception("Relation invalid in: $key");
+                    }
+            } else {
+                if (in_array($key, $jsonKeys)) {
+                    throw new \Exception("Key should be a json, with relation and value.");
+                }
+            }
+        }
     }
 }
