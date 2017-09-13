@@ -2317,7 +2317,7 @@ class ApplicationException extends \Exception {
 class GenericTransactionalPushNotification {
   public $notification_type = null;
   public $service = null;
-  public $created_at = null;
+  public $initiated_at = null;
   public $account_id = null;
   public $data = null;
   public $reference_id = null;
@@ -2332,8 +2332,8 @@ class GenericTransactionalPushNotification {
       if (isset($vals['service'])) {
         $this->service = $vals['service'];
       }
-      if (isset($vals['created_at'])) {
-        $this->created_at = $vals['created_at'];
+      if (isset($vals['initiated_at'])) {
+        $this->initiated_at = $vals['initiated_at'];
       }
       if (isset($vals['account_id'])) {
         $this->account_id = $vals['account_id'];

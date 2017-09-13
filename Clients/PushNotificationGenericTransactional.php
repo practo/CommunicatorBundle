@@ -24,7 +24,7 @@ class PushNotificationGenericTransactional extends Base
     }
 
     public function sendPushNotification($reference_id, $reference_type, $notification_type,
-                            $account_id, $data, $clientAppName=NULL)
+                            $account_id, $data, $clientAppName)
     {
         $this->validateNotificationType(strtoupper($notification_type));
         $job = new praccomm\GenericTransactionalPushNotification();
@@ -33,11 +33,8 @@ class PushNotificationGenericTransactional extends Base
         $job->reference_type = $reference_type;
         $job->notification_type = strtoupper($notification_type);
         $job->service = $this->_service;
-        if ($service) {
-            $job->service = Helper::getValidAppName($service);
-        }
         $job->app_name = $clientAppName;
-        $job->created_at = date("Y-m-d H:i:s");
+        $job->initiated_at = date("Y-m-d H:i:s");
         $job->account_id = $account_id;
         $job->data = $data;
 
