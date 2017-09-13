@@ -39,7 +39,7 @@ class PushNotificationGenericTransactional extends Base
         $job->data = $data;
 
         $jsonifiedJob = json_encode($job);
-        $this->validatePayload(json_decode($job, true));
+        $this->validatePayload(json_decode($jsonifiedJob, true));
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_GENERIC_TRANSACTIONAL_PUSH_NOTIFICATION_QUEUE)
