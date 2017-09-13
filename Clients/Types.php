@@ -2313,3 +2313,48 @@ class ApplicationException extends \Exception {
    }
 
 }
+
+class GenericTransactionalPushNotification {
+  public $notification_type = null;
+  public $service = null;
+  public $initiated_at = null;
+  public $account_id = null;
+  public $data = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $app_name = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['notification_type'])) {
+        $this->notification_type = $vals['notification_type'];
+      }
+      if (isset($vals['service'])) {
+        $this->service = $vals['service'];
+      }
+      if (isset($vals['initiated_at'])) {
+        $this->initiated_at = $vals['initiated_at'];
+      }
+      if (isset($vals['account_id'])) {
+        $this->account_id = $vals['account_id'];
+      }
+      if (isset($vals['data'])) {
+        $this->data = $vals['data'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericTransactionalPushNotification';
+  }
+
+}
