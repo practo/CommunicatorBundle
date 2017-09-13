@@ -2322,6 +2322,7 @@ class GenericTransactionalPushNotification {
   public $data = null;
   public $reference_id = null;
   public $reference_type = null;
+  public $app_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -2345,6 +2346,9 @@ class GenericTransactionalPushNotification {
       }
       if (isset($vals['reference_type'])) {
         $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
       }
     }
   }

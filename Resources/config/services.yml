@@ -28,7 +28,7 @@ parameters:
     communicator.sms_credit: credit_handler
     communicator.send_appointment_sms_queue: appointment_sms_sender
     communicator.update_appointment_sms_queue: appointment_sms_updater
-    communicator.send_generic_push_notification_queue: generic_transactional_send_notification_task
+    communicator.send_generic_push_notification_queue: send_notification_task
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
     legacy_queue.sqs_spool_dir: ~

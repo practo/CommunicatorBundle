@@ -12,19 +12,19 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
  */
 class PushNotificationGenericTransactional extends Base
 {
-    private $_appName;
+    private $_service;
     private $_queue;
     private $_apiSecretKey;
 
-    public function __construct($queue, $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $service)
     {
         $this->_apiSecretKey = $apiSecretKey;
         $this->_queue = $queue;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->_service = Helper::getValidAppName($service);
     }
 
     public function sendPushNotification($reference_id, $reference_type, $notification_type,
-                            $account_id, $data, $appName=NULL)
+                            $account_id, $data, $clientAppName=NULL)
     {
         $this->validateNotificationType(strtoupper($notification_type));
         $job = new praccomm\GenericTransactionalPushNotification();
@@ -32,10 +32,11 @@ class PushNotificationGenericTransactional extends Base
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->notification_type = strtoupper($notification_type);
-        $job->service = $this->_appName;
-        if ($appName) {
-            $job->service = Helper::getValidAppName($appName);
+        $job->service = $this->_service;
+        if ($service) {
+            $job->service = Helper::getValidAppName($service);
         }
+        $job->app_name = $clientAppName;
         $job->created_at = date("Y-m-d H:i:s");
         $job->account_id = $account_id;
         $job->data = $data;

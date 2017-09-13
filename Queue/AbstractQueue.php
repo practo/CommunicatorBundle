@@ -32,7 +32,7 @@ abstract class AbstractQueue
     const METRIC_MONITOR                        = 'metric_monitor';
     const SEND_GENERIC_SMS_QUEUE                = 'generic_sms_sender';
     const UPDATE_GENERIC_SMS_QUEUE              = 'generic_sms_updater';
-    const SEND_GENERIC_PUSH_NOTIFICATION_QUEUE  = 'generic_transactional_send_notification_task';
+    const SEND_GENERIC_TRANSACTIONAL_PUSH_NOTIFICATION_QUEUE  = 'send_notification_task';
 
     /**
      * Receive Message
@@ -148,7 +148,7 @@ abstract class AbstractQueue
             case self::METRIC_MONITOR:
             case self::SEND_GENERIC_SMS_QUEUE:
             case self::UPDATE_GENERIC_SMS_QUEUE:
-            case self::SEND_PUSH_NOTIFICATION_QUEUE:
+            case self::SEND_GENERIC_TRANSACTIONAL_PUSH_NOTIFICATION_QUEUE:
             default:
                 return 60;
         }
