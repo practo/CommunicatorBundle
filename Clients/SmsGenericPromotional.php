@@ -54,7 +54,8 @@ class SmsGenericPromotional extends Base
           'PAYTM_OFFERS_SMS',
           'MARKETING_APP_LINK_SMS',
           'APPOINTMENT_COUPON_CODE_SMS',
-          'PHR_TAX_SAVING_NOTIFICATION_SMS'
+          'PHR_TAX_SAVING_NOTIFICATION_SMS',
+          'ORDER_PROMOTIONAL_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
