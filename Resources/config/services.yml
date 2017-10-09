@@ -181,7 +181,7 @@ services:
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.whatsapp_generic_transactional:
-    class: %practo_communicator.push_notification_generic_transactional.class%
+    class: %practo_communicator.whatsapp_generic_transactional.class%
     arguments:
       - @practo_communicator.queue
       - %communicator.api.secret%
