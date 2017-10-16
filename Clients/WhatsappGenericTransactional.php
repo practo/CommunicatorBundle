@@ -10,7 +10,7 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 /**
  * Client for sending push notifications
  */
-class GenericTransactionalWhatsapp extends Base
+class WhatsappGenericTransactional extends Base
 {
     private $_service;
     private $_queue;
@@ -33,11 +33,13 @@ class GenericTransactionalWhatsapp extends Base
         $message_text,
         $media_s3_path,
         $preview_first_url,
+        $hsm_id,
+        $hsm_data
         $expires_on,
     )
     {
         $this->validateWhatsappMessageType(strtoupper($notification_type));
-        $job = new praccomm\GenericTransactionalWhatsapp();
+        $job = new praccomm\WhatsappGenericTransactional();
 
         $job->service = $this->_service;
         $job->app_name = $clientAppName;
@@ -49,6 +51,8 @@ class GenericTransactionalWhatsapp extends Base
         $job->message_text = $message_text;
         $job->media_s3_path = $media_s3_path;
         $job->preview_first_url = $preview_first_url;
+        $job->hsm_id = $hsm_id;
+        $job->hsm_data = $hsm_data;
         $job->expires_on = $expires_on;
         $job->initiated_on = date("Y-m-d H:i:s");
 
@@ -75,13 +79,15 @@ class GenericTransactionalWhatsapp extends Base
             'IMAGE',
             'TEXT',
             'DOCUMENT',
-            'AUDIO'
+            'AUDIO',
+            'HSM'
         )
         $typeRequiredKeys = array(
             "IMAGE" => array("media_s3_url"),
             "AUDIO" => array("media_s3_url"),
             "TEXT"  => array("message_text"),
-            "DOCUMENT" => array("media_s3_url")
+            "DOCUMENT" => array("media_s3_url"),
+            "HSM" => array("hsm_id", "hsm_data")
         )
         foreach ($RequiredKeys as $key) {
             if (!isset($key, $payload)){
