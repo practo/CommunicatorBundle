@@ -33,7 +33,7 @@ abstract class AbstractQueue
     const SEND_GENERIC_SMS_QUEUE                = 'generic_sms_sender';
     const UPDATE_GENERIC_SMS_QUEUE              = 'generic_sms_updater';
     const SEND_GENERIC_TRANSACTIONAL_PUSH_NOTIFICATION_QUEUE  = 'send_notification_task';
-    const SEND_GENERIC_TRANSACTIONAL_WHATSAPP   = 'generic_transactional_whatsapp_sender'
+    const SEND_GENERIC_TRANSACTIONAL_WHATSAPP   = 'generic_transactional_whatsapp_sender';
 
     /**
      * Receive Message

@@ -34,8 +34,8 @@ class WhatsappGenericTransactional extends Base
         $media_s3_path,
         $preview_first_url,
         $hsm_id,
-        $hsm_data
-        $expires_on,
+        $hsm_data,
+        $expires_on
     )
     {
         $this->validateWhatsappMessageType(strtoupper($notification_type));
@@ -74,36 +74,36 @@ class WhatsappGenericTransactional extends Base
             'whatsapp_message_type',
             'message_type',
             'mobile'
-        )
+        );
         $allowedWAMessageTypes = array(
             'IMAGE',
             'TEXT',
             'DOCUMENT',
             'AUDIO',
             'HSM'
-        )
+        );
         $typeRequiredKeys = array(
             "IMAGE" => array("media_s3_url"),
             "AUDIO" => array("media_s3_url"),
             "TEXT"  => array("message_text"),
             "DOCUMENT" => array("media_s3_url"),
             "HSM" => array("hsm_id", "hsm_data")
-        )
+        );
         foreach ($RequiredKeys as $key) {
-            if (!isset($key, $payload)){
+            if (!isset($payload[$key])) {
                 throw new \Exception("Required key ". $key . " not present.");
             }
         }
-        if (!in_array($payload['whatsapp_message_type'], $allowedWAMessageTypes){
+        if (!in_array($payload['whatsapp_message_type'], $allowedWAMessageTypes)) {
             throw new \Exception("Invalid whatsapp message type ". $payload['whatsapp_message_type']);
         }
-        foreach ($typeRequiredKeys[$payload['whatsapp_message_type']] as $key){
-            if (!isset($key, $payload)){
+        foreach ($typeRequiredKeys[$payload['whatsapp_message_type']] as $key) {
+            if (!isset($payload[$key])) {
                 throw new \Exception("Type Required key ". $key . " not present.");
             }
         }
-        if (isset('expires_on', $payload) && !($payload['expires_on'] > strtotime('now'))) {
-            throw new \Exception("Expiry time less than current time. Job would never run.")
+        if (isset($payload['expires_on']) && !($payload['expires_on'] > strtotime('now'))) {
+            throw new \Exception("Expiry time less than current time. Job would never run.");
         }
     }
 }
