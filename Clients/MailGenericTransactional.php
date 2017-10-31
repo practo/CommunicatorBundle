@@ -176,7 +176,8 @@ class MailGenericTransactional extends Base
             'DNS_DEACTIVATE_BOOK_20_DAYS',
             'DNS_RESTORE_BOOK',
             'DNS_BOOK_RESTORED',
-            'BOOK_ACTIVATION'
+            'BOOK_ACTIVATION',
+            'SERVICE_ENQUIRY'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
