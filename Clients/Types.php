@@ -2358,3 +2358,60 @@ class GenericTransactionalPushNotification {
   }
 
 }
+
+class GenericTransactionalWhatsapp {
+    public $app_name = null;
+    public $mobile = null;
+    public $whatsapp_message_type = null;
+    public $message_type = null;
+    public $reference_id = null;
+    public $reference_type = null;
+    public $message_text = null;
+    public $media_s3_path = null;
+    public $preview_first_url = null;
+    public $expires_on = null;
+    public $initiated_on = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['app_name'])) {
+        $this->app_name = $vals['app_name'];
+      }
+      if (isset($vals['mobile'])) {
+        $this->mobile = $vals['mobile'];
+      }
+      if (isset($vals['whatsapp_message_type'])) {
+        $this->whatsapp_message_type = $vals['whatsapp_message_type'];
+      }
+      if (isset($vals['message_type'])) {
+        $this->message_type = $vals['message_type'];
+      }
+      if (isset($vals['reference_id'])) {
+        $this->reference_id = $vals['reference_id'];
+      }
+      if (isset($vals['reference_type'])) {
+        $this->reference_type = $vals['reference_type'];
+      }
+      if (isset($vals['message_text'])) {
+        $this->message_text = $vals['message_text'];
+      }
+      if (isset($vals['media_s3_path'])) {
+        $this->media_s3_path = $vals['media_s3_path'];
+      }
+      if (isset($vals['preview_first_url'])) {
+        $this->preview_first_url = $vals['preview_first_url'];
+      }
+      if (isset($vals['expires_on'])) {
+        $this->expires_on = $vals['expires_on'];
+      }
+      if (isset($vals['initiated_on'])) {
+        $this->initiated_on = $vals['initiated_on'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'GenericTransactionalWhatsapp';
+  }
+
+}
