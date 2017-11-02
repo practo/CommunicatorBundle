@@ -2358,3 +2358,17 @@ class GenericTransactionalPushNotification {
   }
 
 }
+
+class WhatsappGenericTransactional {
+  public $app_name = null;
+  public $mobile = null;
+  public $whatsapp_message_type = null;
+  public $message_type = null;
+  public $reference_id = null;
+  public $reference_type = null;
+  public $message_text = null;
+  public $media_s3_path = null;
+  public $preview_first_url = null;
+  public $expires_on = null;
+  public $initiated_on = null;
+}
