@@ -101,15 +101,17 @@ class SmsCredit extends Base
      *
      * @param integer $practiceId         - Practice Id
      * @param string  $callDurationInMins - Call duration
+     * @param string  $type               - Call type
      *
      * @return array
      */
-    public function deductHelloCallCost($practiceId, $callDurationInMins)
+    public function deductHelloCallCost($practiceId, $callDurationInMins, $type = 'inbound')
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
         $params['pid'] = $practiceId;
         $params['call_duration_mins'] = $callDurationInMins;
+        $params['call_type'] = $type;
         $result = $client->post("/smscredit/deduct_hello_call_cost", $params);
         return $result;
     }
