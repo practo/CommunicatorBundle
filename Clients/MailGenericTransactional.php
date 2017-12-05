@@ -148,6 +148,7 @@ class MailGenericTransactional extends Base
             'RAY_REPORT_PAYMENT_DETAILS',
             'RAY_REPORT_INVENTORY_STOCK_INFORMATION',
             'RAY_REPORT_AGEING_AMOUNT_DUE',
+            'RAY_REPORT_SMS_DELIVERY_REPORTS',
             'DOCTOR_NO_SHOW',
             'FABRIC_BLUEBOOK_MAIL',
             'APPOINTMENT_REMINDER_MAIL',
