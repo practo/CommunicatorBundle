@@ -149,7 +149,6 @@ class MailGeneric extends Base
             'RAY_REPORT_TREATMENTS_SUMMARY',
             'RAY_REPORT_INVENTORY_TIMELINE',
             'RAY_REPORT_PAYMENT_DETAILS',
-            'RAY_REPORT_SMS_DELIVERY',
             'DOCTOR_NO_SHOW',
             'REACH_DAILY_ROI_EMAIL',
             'FABRIC_BLUEBOOK_MAIL',
