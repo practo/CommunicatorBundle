@@ -46,7 +46,7 @@ class WhatsappGenericTransactional extends Base
         $job->message_text = $message_text;
         $job->media_s3_path = $media_s3_path;
         $job->preview_first_url = $preview_first_url;
-        $job->hsm_template_hash = $hsm_template ? md5($hsm_template) : null;
+        $job->hsm_hash = $hsm_template ? sha1($hsm_template) : null;
         $job->hsm_data = $hsm_data;
         $job->expires_on = $expires_on;
         $job->initiated_on = date('Y-m-d H:i:s');
@@ -82,7 +82,7 @@ class WhatsappGenericTransactional extends Base
             'IMAGE'    => array('media_s3_url'),
             'AUDIO'    => array('media_s3_url'),
             'DOCUMENT' => array('media_s3_url'),
-            'HSM'      => array('hsm_template_hash', 'hsm_data')
+            'HSM'      => array('hsm_hash', 'hsm_data')
         );
 
         $messageType = strtoupper($payload['whatsapp_message_type']);
