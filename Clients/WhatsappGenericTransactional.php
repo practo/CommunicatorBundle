@@ -32,8 +32,8 @@ class WhatsappGenericTransactional extends Base
      * @param string $media_s3_path
      * @param string $preview_first_url
      * @param string $hsm_template
-     * @param string $hsm_data
-     * @param string $expires_on
+     * @param array  $hsm_data
+     * @param string $expires_at
      *
      * @return string Transaction ID
      */
@@ -48,7 +48,7 @@ class WhatsappGenericTransactional extends Base
         $preview_first_url = null,
         $hsm_template = null,
         $hsm_data = null,
-        $expires_on = null)
+        $expires_at = null)
     {
         $job = new \praccomm\WhatsappGenericTransactional();
 
@@ -62,10 +62,10 @@ class WhatsappGenericTransactional extends Base
         $job->message_text = $message_text;
         $job->media_s3_path = $media_s3_path;
         $job->preview_first_url = $preview_first_url;
-        $job->hsm_hash = $hsm_template ? sha1($hsm_template) : null;
-        $job->hsm_data = $hsm_data;
-        $job->expires_on = $expires_on;
-        $job->initiated_on = date('Y-m-d H:i:s');
+        $job->hsm_hash = $hsm_template ? hash('sha256', $hsm_template) : null;
+        $job->hsm_data = json_encode($hsm_data);
+        $job->expires_at = $expires_at;
+        $job->initiated_at = date('Y-m-d H:i:s');
 
         // Combination of timestamp + 20 random characters.
         $job->transaction_id = time() . substr(str_shuffle(
@@ -117,7 +117,7 @@ class WhatsappGenericTransactional extends Base
            throw new \Exception('Missing keys: ' . implode(',', $missingKeys));
         }
 
-        if (isset($payload['expires_on']) && ($payload['expires_on'] < strtotime('now'))) {
+        if (isset($payload['expires_at']) && ($payload['expires_at'] < strtotime('now'))) {
             throw new \Exception("Expiry time less than current time. Job would never run.");
         }
     }

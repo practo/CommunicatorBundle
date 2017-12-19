@@ -2369,7 +2369,7 @@ class WhatsappGenericTransactional {
   public $message_text = null;
   public $media_s3_path = null;
   public $preview_first_url = null;
-  public $expires_on = null;
-  public $initiated_on = null;
+  public $expires_at = null;
+  public $initiated_at = null;
   public $transaction_id = null;
 }
