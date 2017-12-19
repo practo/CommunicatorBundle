@@ -2371,4 +2371,5 @@ class WhatsappGenericTransactional {
   public $preview_first_url = null;
   public $expires_on = null;
   public $initiated_on = null;
+  public $transaction_id = null;
 }

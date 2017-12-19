@@ -4,7 +4,6 @@ namespace Practo\CommunicatorBundle\Clients;
 
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
-use praccomm\WhatsappGenericTransactional;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 
 /**
@@ -21,6 +20,23 @@ class WhatsappGenericTransactional extends Base
         $this->_service = Helper::getValidAppName($service);
     }
 
+    /**
+     * Send WhatsApp message
+     *
+     * @param string $mobile
+     * @param string $whatsapp_message_type
+     * @param string $message_type
+     * @param string $reference_id
+     * @param string $reference_type
+     * @param string $message_text
+     * @param string $media_s3_path
+     * @param string $preview_first_url
+     * @param string $hsm_template
+     * @param string $hsm_data
+     * @param string $expires_on
+     *
+     * @return string Transaction ID
+     */
     public function sendGenericTransactionalWhatsapp(
         $mobile,
         $whatsapp_message_type,
@@ -34,7 +50,7 @@ class WhatsappGenericTransactional extends Base
         $hsm_data = null,
         $expires_on = null)
     {
-        $job = new WhatsappGenericTransactional();
+        $job = new \praccomm\WhatsappGenericTransactional();
 
         $job->service = $this->_service;
         $job->app_name = $this->_service;
@@ -51,14 +67,20 @@ class WhatsappGenericTransactional extends Base
         $job->expires_on = $expires_on;
         $job->initiated_on = date('Y-m-d H:i:s');
 
+        // Combination of timestamp + 20 random characters.
+        $job->transaction_id = time() . substr(str_shuffle(
+            str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
+
         $jsonifiedJob = json_encode($job);
         $this->validatePayload(json_decode($jsonifiedJob, true));
 
         $this->_queue->setDomain($this->_domain);
 
-        return $this->_queue
+        $this->_queue
             ->setQueueName(Queue::GENERIC_TRANSACTIONAL_WHATSAPP_SENDER)
             ->sendMessage($jsonifiedJob, 10);
+
+        return $job->transaction_id;
     }
 
     private function validatePayload($payload)
