@@ -83,6 +83,22 @@ class WhatsappGenericTransactional extends Base
         return $job->transaction_id;
     }
 
+    /**
+     * Get status of a previously sent WhatsApp message using transaction ID
+     *
+     * @param string $transactionId
+     *
+     * @return array
+     */
+    public function getByTransactionId($transactionId)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = [
+            'transaction_id' => $transactionId
+        ];
+        return $client->get('/generic_transactional_whatsapp/get_by_transaction_id', $params);
+    }
+
     private function validatePayload($payload)
     {
         $requiredKeys = array(
