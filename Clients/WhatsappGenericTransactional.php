@@ -12,13 +12,13 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 class WhatsappGenericTransactional extends Base
 {
     private $_apiSecretKey;
-    private $_appName;
+    private $_service;
     private $_queue;
 
-    public function __construct($queue, $apiSecretKey, $appName)
+    public function __construct($queue, $apiSecretKey, $service)
     {
         $this->_apiSecretKey = $apiSecretKey;
-        $this->_appName = Helper::getValidAppName($appName);
+        $this->_service = Helper::getValidAppName($appName);
         $this->_queue = $queue;
     }
 
