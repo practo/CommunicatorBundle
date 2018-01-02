@@ -18,7 +18,7 @@ class WhatsappGenericTransactional extends Base
     public function __construct($queue, $apiSecretKey, $service)
     {
         $this->_apiSecretKey = $apiSecretKey;
-        $this->_service = Helper::getValidAppName($appName);
+        $this->_service = Helper::getValidAppName($service);
         $this->_queue = $queue;
     }
 
