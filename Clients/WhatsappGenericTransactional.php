@@ -104,6 +104,29 @@ class WhatsappGenericTransactional extends Base
         return $client->get('/generic_transactional_whatsapp/get_by_transaction_id', $params);
     }
 
+    /**
+     * Get WhatsApp message using Ray Practice ID
+     *
+     * @param int   $rayPracticeId   - Ray Practice ID
+     * @param int   $initiatedAfter  - Unix timestamp for initiated after
+     * @param int   $initiatedBefore - Unix timestamp for initiated before
+     * @param array $statusList      - Array of status codes
+     *
+     * @return array
+     */
+    public function getByRayPracticeId($rayPracticeID, $initiatedAfter, $initiatedBefore, $statusList)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = [
+            'ray_practice_id' => $rayPracticeID,
+            'initiated_after' => $initiatedAfter,
+            'initiated_before' => $initiatedBefore,
+            'status_list' => $statusList,
+            'app_name' => $this->_service
+        ];
+        return $client->get('/generic_transactional_whatsapp/get_by_ray_practice_id', $params);
+    }
+
     private function validatePayload($payload)
     {
         $requiredKeys = array(
