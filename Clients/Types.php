@@ -2372,4 +2372,5 @@ class WhatsappGenericTransactional {
   public $expires_at = null;
   public $initiated_at = null;
   public $transaction_id = null;
+  public $ray_practice_id = null;
 }

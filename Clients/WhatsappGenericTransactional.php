@@ -36,6 +36,7 @@ class WhatsappGenericTransactional extends Base
      * @param string $hsm_template
      * @param array  $hsm_data
      * @param string $expires_at
+     * @param int    $ray_practice_id
      *
      * @return string Transaction ID
      */
@@ -50,7 +51,8 @@ class WhatsappGenericTransactional extends Base
         $preview_first_url = null,
         $hsm_template = null,
         $hsm_data = null,
-        $expires_at = null)
+        $expires_at = null,
+        $ray_practice_id = null)
     {
         $job = new \praccomm\WhatsappGenericTransactional();
 
@@ -67,6 +69,7 @@ class WhatsappGenericTransactional extends Base
         $job->hsm_hash = $hsm_template ? hash('sha256', $hsm_template) : null;
         $job->hsm_data = json_encode($hsm_data);
         $job->expires_at = $expires_at;
+        $job->ray_practice_id = $ray_practice_id;
         $job->initiated_at = date('Y-m-d H:i:s');
 
         // Combination of timestamp + 20 random characters.
