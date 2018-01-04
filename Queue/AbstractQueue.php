@@ -32,6 +32,7 @@ abstract class AbstractQueue
     const METRIC_MONITOR                        = 'metric_monitor';
     const SEND_GENERIC_SMS_QUEUE                = 'generic_sms_sender';
     const UPDATE_GENERIC_SMS_QUEUE              = 'generic_sms_updater';
+    const GENERIC_TRANSACTIONAL_WHATSAPP_SENDER = 'generic_transactional_whatsapp_sender';
     const SEND_GENERIC_TRANSACTIONAL_PUSH_NOTIFICATION_QUEUE  = 'send_notification_task';
 
     /**
