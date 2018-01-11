@@ -204,6 +204,8 @@ class MailStaff extends Base
           return \praccomm\StaffEmailType::TRIAL_EXPIRY_REMINDER;
         case "WELCOME_TO_RAY":
           return \praccomm\StaffEmailType::WELCOME_TO_RAY;
+        case "EXPORT_DATA":
+          return praccomm\StaffEmailType::EXPORT_DATA;
         default:
           throw new \Exception("Invalid message type");
       }
