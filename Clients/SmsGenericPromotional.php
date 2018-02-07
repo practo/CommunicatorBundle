@@ -25,7 +25,7 @@ class SmsGenericPromotional extends Base
 
     public function sendSms($reference_id, $reference_type,
                             $name, $to, $messageType, $body,
-                            $expiryTime = null)
+                            $expiryTime = null, $campaign_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericPromotionalSMS();
@@ -37,6 +37,7 @@ class SmsGenericPromotional extends Base
         $job->message_text = $body;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
+        $job->campaign_id = $campaign_id;
         $job->sms_type = 'generic_promotional';
         $job->initiated_at = date("Y-m-d H:i:s");
         $jsonifiedJob = json_encode($job);
