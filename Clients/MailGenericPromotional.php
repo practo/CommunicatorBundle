@@ -27,7 +27,8 @@ class MailGenericPromotional extends Base
                              $cc = "", $bcc = "", $subject, $body, $type,
                              $files, $hash, $plaintext = "", $replyTo = NULL,
                              $reference_id = NULL, $reference_type = NULL,
-                             $expiryTime = NULL, $appName = null, $createdBy = NULL)
+                             $expiryTime = NULL, $appName = null, $createdBy = NULL,
+                             $campaign_id = NULL)
     {
         $this->validateMailType(strtoupper($type));
         $job = new praccomm\GenericPromotionalMail();
@@ -57,6 +58,7 @@ class MailGenericPromotional extends Base
         $job->plaintext = $plaintext;
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
+        $job->campaign_id = $campaign_id;
         $job->initiated_at = date("Y-m-d H:i:s");
         $job->app_name = $this->_appName;
         if ($createdBy) {
