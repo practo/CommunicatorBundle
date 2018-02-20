@@ -90,6 +90,7 @@ class SmsGeneric extends Base
             'TATKAL_NOTIFICATION_SMS',
             'APPOINTMENT_PNS_DEFAULT',
             'APPOINTMENT_PNS_THIRD',
+            'CAMPAIGN_RENEWAL_SMS',
             'VN_COOL_OFF_SMS'
         );
         if (!in_array($type, $allowedTypes, true)) {
