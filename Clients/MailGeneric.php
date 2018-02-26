@@ -171,7 +171,6 @@ class MailGeneric extends Base
             'BOOK_GENERIC_NOTIFICATION',
             'APPOINTMENT_PNS',
             'ENTERPRISE_REPORT',
-            'CAMPAIGN_RENEWAL_MAIL',
             'PROFILE_DATA_VERIFICATION'
         );
 
