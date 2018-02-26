@@ -96,6 +96,7 @@ class SmsGenericTransactional extends Base
             'DNS_RESTORE_BOOK',
             'DNS_BOOK_RESTORED',
             'BOOK_ACTIVATION',
+            'CAMPAIGN_RENEWAL_SMS',
             'SERVICE_ENQUIRY'
         );
         if (!in_array($type, $allowedTypes, true)) {
