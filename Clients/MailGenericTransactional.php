@@ -179,6 +179,7 @@ class MailGenericTransactional extends Base
             'DNS_RESTORE_BOOK',
             'DNS_BOOK_RESTORED',
             'BOOK_ACTIVATION',
+            'CAMPAIGN_RENEWAL_MAIL',
             'SERVICE_ENQUIRY'
         );
 
