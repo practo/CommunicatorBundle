@@ -2361,7 +2361,116 @@ class GenericTransactionalPushNotification {
   public function getName() {
     return 'GenericTransactionalPushNotification';
   }
+}
 
+class PushData {
+  public $title = '';
+  public $body = '';
+  public $sound = '';
+  public $body_loc_args = '';
+  public $body_loc_key = '';
+  public $title_loc_key = '';
+  public $title_loc_args = '';
+  public $custom = array();
+
+  public function getName() {
+    return 'PushData';
+  }
+}
+
+class AndroidPushData extends PushData {
+  public $icon = '';
+
+  public function getName() {
+    return 'AndroidPushData';
+  }
+}
+
+class IosPushData extends PushData {
+  public $badge = '';
+
+  public function getName() {
+    return 'IosPushData';
+  }
+}
+
+class PushObj {
+  public $app_name = '';
+  public $service = '';
+  public $reference_id = '';
+  public $reference_type = '';
+  public $data = array();
+  public $app_version = array();
+  public $is_silent = null;
+  public $last_active = array();
+  public $is_content_available = null;
+  public $account_id = '';
+  public $device_id = '';
+  public $device_id = '';
+
+  public function getName() {
+    return 'PushObj';
+  }
+}
+
+class IosPushObj extends PushObj {
+  public $data = json_encode(IosPushData());
+  public $is_silent = false;
+  public $app_name = 'ios';
+
+  public function getName() {
+    return 'IosPushObj';
+  }
+}
+
+class AndroidPushObj extends PushObj {
+  public $data = json_encode(AndroidPushObj());
+  public $is_silent = true;
+  public $app_name = 'android';
+
+  public function getName() {
+    return 'AndroidPushObj';
+  }
+}
+
+class PatientPromoAndroidPushObj extends AndroidPushObj {
+  public function getName() {
+    return 'PatientPromoAndroidPushObj';
+  }
+}
+
+class PatientTransAndroidPushObj extends AndroidPushObj {
+  public function getName() {
+    return 'PatientTransAndroidPushObj';
+  }
+}
+
+class PatientPromoIosPushObj extends IosPushObj {
+  public function getName() {
+    return 'PatientPromoIosPushObj';
+  }
+}
+
+class PatientTransIosPushObj extends IosPushObj {
+  public function getName() {
+    return 'PatientTransIosPushObj';
+  }
+}
+
+class PushDataTypes {
+  public $types = array(
+    'app_name' => string,
+    'service': string,
+    'reference_id': string,
+    'reference_type': string,
+    'app_version': object,
+    'is_silent': bool,
+    'last_active': object,
+    'account_id': string,
+    'is_content_available': bool,
+    'device_id': string,
+    'data': object
+  )
 }
 
 class WhatsappGenericTransactional {
@@ -2378,4 +2487,8 @@ class WhatsappGenericTransactional {
   public $initiated_at = null;
   public $transaction_id = null;
   public $ray_practice_id = null;
+
+  public function getName() {
+    return 'WhatsappGenericTransactional';
+  }
 }
