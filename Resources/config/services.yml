@@ -15,7 +15,6 @@ parameters:
     practo_communicator.mail_generic_promotional.class: Practo\CommunicatorBundle\Clients\MailGenericPromotional
     practo_communicator.mail_generic_transactional.class: Practo\CommunicatorBundle\Clients\MailGenericTransactional
     practo_communicator.device_information.class: Practo\CommunicatorBundle\Clients\DeviceInformation
-    practo_communicator.push_android_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientTransactional
     practo_communicator.push_ios_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushIosPatientTransactional
     practo_communicator.push_android_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientPromotional
     practo_communicator.push_ios_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushIosPatientPromotional
@@ -32,7 +31,6 @@ parameters:
     communicator.sms_credit: credit_handler
     communicator.send_appointment_sms_queue: appointment_sms_sender
     communicator.update_appointment_sms_queue: appointment_sms_updater
-    communicator.send_generic_push_notification_queue: send_notification_task
     communicator.send_patient_trans_push_queue: patient_transactional_push_notification_sender
     communicator.send_patient_promo_push_queue: patient_promotional_push_notification_sender
 
@@ -175,14 +173,6 @@ services:
     class: %practo_communicator.device_information.class%
     arguments:
       - %communicator.api.secret%
-    calls:
-      - [ setRequest, [ '@?request=' ]]
-  practo_communicator.push_notification_generic_transactional:
-    class: %practo_communicator.push_notification_generic_transactional.class%
-    arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
     calls:
       - [ setRequest, [ '@?request=' ]]
   practo_communicator.whatsapp_generic_transactional:
