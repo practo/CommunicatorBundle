@@ -2396,6 +2396,7 @@ class IosPushData extends PushData {
 
 class PushObj {
   public $app_name = '';
+  public $push_type = '';
   public $service = '';
   public $reference_id = '';
   public $reference_type = '';
@@ -2460,17 +2461,21 @@ class PatientTransIosPushObj extends IosPushObj {
 class PushDataTypes {
   public $types = array(
     'app_name' => string,
-    'service': string,
-    'reference_id': string,
-    'reference_type': string,
-    'app_version': object,
-    'is_silent': bool,
-    'last_active': object,
-    'account_id': string,
-    'is_content_available': bool,
-    'device_id': string,
-    'data': object
+    'service' => string,
+    'reference_id' => string,
+    'reference_type' => string,
+    'app_version' => object,
+    'is_silent' => bool,
+    'last_active' => object,
+    'account_id' => string,
+    'is_content_available' => bool,
+    'device_id' => string,
+    'push_type' => string,
+    'data' => object
   )
+  public function getName() {
+    return 'PushDataTypes';
+  }
 }
 
 class WhatsappGenericTransactional {
