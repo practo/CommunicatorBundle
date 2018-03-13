@@ -22,7 +22,7 @@ abstract class AbstractPush extends Base
     ];
 
     abstract protected function validatePushType($pushType);
-    abstract protected function validateFilters($pushType);
+    abstract protected function validateFilters($inputDict);
 
 
     public function __construct($queue, $service)
@@ -87,7 +87,7 @@ abstract class AbstractPush extends Base
     }
 
     public function validatePushRelationKeys($inputDict) {
-        foreach ($inputDict as $key) {
+        foreach ($this->push_relation_keys as $key) {
             if (array_key_exists($key, $inputDict)) {
                 if (['value', 'relation'] != set(array_keys($inputDict[$key]))
                     throw new PushValidationException("Invalid keys in last active");
@@ -145,7 +145,7 @@ abstract class AbstractPush extends Base
     }
 
     public function validate($inputDict) {
-        $inputDict = $this->remove_empty_keys($inputDict);
+        $inputDict = $this->removeEmptyKeys($inputDict);
         $this->validateTypes($inputDict);
         $this->validateMandatoryKeys($this->mandatory_keys, $inputDict);
         $this->validateFilters($inputDict);
