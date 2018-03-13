@@ -1,0 +1,47 @@
+<?php
+
+namespace Practo\CommunicatorBundle\Clients;
+
+use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
+use Practo\CommunicatorBundle\Clients\Helper;
+use praccomm;
+use Practo\CommunicatorBundle\Clients\CommunicatorClient;
+use Practo\CommunicatorBundle\Clients\Exceptions;
+
+/**
+ * Client for sending Patient Promotional Ios Push notifications
+ */
+class PushIosPatientPromotional extends AbstractPush
+{
+    public function __construct($queue, $service)
+    {
+        parent::__construct();
+        $this->comm_app_name = 'fabric-ios';
+        $this->job = new praccomm\PatientPromoIosPush();
+        $this->job->service = $service;
+    }
+
+    public function sendPushNotification()
+    {
+        var $jobData = (array) $this->job;
+        $jobData = $this->validate($jobData);
+        var $jsonifiedJob = json_encode($jobData);
+        $this->_queue->setDomain($this->_domain);
+        return $this->_queue
+                    ->setQueueName(Queue::SEND_PATIENT_PROMOTIONAL_PUSH_QUEUE)
+                    ->sendMessage($jsonifiedJob, 10);
+    }
+
+    private function validateFilters($pushDict)
+    {
+        $this->validatePushRelationKeys($pushDict);
+    }
+
+    private function validatePushType($pushType)
+    {
+        $allowedTypes = array();
+        if (!in_array($pushType, $allowedTypes, true)) {
+            throw new \PushValidationException("Invalid message type");
+        }
+    }
+}
