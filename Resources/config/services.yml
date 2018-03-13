@@ -16,6 +16,7 @@ parameters:
     practo_communicator.mail_generic_transactional.class: Practo\CommunicatorBundle\Clients\MailGenericTransactional
     practo_communicator.device_information.class: Practo\CommunicatorBundle\Clients\DeviceInformation
     practo_communicator.push_ios_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushIosPatientTransactional
+    practo_communicator.push_android_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientTransactional
     practo_communicator.push_android_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientPromotional
     practo_communicator.push_ios_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushIosPatientPromotional
     practo_communicator.whatsapp_generic_transactional.class: Practo\CommunicatorBundle\Clients\WhatsappGenericTransactional
