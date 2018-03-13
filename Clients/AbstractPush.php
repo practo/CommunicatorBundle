@@ -32,12 +32,12 @@ abstract class AbstractPush extends Base
     }
 
     public function removeEmptyKeys($object) {
-        var $updated_object = array();
+        $updated_object = array();
         foreach ($object as $key => $value) {
             if (in_array($value, ['', null, array()]))
                 continue;
             else if (type($value) == 'object') {
-                var $updated_val = $this->removeEmptyKeys($value);
+                $updated_val = $this->removeEmptyKeys($value);
                 if (in_array($updated_val, ['', null, array()]))
                     continue;
                 $updated_object[$key] = $updated_val;
@@ -89,16 +89,16 @@ abstract class AbstractPush extends Base
     public function validatePushRelationKeys($inputDict) {
         foreach ($this->push_relation_keys as $key) {
             if (array_key_exists($key, $inputDict)) {
-                if (['value', 'relation'] != set(array_keys($inputDict[$key]))
+                if (['value', 'relation'] != set(array_keys($inputDict[$key])))
                     throw new PushValidationException("Invalid keys in last active");
-                if (!in_array($this->push_relations, $inputDict[$key]['relation'])))
+                if (!in_array($this->push_relations, $inputDict[$key]['relation']))
                     throw new PushValidationException("Invalid keys in last active");
             }
         }
     }
 
     public function validateMandatoryKeys($mandatoryKeys, $inputDict) {
-        var $missing_keys = array_diff($mandatory_keys, array_keys($inputDict));
+        $missing_keys = array_diff($mandatory_keys, array_keys($inputDict));
         if (array_len($missing_keys))
             throw new PushValidationException("Missing Mandatory Keys: " . $missing_keys);
         foreach ($inputDict as $key => $value) {
@@ -108,11 +108,10 @@ abstract class AbstractPush extends Base
     }
 
     public function validateTypes($inputDict) {
-        var $pdt = new PushDataTypes;
+        $pdt = new PushDataTypes;
         foreach ($pdt->types as $key => $value) {
             if (in_array($key, $inputDict) && ($inputDict[$key] === null) && (type($inputDict[$key]) !== $value))
                 throw new PushValidationException("Invalid Type for key: " . $key);
-            }
         }
     }
 

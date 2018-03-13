@@ -23,9 +23,9 @@ class PushAndroidPatientTransactional extends AbstractPush
 
     public function sendPushNotification()
     {
-        var $jobData = (array) $this->job;
+        $jobData = (array) $this->job;
         $jobData = $this->validate($jobData);
-        var $jsonifiedJob = json_encode($jobData);
+        $jsonifiedJob = json_encode($jobData);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE)
@@ -38,7 +38,7 @@ class PushAndroidPatientTransactional extends AbstractPush
         if ((!array_key_exists('account_id', $inputDict)) && (!array_key_exists('device_id', $inputDict)))
             throw new \PushValidationException(
                 "Account/Device ID is mandatory for transactional pushes"
-            )
+            );
     }
 
     private function validatePushType($pushType)

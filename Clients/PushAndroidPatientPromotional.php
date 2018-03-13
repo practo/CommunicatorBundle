@@ -23,9 +23,9 @@ class PushAndroidPatientPromotional extends AbstractPush
 
     public function sendPushNotification()
     {
-        var $jobData = (array) $this->job;
+        $jobData = (array) $this->job;
         $jobData = $this->validate($jobData);
-        var $jsonifiedJob = json_encode($jobData);
+        $jsonifiedJob = json_encode($jobData);
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_PATIENT_PROMOTIONAL_PUSH_QUEUE)
@@ -40,7 +40,6 @@ class PushAndroidPatientPromotional extends AbstractPush
     private function validatePushType($pushType)
     {
         $allowedTypes = array();
-
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new \PushValidationException("Invalid message type");
         }
