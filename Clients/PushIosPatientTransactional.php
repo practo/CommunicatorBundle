@@ -21,8 +21,11 @@ class PushIosPatientTransactional extends AbstractPush
         $this->job->service = $service;
     }
 
-    public function sendPushNotification()
+    public function sendPushNotification($pushDict)
     {
+        $this->addHeaders($this->job, $pushDict);
+        $this->addFilters($this->job, $pushDict);
+        $this->addData($this->job, $pushDict);
         $jobData = (array) $this->job;
         $jobData = $this->validate($jobData);
         $jsonifiedJob = json_encode($jobData);
