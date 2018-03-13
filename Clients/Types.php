@@ -2407,7 +2407,6 @@ class PushObj {
   public $is_content_available = null;
   public $account_id = '';
   public $device_id = '';
-  public $device_id = '';
 
   public function getName() {
     return 'PushObj';
@@ -2425,7 +2424,7 @@ class IosPushObj extends PushObj {
 }
 
 class AndroidPushObj extends PushObj {
-  public $data = json_encode(AndroidPushObj());
+  public $data = json_encode(AndroidPushData());
   public $is_silent = true;
   public $app_name = 'android';
 
@@ -2434,27 +2433,27 @@ class AndroidPushObj extends PushObj {
   }
 }
 
-class PatientPromoAndroidPushObj extends AndroidPushObj {
+class PatientPromoAndroidPush extends AndroidPushObj {
   public function getName() {
-    return 'PatientPromoAndroidPushObj';
+    return 'PatientPromoAndroidPush';
   }
 }
 
-class PatientTransAndroidPushObj extends AndroidPushObj {
+class PatientTransAndroidPush extends AndroidPushObj {
   public function getName() {
-    return 'PatientTransAndroidPushObj';
+    return 'PatientTransAndroidPush';
   }
 }
 
-class PatientPromoIosPushObj extends IosPushObj {
+class PatientPromoIosPush extends IosPushObj {
   public function getName() {
-    return 'PatientPromoIosPushObj';
+    return 'PatientPromoIosPush';
   }
 }
 
-class PatientTransIosPushObj extends IosPushObj {
+class PatientTransIosPush extends IosPushObj {
   public function getName() {
-    return 'PatientTransIosPushObj';
+    return 'PatientTransIosPush';
   }
 }
 
