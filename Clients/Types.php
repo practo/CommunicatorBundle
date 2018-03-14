@@ -2459,18 +2459,18 @@ class PatientTransIosPush extends IosPushObj {
 
 class PushDataTypes {
   public $types = array(
-    'app_name' => string,
-    'service' => string,
-    'reference_id' => string,
-    'reference_type' => string,
-    'app_version' => object,
-    'is_silent' => bool,
-    'last_active' => object,
-    'account_id' => string,
-    'is_content_available' => bool,
-    'device_id' => string,
-    'push_type' => string,
-    'data' => object
+    'app_name' => "string",
+    'service' => "string",
+    'reference_id' => "string",
+    'reference_type' => "string",
+    'app_version' => "array",
+    'is_silent' => "boolean",
+    'last_active' => "array",
+    'account_id' => "string",
+    'is_content_available' => "boolean",
+    'device_id' => "string",
+    'push_type' => "string",
+    'data' => "array"
   )
   public function getName() {
     return 'PushDataTypes';

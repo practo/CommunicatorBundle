@@ -14,12 +14,12 @@ abstract class AbstractPush extends Base
 {
     private $_service;
     private $_queue;
-    private $push_relations = ['=', '>', '<', '>=', '<='];
-    private $push_relation_keys = ['app_version', 'last_active'];
+    private $push_relations = array('=', '>', '<', '>=', '<=');
+    private $push_relation_keys = array('app_version', 'last_active');
     private $comm_app_name = '';
-    private $mandatory_keys = [
+    private $mandatory_keys = array(
         'service', 'reference_id', 'reference_type', 'data', 'push_type'
-    ];
+    );
 
     abstract protected function validatePushType($pushType);
     abstract protected function validateFilters($inputDict);
@@ -31,14 +31,21 @@ abstract class AbstractPush extends Base
         $this->_service = Helper::getValidAppName($service);
     }
 
+    public function isAssoc($arr)
+    {
+        if (array() === $arr) return false;
+        if (gettype($arr) !== 'array') return false;
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
     public function removeEmptyKeys($object) {
         $updated_object = array();
         foreach ($object as $key => $value) {
-            if (in_array($value, ['', null, array()]))
+            if (in_array($value, array('', null, array())))
                 continue;
-            else if (type($value) == 'object') {
+            else if ($this->isAssoc($value)) {
                 $updated_val = $this->removeEmptyKeys($value);
-                if (in_array($updated_val, ['', null, array()]))
+                if (in_array($updated_val, array('', null, array())))
                     continue;
                 $updated_object[$key] = $updated_val;
             }
@@ -89,7 +96,7 @@ abstract class AbstractPush extends Base
     public function validatePushRelationKeys($inputDict) {
         foreach ($this->push_relation_keys as $key) {
             if (array_key_exists($key, $inputDict)) {
-                if (['value', 'relation'] != set(array_keys($inputDict[$key])))
+                if (array('value', 'relation') != set(array_keys($inputDict[$key])))
                     throw new PushValidationException("Invalid keys in last active");
                 if (!in_array($this->push_relations, $inputDict[$key]['relation']))
                     throw new PushValidationException("Invalid keys in last active");
@@ -102,7 +109,7 @@ abstract class AbstractPush extends Base
         if (array_len($missing_keys))
             throw new PushValidationException("Missing Mandatory Keys: " . $missing_keys);
         foreach ($inputDict as $key => $value) {
-            if (in_array($value, ['', null, array()]))
+            if (in_array($value, array('', null, array())))
                 throw new PushValidationException("Key: " . $key . "Cannot be empty");
         }
     }
@@ -110,7 +117,7 @@ abstract class AbstractPush extends Base
     public function validateTypes($inputDict) {
         $pdt = new PushDataTypes;
         foreach ($pdt->types as $key => $value) {
-            if (in_array($key, $inputDict) && ($inputDict[$key] === null) && (type($inputDict[$key]) !== $value))
+            if (in_array($key, $inputDict) && ($inputDict[$key] === null) && (gettype($inputDict[$key]) !== $value))
                 throw new PushValidationException("Invalid Type for key: " . $key);
         }
     }
@@ -125,11 +132,11 @@ abstract class AbstractPush extends Base
             throw new PushValidationException("No Data in Ios Payload");
         if ($isIosSilent) {
             $inputDict['is_content_available'] = true;
-            if (array_len(array_diff(array_keys($iosData), ['custom'])) > 0) {
+            if (array_len(array_diff(array_keys($iosData), array('custom'))) > 0) {
                 throw new PushValidationException("Silent Push can only have custom keys");
             }
         }
-        else if (array_len(array_diff(array_keys($iosData), ['custom'])) == 0) {
+        else if (array_len(array_diff(array_keys($iosData), array('custom'))) == 0) {
             throw new PushValidationException("Non Silent Push data cant be empty");
         }
     }
