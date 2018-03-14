@@ -106,7 +106,7 @@ abstract class AbstractPush extends Base
 
     public function validateMandatoryKeys($mandatoryKeys, $inputDict) {
         $missing_keys = array_diff($mandatoryKeys, array_keys($inputDict));
-        if (array_len($missing_keys))
+        if (count($missing_keys))
             throw new PushValidationException("Missing Mandatory Keys: " . $missing_keys);
         foreach ($inputDict as $key => $value) {
             if (in_array($value, array('', null, array())))
@@ -132,11 +132,11 @@ abstract class AbstractPush extends Base
             throw new PushValidationException("No Data in Ios Payload");
         if ($isIosSilent) {
             $inputDict['is_content_available'] = true;
-            if (array_len(array_diff(array_keys($iosData), array('custom'))) > 0) {
+            if (count(array_diff(array_keys($iosData), array('custom'))) > 0) {
                 throw new PushValidationException("Silent Push can only have custom keys");
             }
         }
-        else if (array_len(array_diff(array_keys($iosData), array('custom'))) == 0) {
+        else if (count(array_diff(array_keys($iosData), array('custom'))) == 0) {
             throw new PushValidationException("Non Silent Push data cant be empty");
         }
     }
