@@ -105,7 +105,7 @@ abstract class AbstractPush extends Base
     }
 
     public function validateMandatoryKeys($mandatoryKeys, $inputDict) {
-        $missing_keys = array_diff($mandatory_keys, array_keys($inputDict));
+        $missing_keys = array_diff($mandatoryKeys, array_keys($inputDict));
         if (array_len($missing_keys))
             throw new PushValidationException("Missing Mandatory Keys: " . $missing_keys);
         foreach ($inputDict as $key => $value) {
@@ -115,9 +115,9 @@ abstract class AbstractPush extends Base
     }
 
     public function validateTypes($inputDict) {
-        $pdt = new PushDataTypes;
+        $pdt = new praccomm\PushDataTypes;
         foreach ($pdt->types as $key => $value) {
-            if (in_array($key, $inputDict) && ($inputDict[$key] === null) && (gettype($inputDict[$key]) !== $value))
+            if (in_array($key, array_keys($inputDict)) && ($inputDict[$key] === null) && (gettype($inputDict[$key]) !== $value))
                 throw new PushValidationException("Invalid Type for key: " . $key);
         }
     }

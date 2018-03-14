@@ -38,7 +38,7 @@ class PushIosPatientTransactional extends AbstractPush
     protected function validateFilters($pushDict)
     {
         $this->validatePushRelationKeys($pushDict);
-        if ((!array_key_exists('account_id', $inputDict)) && (!array_key_exists('device_id', $inputDict)))
+        if ((!array_key_exists('account_id', $pushDict)) && (!array_key_exists('device_id', $pushDict)))
             throw new \PushValidationException(
                 "Account/Device ID is mandatory for transactional pushes"
             );
