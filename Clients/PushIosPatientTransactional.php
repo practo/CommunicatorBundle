@@ -15,7 +15,7 @@ class PushIosPatientTransactional extends AbstractPush
 {
     public function __construct($queue, $service)
     {
-        parent::__construct();
+        parent::__construct($queue, $service);
         $this->comm_app_name = 'fabric-ios';
         $this->job = new praccomm\PatientTransIosPush();
         $this->job->service = $service;
@@ -35,7 +35,7 @@ class PushIosPatientTransactional extends AbstractPush
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function validateFilters($pushDict)
+    protected function validateFilters($pushDict)
     {
         $this->validatePushRelationKeys($pushDict);
         if ((!array_key_exists('account_id', $inputDict)) && (!array_key_exists('device_id', $inputDict)))
@@ -44,7 +44,7 @@ class PushIosPatientTransactional extends AbstractPush
             );
     }
 
-    private function validatePushType($pushType)
+    protected function validatePushType($pushType)
     {
         $allowedTypes = array(
             'PHR_RECORD_SHARED_NOTIF',

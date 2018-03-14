@@ -2414,9 +2414,12 @@ class PushObj {
 }
 
 class IosPushObj extends PushObj {
-  public $data = json_encode(IosPushData());
+  public $data = array();
   public $is_silent = false;
   public $app_name = 'ios';
+  public function __construct() {
+    $this->data = json_encode(new IosPushData);
+  }
 
   public function getName() {
     return 'IosPushObj';
@@ -2424,9 +2427,12 @@ class IosPushObj extends PushObj {
 }
 
 class AndroidPushObj extends PushObj {
-  public $data = json_encode(AndroidPushData());
+  public $data = array();
   public $is_silent = true;
   public $app_name = 'android';
+  public function __construct() {
+    $this->data = json_encode(new AndroidPushData);
+  }
 
   public function getName() {
     return 'AndroidPushObj';
@@ -2471,7 +2477,7 @@ class PushDataTypes {
     'device_id' => "string",
     'push_type' => "string",
     'data' => "array"
-  )
+  );
   public function getName() {
     return 'PushDataTypes';
   }

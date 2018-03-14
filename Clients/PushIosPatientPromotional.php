@@ -15,7 +15,7 @@ class PushIosPatientPromotional extends AbstractPush
 {
     public function __construct($queue, $service)
     {
-        parent::__construct();
+        parent::__construct($queue, $service);
         $this->comm_app_name = 'fabric-ios';
         $this->job = new praccomm\PatientPromoIosPush();
         $this->job->service = $service;
@@ -35,12 +35,12 @@ class PushIosPatientPromotional extends AbstractPush
                     ->sendMessage($jsonifiedJob, 10);
     }
 
-    private function validateFilters($pushDict)
+    protected function validateFilters($pushDict)
     {
         $this->validatePushRelationKeys($pushDict);
     }
 
-    private function validatePushType($pushType)
+    protected function validatePushType($pushType)
     {
         $allowedTypes = array();
         if (!in_array($pushType, $allowedTypes, true)) {
