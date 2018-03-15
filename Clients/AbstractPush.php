@@ -31,6 +31,13 @@ abstract class AbstractPush extends Base
         $this->_service = Helper::getValidAppName($service);
     }
 
+    protected function sendPush($queueName, $jsonifiedJob) {
+        $this->_queue->setDomain($this->_domain);
+        return $this->_queue
+                    ->setQueueName($queueName)
+                    ->sendMessage($jsonifiedJob, 10);
+    }
+
     public function isAssoc($arr)
     {
         if (array() === $arr) return false;

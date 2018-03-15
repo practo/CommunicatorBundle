@@ -29,10 +29,7 @@ class PushAndroidPatientTransactional extends AbstractPush
         $jobData = (array) $this->job;
         $jobData = $this->validate($jobData);
         $jsonifiedJob = json_encode($jobData);
-        $this->_queue->setDomain($this->_domain);
-        return $this->_queue
-                    ->setQueueName(Queue::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+        return $this->sendPush(Queue::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE, $jsonifiedJob);
     }
 
     protected function validateFilters($pushDict)
