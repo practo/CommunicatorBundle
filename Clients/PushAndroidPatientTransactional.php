@@ -48,8 +48,7 @@ class PushAndroidPatientTransactional extends AbstractPush
             'PHR_RECORD_SHARED_NOTIF',
             'PHR_APPOINTMENT_RECORD_UPLOAD_NOTIF',
             'PHR_ADD_REMINDER_NOTIF',
-            'ACCOUNTS_REMOTE_LOGOUT',
-            'ORDER_NOTIFICATION'
+            'ACCOUNTS_REMOTE_LOGOUT'
         );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new \PushValidationException("Invalid message type");
