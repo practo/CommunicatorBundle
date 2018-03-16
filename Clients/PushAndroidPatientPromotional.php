@@ -40,7 +40,7 @@ class PushAndroidPatientPromotional extends AbstractPush
 
     protected function validatePushType($pushType)
     {
-        $allowedTypes = array();
+        $allowedTypes = array('ORDER_NOTIFICATION');
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new \PushValidationException("Invalid message type");
         }
