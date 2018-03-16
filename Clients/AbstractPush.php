@@ -143,7 +143,7 @@ abstract class AbstractPush extends Base
             }
         }
         else if (count(array_diff(array_keys($iosData), array('custom'))) == 0) {
-            throw new PushValidationException("Non Silent Push data cant be empty");
+            throw new PushValidationException("Non Silent Push data should have keys other than custom");
         }
     }
 
