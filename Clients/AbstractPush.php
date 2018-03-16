@@ -123,7 +123,7 @@ abstract class AbstractPush extends Base
     public function validateTypes($inputDict) {
         $pdt = new praccomm\PushDataTypes;
         foreach ($pdt->types as $key => $value) {
-            if (in_array($key, array_keys($inputDict)) && ($inputDict[$key] === null) && (gettype($inputDict[$key]) !== $value))
+            if (in_array($key, array_keys($inputDict)) && (gettype($inputDict[$key]) !== $value))
                 throw new PushValidationException("Invalid Type for key: " . $key);
         }
     }
