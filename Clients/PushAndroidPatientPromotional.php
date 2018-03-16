@@ -28,6 +28,7 @@ class PushAndroidPatientPromotional extends AbstractPush
         $this->addData($this->job, $pushDict);
         $jobData = (array) $this->job;
         $jobData = $this->validate($jobData);
+        $jobData['app_name'] = $this->comm_app_name;
         $jsonifiedJob = json_encode($jobData);
         return $this->sendPush(Queue::SEND_PATIENT_PROMOTIONAL_PUSH_QUEUE, $jsonifiedJob);
     }

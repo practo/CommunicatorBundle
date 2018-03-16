@@ -40,7 +40,6 @@ abstract class AbstractPush extends Base
 
     public function isAssoc($arr)
     {
-        if (array() === $arr) return false;
         if (gettype($arr) !== 'array') return false;
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
@@ -164,7 +163,6 @@ abstract class AbstractPush extends Base
         $this->validateFilters($inputDict);
         $this->validateData($inputDict);
         $this->validatePushType($inputDict['push_type']);
-        $inputDict['app_name'] = $this->comm_app_name;
         return $inputDict;
     }
 }
