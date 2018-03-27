@@ -16,7 +16,7 @@ class PushAndroidPatientTransactional extends AbstractPush
     public function __construct($queue, $service)
     {
         parent::__construct($queue, $service);
-        $this->comm_app_name = 'fabric-android';
+        $this->comm_app_name = 'fabric-droid';
         $this->job = new praccomm\PatientTransAndroidPush();
         $this->job->service = $service;
     }
