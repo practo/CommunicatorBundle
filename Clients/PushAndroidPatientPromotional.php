@@ -6,7 +6,7 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
-use Practo\CommunicatorBundle\Clients\Exceptions;
+use Practo\CommunicatorBundle\Clients\Exceptions\PushValidationException;
 
 /**
  * Client for sending Patient Promotional Android Push notifications
@@ -42,7 +42,7 @@ class PushAndroidPatientPromotional extends AbstractPush
     {
         $allowedTypes = array('ORDER_NOTIFICATION');
         if (!in_array($pushType, $allowedTypes, true)) {
-            throw new \PushValidationException("Invalid message type");
+            throw new PushValidationException("Invalid message type");
         }
     }
 }

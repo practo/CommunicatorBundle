@@ -6,7 +6,7 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
-use Practo\CommunicatorBundle\Clients\Exceptions;
+use Practo\CommunicatorBundle\Clients\Exceptions\PushValidationException;
 
 /**
  * Client for sending Patient Transactional Android Push notifications
@@ -37,7 +37,7 @@ class PushAndroidPatientTransactional extends AbstractPush
     {
         $this->validatePushRelationKeys($pushDict);
         if ((!array_key_exists('account_id', $pushDict)) && (!array_key_exists('device_id', $pushDict)))
-            throw new \PushValidationException(
+            throw new PushValidationException(
                 "Account/Device ID is mandatory for transactional pushes"
             );
     }
@@ -51,7 +51,7 @@ class PushAndroidPatientTransactional extends AbstractPush
             'ACCOUNTS_REMOTE_LOGOUT'
         );
         if (!in_array($pushType, $allowedTypes, true)) {
-            throw new \PushValidationException("Invalid message type");
+            throw new PushValidationException("Invalid message type");
         }
     }
 }

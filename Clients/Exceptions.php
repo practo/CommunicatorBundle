@@ -1,8 +1,8 @@
 <?php
 
-namespace Practo\CommunicatorBundle\Exceptions;
+namespace Practo\CommunicatorBundle\Clients\Exceptions;
 
-class PushException extends Exception
+class PushException extends \Exception
 {
     /**
      *    Base Exception for Push Notifications

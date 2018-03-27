@@ -4,7 +4,7 @@ namespace Practo\CommunicatorBundle\Clients;
 
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
-use Practo\CommunicatorBundle\Clients\Exceptions;
+use Practo\CommunicatorBundle\Clients\Exceptions\PushValidationException;
 use praccomm;
 
 /**
