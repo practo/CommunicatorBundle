@@ -6,7 +6,7 @@ use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
 use praccomm;
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
-use Practo\CommunicatorBundle\Clients\Exceptions\PushValidationException;
+use Practo\CommunicatorBundle\Exceptions\PushValidationException;
 
 /**
  * Client for sending Patient Promotional Android Push notifications
