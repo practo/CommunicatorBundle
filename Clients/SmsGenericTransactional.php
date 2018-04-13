@@ -97,7 +97,10 @@ class SmsGenericTransactional extends Base
             'DNS_BOOK_RESTORED',
             'BOOK_ACTIVATION',
             'CAMPAIGN_RENEWAL_SMS',
-            'SERVICE_ENQUIRY'
+            'SERVICE_ENQUIRY',
+            'HOLONET_RED_ALERT',
+            'PHR_DIAGNOSTICS_INVITE',
+            'PHR_DIAGNOSTICS_RECORD_SHARED'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
