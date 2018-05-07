@@ -76,6 +76,9 @@ final class StaffEmailType {
   const VERSION_UPGRADES = 22;
   const TRIAL_EXPIRY_REMINDER = 23;
   const WELCOME_TO_RAY = 24;
+  const WELCOME_TO_CONNECT = 25;
+  const EXPORT_DATA = 26;
+  
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',
@@ -100,7 +103,9 @@ final class StaffEmailType {
     21 => 'MY_DOCTORS_SETTINGS_UPDATE',
     22 => 'VERSION_UPGRADES',
     23 => 'TRIAL_EXPIRY_REMINDER',
-    24 => 'WELCOME_TO_RAY'
+    24 => 'WELCOME_TO_RAY',
+    25 => 'WELCOME_TO_CONNECT',
+    26 => 'EXPORT_DATA'
   );
 }
 
@@ -2358,7 +2363,126 @@ class GenericTransactionalPushNotification {
   public function getName() {
     return 'GenericTransactionalPushNotification';
   }
+}
 
+class PushData {
+  public $title = '';
+  public $body = '';
+  public $sound = '';
+  public $body_loc_args = '';
+  public $body_loc_key = '';
+  public $title_loc_key = '';
+  public $title_loc_args = '';
+  public $custom = array();
+
+  public function getName() {
+    return 'PushData';
+  }
+}
+
+class AndroidPushData extends PushData {
+  public $icon = '';
+
+  public function getName() {
+    return 'AndroidPushData';
+  }
+}
+
+class IosPushData extends PushData {
+  public $badge = '';
+
+  public function getName() {
+    return 'IosPushData';
+  }
+}
+
+class PushObj {
+  public $app_name = '';
+  public $push_type = '';
+  public $service = '';
+  public $reference_id = '';
+  public $reference_type = '';
+  public $data = array();
+  public $app_version = array();
+  public $is_silent = null;
+  public $last_active = array();
+  public $is_content_available = null;
+  public $account_id = '';
+  public $device_id = '';
+
+  public function getName() {
+    return 'PushObj';
+  }
+}
+
+class IosPushObj extends PushObj {
+  public $data = array();
+  public $is_silent = false;
+  public $app_name = 'ios';
+  public function __construct() {
+    $this->data = json_encode(new IosPushData);
+  }
+
+  public function getName() {
+    return 'IosPushObj';
+  }
+}
+
+class AndroidPushObj extends PushObj {
+  public $data = array();
+  public $is_silent = true;
+  public $app_name = 'android';
+  public function __construct() {
+    $this->data = json_encode(new AndroidPushData);
+  }
+
+  public function getName() {
+    return 'AndroidPushObj';
+  }
+}
+
+class PatientPromoAndroidPush extends AndroidPushObj {
+  public function getName() {
+    return 'PatientPromoAndroidPush';
+  }
+}
+
+class PatientTransAndroidPush extends AndroidPushObj {
+  public function getName() {
+    return 'PatientTransAndroidPush';
+  }
+}
+
+class PatientPromoIosPush extends IosPushObj {
+  public function getName() {
+    return 'PatientPromoIosPush';
+  }
+}
+
+class PatientTransIosPush extends IosPushObj {
+  public function getName() {
+    return 'PatientTransIosPush';
+  }
+}
+
+class PushDataTypes {
+  public $types = array(
+    'app_name' => "string",
+    'service' => "string",
+    'reference_id' => "string",
+    'reference_type' => "string",
+    'app_version' => "array",
+    'is_silent' => "boolean",
+    'last_active' => "array",
+    'account_id' => "string",
+    'is_content_available' => "boolean",
+    'device_id' => "string",
+    'push_type' => "string",
+    'data' => "array"
+  );
+  public function getName() {
+    return 'PushDataTypes';
+  }
 }
 
 class WhatsappGenericTransactional {
@@ -2375,4 +2499,8 @@ class WhatsappGenericTransactional {
   public $initiated_at = null;
   public $transaction_id = null;
   public $ray_practice_id = null;
+
+  public function getName() {
+    return 'WhatsappGenericTransactional';
+  }
 }

@@ -122,6 +122,12 @@ class MailGenericTransactional extends Base
             'FABRIC_DQS_REPORT',
             'SURVEY_VERIFICATION_EMAIL',
             'CONSULT_GENERIC_MAIL',
+            'CONSULT_QUESTION_ASKED',
+            'CONSULT_QUESTION_ANSWERED',
+            'CONSULT_QUESTION_NO_REPLY',
+            'CONSULT_QUESTION_RETENTION_MAIL',
+            'CONSULT_PAID_TRANSACTION_INVOICE',
+            'CONSULT_DOCTOR_SETTLEMENT_INVOICE',            
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
             'QIKWELL_APPOINTMENT_REMINDER_MAIL',
@@ -179,6 +185,7 @@ class MailGenericTransactional extends Base
             'DNS_RESTORE_BOOK',
             'DNS_BOOK_RESTORED',
             'BOOK_ACTIVATION',
+            'CAMPAIGN_RENEWAL_MAIL',
             'SERVICE_ENQUIRY'
         );
 
