@@ -2,14 +2,17 @@
 
 namespace Practo\CommunicatorBundle\Queue;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Queue Factory
  */
-class QueueFactory extends ContainerAware
+class QueueFactory implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * Get Queue Object
      *
