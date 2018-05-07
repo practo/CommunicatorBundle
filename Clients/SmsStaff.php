@@ -186,6 +186,8 @@ class SmsStaff extends Base
                 return praccomm\StaffSMSType::PAYMENT;
             case 'VERSION_UPGRADES':
                 return praccomm\StaffSMSType::VERSION_UPGRADES;
+            case 'CONNECT_LOW_CREDIT':
+                return praccomm\StaffSMSType::CONNECT_LOW_CREDIT;
             default:
               throw new \Exception("Invalid message type");
         }
