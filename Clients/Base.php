@@ -12,7 +12,7 @@ class Base
     public function setRequest(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
-        if ($request instanceof Request) {
+        if ($this->request instanceof Request) {
             $this->_domain = $this->request->getSchemeAndHttpHost();
         }
     }
