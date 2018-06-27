@@ -146,4 +146,16 @@ class SmsCredit extends Base
                 throw new \Exception("Invalid currency");
         }
     }
+
+    public function getMessageExpenseReport($pid, $fromTimestamp, $toTimestamp)
+    {
+        $client = new CommunicatorClient($this->_communicatorBaseUri, $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['from_date'] = $fromTimestamp;
+        $params['to_date'] = $toTimestamp;
+        $result = $client->get("/smscredit/get_message_expense_report", $params);
+
+	return $result;
+    }
 }
