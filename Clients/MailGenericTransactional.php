@@ -186,7 +186,8 @@ class MailGenericTransactional extends Base
             'DNS_BOOK_RESTORED',
             'BOOK_ACTIVATION',
             'CAMPAIGN_RENEWAL_MAIL',
-            'SERVICE_ENQUIRY'
+            'SERVICE_ENQUIRY',
+            'PRIME_DAILY_REPORT'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
