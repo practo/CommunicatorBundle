@@ -74,7 +74,6 @@ class SmsGenericTransactional extends Base
             'CONSULT_DOCTOR_REPLY_CHAT',
             'CONSULT_DOCTOR_ONBOARDING',
             'CONSULT_FOLLOWUP',
-            'CONSULT_REFERRAL_CODE',
             'ORDER_SMS',
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
