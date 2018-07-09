@@ -98,6 +98,9 @@ class SmsGenericTransactional extends Base
             'BOOK_ACTIVATION',
             'CAMPAIGN_RENEWAL_SMS',
             'SERVICE_ENQUIRY',
+            'HOLONET_RED_ALERT',
+            'PHR_DIAGNOSTICS_INVITE',
+            'PHR_DIAGNOSTICS_RECORD_SHARED',
             'VN_PRIME_FORM'
         );
         if (!in_array($type, $allowedTypes, true)) {
