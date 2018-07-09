@@ -90,7 +90,8 @@ class SmsGeneric extends Base
             'TATKAL_NOTIFICATION_SMS',
             'APPOINTMENT_PNS_DEFAULT',
             'APPOINTMENT_PNS_THIRD',
-            'VN_COOL_OFF_SMS'
+            'VN_COOL_OFF_SMS',
+            'VN_PRIME_FORM'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");

@@ -46,169 +46,168 @@ services:
   practo_communicator.mail_patient:
     class: %practo_communicator.mail_patient.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_doctor:
     class: %practo_communicator.mail_doctor.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_staff:
     class: %practo_communicator.mail_staff.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_appointment:
     class: %practo_communicator.mail_appointment.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic:
     class: %practo_communicator.mail_generic.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic_promotional:
     class: %practo_communicator.mail_generic_promotional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic_transactional:
     class: %practo_communicator.mail_generic_transactional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic_transactional:
     class: %practo_communicator.sms_generic_transactional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic_promotional:
     class: %practo_communicator.sms_generic_promotional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_patient:
     class: %practo_communicator.sms_patient.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_doctor:
     class: %practo_communicator.sms_doctor.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic:
     class: %practo_communicator.sms_generic.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_staff:
     class: %practo_communicator.sms_staff.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_appointment:
     class: %practo_communicator.sms_appointment.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_credit:
     class: %practo_communicator.sms_credit.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.queue_factory:
     class: Practo\CommunicatorBundle\Queue\QueueFactory
     calls:
-      - [ setContainer, [ @service_container ]]
+      - [ setContainer, [ '@service_container' ]]
   practo_communicator.queue:
     class: Practo\CommunicatorBundle\Queue\AbstractQueue
-    factory_service: practo_communicator.queue_factory
-    factory_method: get
+    factory: 'practo_communicator.queue_factory:get'
   practo_communicator.device_information:
     class: %practo_communicator.device_information.class%
     arguments:
-      - %communicator.api.secret%
+      - '%communicator.api.secret%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.whatsapp_generic_transactional:
     class: %practo_communicator.whatsapp_generic_transactional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.secret%
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_ios_patient_transactional:
     class: %practo_communicator.push_ios_patient_transactional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_android_patient_transactional:
     class: %practo_communicator.push_android_patient_transactional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_android_patient_promotional:
     class: %practo_communicator.push_android_patient_promotional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_ios_patient_promotional:
     class: %practo_communicator.push_ios_patient_promotional.class%
     arguments:
-      - @practo_communicator.queue
-      - %communicator.api.app_name%
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
     calls:
-      - [ setRequest, [ '@?request=' ]]
+      - [ setRequest, [ '@request_stack' ]]
