@@ -59,7 +59,6 @@ class SmsGenericTransactional extends Base
             'QIKWELL_APPOINTMENT_REMINDER_SMS',
             'OTP',
             'CONSULT_DOCTOR_REPLY_SMS',
-            'CONSULT_GENERIC_SMS',
             'CONSULT_FREE_QUESTION',
             'CONSULT_QUESTION_ASKED',
             'CONSULT_DOCTOR_REPLY',
