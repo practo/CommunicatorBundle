@@ -57,7 +57,11 @@ class SmsGenericPromotional extends Base
           'APPOINTMENT_COUPON_CODE_SMS',
           'PHR_TAX_SAVING_NOTIFICATION_SMS',
           'ORDER_PROMOTIONAL_SMS',
-          'SURVEY_SMS'
+          'SURVEY_SMS',
+          'CONSULT_FREE_QUESTION_PROMOTIONAL',
+          'CONSULT_PAID_PROMOTIONAL',
+          'CONSULT_FOLLOWUP_PROMOTIONAL',
+          'CONSULT_REFERRAL_CODE'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
