@@ -49,7 +49,24 @@ class PushIosPatientTransactional extends AbstractPush
             'PHR_APPOINTMENT_RECORD_UPLOAD_NOTIF',
             'PHR_ADD_REMINDER_NOTIF',
             'ACCOUNTS_REMOTE_LOGOUT',
-            'ORDER_STATUS_NOTIFICATION'
+            'ORDER_STATUS_NOTIFICATION',
+            'PAID_CONSULTATION_FEEDBACK',
+            'PAID_CONSULTATION_ASSIGNED',
+            'PAID_CONSULTATION_CANCELLATION',
+            'PAID_CONSULTATION_ANSWERED',
+            'PAID_CONSULTATION_NEW_CONVERSATION',
+            'PRIVATE_THREAD',
+            'PUBLIC_QUESTION',
+            'QUESTION_REJECTED',
+            'GROUP_NOTIFICATION',
+            'PAID_CONSULTATION',
+            'RAY_FOLLOW_UP',
+            'CONSULT_FOLLOWUP',
+            'CONSULT_PAID_CHAT',
+            'CONSULT_PAID_FEEDBACK',
+            'CONSULT_QUESTION_REPLY',
+            'CONSULT_QUESTION_FEEDBACK',
+            'CONSULT_REFERRAL_CODE'
         );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new PushValidationException("Invalid message type");
