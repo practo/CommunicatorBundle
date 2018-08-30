@@ -78,6 +78,7 @@ final class StaffEmailType {
   const WELCOME_TO_RAY = 24;
   const WELCOME_TO_CONNECT = 25;
   const EXPORT_DATA = 26;
+  const MOBILE_ACCESS = 27;
   
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
@@ -105,7 +106,8 @@ final class StaffEmailType {
     23 => 'TRIAL_EXPIRY_REMINDER',
     24 => 'WELCOME_TO_RAY',
     25 => 'WELCOME_TO_CONNECT',
-    26 => 'EXPORT_DATA'
+    26 => 'EXPORT_DATA',
+    27 => 'MOBILE_ACCESS'
   );
 }
 
