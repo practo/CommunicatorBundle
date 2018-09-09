@@ -37,6 +37,7 @@ final class DoctorEmailType {
   const TERMS_CONFIRMATION = 8;
   const SHARE_SETTINGS_UPDATE = 9;
   const MY_DOCTORS_SETTINGS_UPDATE = 10;
+  const MOBILE_ACCESS = 11;
   static public $__names = array(
     1 => 'CANCELLATION',
     2 => 'CONFIRMATION',
@@ -47,7 +48,8 @@ final class DoctorEmailType {
     7 => 'BILLS_REPORT',
     8 => 'TERMS_CONFIRMATION',
     9 => 'SHARE_SETTINGS_UPDATE',
-    10 => 'MY_DOCTORS_SETTINGS_UPDATE'
+    10 => 'MY_DOCTORS_SETTINGS_UPDATE',
+    11 => 'MOBILE_ACCESS'
   );
 }
 
@@ -79,7 +81,7 @@ final class StaffEmailType {
   const WELCOME_TO_CONNECT = 25;
   const EXPORT_DATA = 26;
   const MOBILE_ACCESS = 27;
-  
+
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
     2 => 'EXPENSES_REPORT',

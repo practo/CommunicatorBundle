@@ -125,7 +125,7 @@ $mailStaff->sendMail(
 FAQ
 ===
 
-* Getting error pheanstalk_pheanstalk not found 
+* Getting error pheanstalk_pheanstalk not found
 
 There are two ways to solve it.
 

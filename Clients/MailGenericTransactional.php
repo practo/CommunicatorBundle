@@ -127,7 +127,7 @@ class MailGenericTransactional extends Base
             'CONSULT_QUESTION_NO_REPLY',
             'CONSULT_QUESTION_RETENTION_MAIL',
             'CONSULT_PAID_TRANSACTION_INVOICE',
-            'CONSULT_DOCTOR_SETTLEMENT_INVOICE',            
+            'CONSULT_DOCTOR_SETTLEMENT_INVOICE',
             'REACH_TOS_MAIL',
             'REACH_QUALITY_REMINDER',
             'QIKWELL_APPOINTMENT_REMINDER_MAIL',
