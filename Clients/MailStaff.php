@@ -208,6 +208,8 @@ class MailStaff extends Base
           return \praccomm\StaffEmailType::WELCOME_TO_CONNECT;
         case "EXPORT_DATA":
           return praccomm\StaffEmailType::EXPORT_DATA;
+        case "MOBILE_ACCESS":
+          return praccomm\StaffEmailType::MOBILE_ACCESS;
         default:
           throw new \Exception("Invalid message type");
       }

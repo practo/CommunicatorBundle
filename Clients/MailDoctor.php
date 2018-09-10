@@ -180,6 +180,8 @@ class MailDoctor extends Base
               return \praccomm\DoctorEmailType::SHARE_SETTINGS_UPDATE;
             case "MY_DOCTORS_SETTINGS_UPDATE":
               return \praccomm\DoctorEmailType::MY_DOCTORS_SETTINGS_UPDATE;
+            case "MOBILE_ACCESS":
+              return \praccomm\DoctorEmailType::MOBILE_ACCESS;
             default:
               throw new \Exception("Invalid message type");
         }
