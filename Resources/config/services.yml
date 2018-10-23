@@ -212,7 +212,7 @@ services:
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
-  practo_communicator.whatsapp_consent.class:
+  practo_communicator.whatsapp_consent:
     class: %practo_communicator.whatsapp_consent.class%
     arguments:
       - '%communicator.api.secret%'
