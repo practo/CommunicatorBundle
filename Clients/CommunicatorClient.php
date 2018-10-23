@@ -45,8 +45,11 @@ class CommunicatorClient {
         if (false !== $featureSet) {
             $featureSet = json_decode($featureSet, True);
             if($responseCode === 200){
-                $result = $featureSet['result'];
-                return $result;
+                if (isset($featureSet['result'])) {
+                    $result = $featureSet['result'];
+                    return $result;
+                }
+                return $featureSet;
             }
             else{
                 $errorMessage = $responseCode.': '. $featureSet['message'];
@@ -91,8 +94,11 @@ class CommunicatorClient {
         if (false !== $featureSet) {
             $featureSet = json_decode($featureSet, True);
             if($responseCode === 200){
-                $result = $featureSet['result'];
-                return $result;
+                if (isset($featureSet['result'])) {
+                    $result = $featureSet['result'];
+                    return $result;
+                }
+                return $featureSet;
             }
             else{
                 $errorMessage = $responseCode.': '. $featureSet['message'];
