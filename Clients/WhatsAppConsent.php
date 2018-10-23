@@ -73,8 +73,9 @@ class WhatsAppConsent extends Base
         } else if (isset($serviceHeaders['token'])) {
             $isValidHeader = true;
         }
+        $errorMessage = "Missing Headers: Service-Request-Nonce with User-Agent OR token  must be present";
         if (!$isValidHeader) {
-            throw new \Exception("Invalid headers.");
+            throw new \Exception($errorMessage);
         }
     }
 }
