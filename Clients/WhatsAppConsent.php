@@ -31,6 +31,7 @@ class WhatsAppConsent extends Base
      */
     public function updateWhatsAppConsent($mobile, $accountId, $consentGiven, $serviceHeaders)
     {
+        $this->validateServiceHeaders($serviceHeaders);
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = [
             'mobile'        => $mobile,
@@ -53,6 +54,7 @@ class WhatsAppConsent extends Base
      */
     public function getWhatsAppConsent($mobile, $accountId, $serviceHeaders)
     {
+        $this->validateServiceHeaders($serviceHeaders);
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = [
             'mobile'     => $mobile,
@@ -62,7 +64,7 @@ class WhatsAppConsent extends Base
         return $client->get('/whatsapp/consent', $params, $serviceHeaders);
     }
 
-    private function validateHeader($serviceHeaders)
+    private function validateServiceHeaders($serviceHeaders)
     {
         $isValidHeader = false;
         if (isset($serviceHeaders['Service-Request-Nonce'])
