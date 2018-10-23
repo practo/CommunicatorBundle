@@ -67,13 +67,13 @@ class WhatsAppConsent extends Base
     private function validateServiceHeaders($serviceHeaders)
     {
         $isValidHeader = false;
-        if (isset($serviceHeaders['Service-Request-Nonce'])
+        if (isset($serviceHeaders['Service-Nonce'])
             && isset($serviceHeaders['User-Agent'])) {
             $isValidHeader = true;
         } else if (isset($serviceHeaders['token'])) {
             $isValidHeader = true;
         }
-        $errorMessage = "Missing Headers: Service-Request-Nonce with User-Agent OR token  must be present";
+        $errorMessage = "Missing Headers: Service-Nonce with User-Agent OR token  must be present";
         if (!$isValidHeader) {
             throw new \Exception($errorMessage);
         }
