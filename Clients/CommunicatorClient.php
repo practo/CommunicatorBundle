@@ -33,7 +33,9 @@ class CommunicatorClient {
             'X-AUTH-TOKEN: '.$auth_token
         );
         if (!empty($service_headers)) {
-            $headers = array_merge($headers, $service_headers);
+            foreach($service_headers as $key => $value) {
+                $headers[] =  $key . ":" . $value;
+            }
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $featureSet = curl_exec($ch);
@@ -76,7 +78,9 @@ class CommunicatorClient {
             'Content-type: application/json'
         );
         if (!empty($service_headers)) {
-            $headers = array_merge($headers, $service_headers);
+            foreach($service_headers as $key => $value) {
+                $headers[] =  $key . ":" . $value;
+            }
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
