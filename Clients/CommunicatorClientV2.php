@@ -43,11 +43,13 @@ class CommunicatorClientV2 {
             'X-AUTH-TOKEN: '.$auth_token,
             'service:'.$this->_service
         );
+
         if (!empty($service_headers)) {
             foreach($service_headers as $key => $value) {
                 $headers[] =  $key . ":" . $value;
             }
         }
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -56,14 +58,16 @@ class CommunicatorClientV2 {
         if (false !== $featureSet) {
             if ($responseCode === 200) {
                 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-                $respone_headers = substr($featureSet, 0, $header_size);
-                $respone_headers = $this->getHeadersFromCurlResponse($respone_headers);
+                $response_headers = substr($featureSet, 0, $header_size);
+                $headerArray = $this->get_headers_from_curl_response($response_headers);
                 $respone_body = json_decode(substr($featureSet, $header_size), True);
-                
-                return array(
-                    "response_headers" => $respone_headers,
+
+                $response = array(
+                    "response_headers" => $headerArray,
                     "response_body" => $respone_body
                 );
+
+                return $response;
 
             } else {
                 $featureSet = json_decode($featureSet, True);
@@ -75,7 +79,6 @@ class CommunicatorClientV2 {
         else{
             $errorMessage = curl_error($ch);
         }
-
         curl_close($ch);
         if($errorMessage){
             if (is_array($errorMessage)) {
@@ -119,13 +122,16 @@ class CommunicatorClientV2 {
         if (false !== $featureSet) {
             if ($responseCode === 200) {
                 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-                $respone_headers = substr($featureSet, 0, $header_size);
-                $respone_headers = $this->getHeadersFromCurlResponse($respone_headers);
+                $response_headers = substr($featureSet, 0, $header_size);
+                $headerArray = $this->get_headers_from_curl_response($response_headers);
                 $respone_body = json_decode(substr($featureSet, $header_size), True);
-                return array(
-                    "response_headers" => $respone_headers,
+
+                $response = array(
+                    "response_headers" => $headerArray,
                     "response_body" => $respone_body
                 );
+
+                return $response;
 
             } else {
                 $featureSet = json_decode($featureSet, True);
@@ -162,13 +168,16 @@ class CommunicatorClientV2 {
         }
     }
 
-    private function getHeadersFromCurlResponse($headerContent)
+    private function get_headers_from_curl_response($headerContent)
     {
         $headers = array();
+
         $arrRequests = explode("\r\n\r\n", $headerContent);
 
         for ($index = 0; $index < count($arrRequests) -1; $index++) {
-            foreach (explode("\r\n", $arrRequests[$index]) as $i => $line) {
+
+            foreach (explode("\r\n", $arrRequests[$index]) as $i => $line)
+            {
                 if ($i === 0)
                     $headers[$index]['http_code'] = $line;
                 else
@@ -177,6 +186,9 @@ class CommunicatorClientV2 {
                     $headers[$index][$key] = $value;
                 }
             }
+        }
+        if (!empty($headers)) {
+            return $headers[0];
         }
 
         return $headers;
