@@ -56,7 +56,8 @@ class CommunicatorClientV2 {
         if (false !== $featureSet) {
             if ($responseCode === 200) {
                 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-                $respone_headers = json_decode(substr($featureSet, 0, $header_size), True);
+                $respone_headers = substr($featureSet, 0, $header_size);
+                $respone_headers = $this->getHeadersFromCurlResponse($respone_headers);
                 $respone_body = json_decode(substr($featureSet, $header_size), True);
                 
                 return array(
@@ -118,7 +119,8 @@ class CommunicatorClientV2 {
         if (false !== $featureSet) {
             if ($responseCode === 200) {
                 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-                $respone_headers = json_decode(substr($featureSet, 0, $header_size), True);
+                $respone_headers = substr($featureSet, 0, $header_size);
+                $respone_headers = $this->getHeadersFromCurlResponse($respone_headers);
                 $respone_body = json_decode(substr($featureSet, $header_size), True);
                 return array(
                     "response_headers" => $respone_headers,
@@ -158,5 +160,25 @@ class CommunicatorClientV2 {
         if (!$isValidHeader) {
             throw new \Exception($errorMessage);
         }
+    }
+
+    private function getHeadersFromCurlResponse($headerContent)
+    {
+        $headers = array();
+        $arrRequests = explode("\r\n\r\n", $headerContent);
+
+        for ($index = 0; $index < count($arrRequests) -1; $index++) {
+            foreach (explode("\r\n", $arrRequests[$index]) as $i => $line) {
+                if ($i === 0)
+                    $headers[$index]['http_code'] = $line;
+                else
+                {
+                    list ($key, $value) = explode(': ', $line);
+                    $headers[$index][$key] = $value;
+                }
+            }
+        }
+
+        return $headers;
     }
 }
