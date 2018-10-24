@@ -3,7 +3,7 @@
 namespace Practo\CommunicatorBundle\Clients;
 
 use Practo\CommunicatorBundle\Clients\Helper;
-use Practo\CommunicatorBundle\Clients\CommunicatorClient;
+use Practo\CommunicatorBundle\Clients\CommunicatorClientV2;
 
 /**
  * Client for taking and checking WhatsApp consent
@@ -32,14 +32,16 @@ class WhatsAppConsent extends Base
     public function updateWhatsAppConsent($mobile, $accountId, $consentGiven, $serviceHeaders)
     {
         $this->validateServiceHeaders($serviceHeaders);
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClientV2($this->getCommunicatorUri(),
+            $this->_apiSecretKey,
+            $this->_service
+        );
         $params = [
             'mobile'        => $mobile,
             'account_id'    => $accountId,
             'consent_given' => $consentGiven
         ];
-        $serviceHeaders['service'] = $this->_service;
-        $result = $client->post("/whatsapp/consent", $params, $serviceHeaders, true);
+        $result = $client->post("/whatsapp/consent", $params, $serviceHeaders);
 
         return $result;
     }
@@ -56,14 +58,16 @@ class WhatsAppConsent extends Base
     public function getWhatsAppConsent($mobile, $accountId, $serviceHeaders)
     {
         $this->validateServiceHeaders($serviceHeaders);
-        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $client = new CommunicatorClientV2($this->getCommunicatorUri(),
+            $this->_apiSecretKey,
+            $this->_service
+        );
         $params = [
             'mobile'     => $mobile,
             'account_id' => $accountId
         ];
-        $serviceHeaders['service'] = $this->_service;
 
-        return $client->get('/whatsapp/consent', $params, $serviceHeaders, true);
+        return $client->get('/whatsapp/consent', $params, $serviceHeaders);
     }
 
     private function validateServiceHeaders($serviceHeaders)
