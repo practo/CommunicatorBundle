@@ -31,7 +31,6 @@ class WhatsAppConsent extends Base
      */
     public function updateWhatsAppConsent($mobile, $accountId, $consentGiven, $serviceHeaders)
     {
-        $this->validateServiceHeaders($serviceHeaders);
         $client = new CommunicatorClientV2($this->getCommunicatorUri(),
             $this->_apiSecretKey,
             $this->_service
@@ -57,7 +56,6 @@ class WhatsAppConsent extends Base
      */
     public function getWhatsAppConsent($mobile, $accountId, $serviceHeaders)
     {
-        $this->validateServiceHeaders($serviceHeaders);
         $client = new CommunicatorClientV2($this->getCommunicatorUri(),
             $this->_apiSecretKey,
             $this->_service
@@ -68,20 +66,5 @@ class WhatsAppConsent extends Base
         ];
 
         return $client->get('/whatsapp/consent', $params, $serviceHeaders);
-    }
-
-    private function validateServiceHeaders($serviceHeaders)
-    {
-        $isValidHeader = false;
-        if (isset($serviceHeaders['Service-Nonce'])
-            && isset($serviceHeaders['User-Agent'])) {
-            $isValidHeader = true;
-        } else if (isset($serviceHeaders['token'])) {
-            $isValidHeader = true;
-        }
-        $errorMessage = "Missing Headers: Service-Nonce with User-Agent OR token  must be present";
-        if (!$isValidHeader) {
-            throw new \Exception($errorMessage);
-        }
     }
 }

@@ -2,6 +2,11 @@
 
 namespace Practo\CommunicatorBundle\Clients;
 
+/**
+* Communicator Client with mandatory service nonce and token based auth.
+*
+*/
+
 class CommunicatorClientV2 {
     private $_communicator_base_uri;
     private $_communicator_api_key;
@@ -19,6 +24,7 @@ class CommunicatorClientV2 {
     }
 
     public function get($endpoint, $request_params, $service_headers) {
+        $this->validateServiceHeaders($service_headers);
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -74,6 +80,7 @@ class CommunicatorClientV2 {
     }
 
     public function post($endpoint, $request_params, $service_headers) {
+        $this->validateServiceHeaders($service_headers);
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -124,6 +131,21 @@ class CommunicatorClientV2 {
 
         curl_close($ch);
         if($errorMessage){
+            throw new \Exception($errorMessage);
+        }
+    }
+
+    private function validateServiceHeaders($service_headers)
+    {
+        $isValidHeader = false;
+        if (isset($service_headers['Service-Nonce'])
+            && isset($service_headers['User-Agent'])) {
+            $isValidHeader = true;
+        } else if (isset($service_headers['token'])) {
+            $isValidHeader = true;
+        }
+        $errorMessage = "Missing Headers: Service-Nonce with User-Agent OR token  must be present";
+        if (!$isValidHeader) {
             throw new \Exception($errorMessage);
         }
     }
