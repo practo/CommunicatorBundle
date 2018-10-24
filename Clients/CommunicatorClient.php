@@ -16,7 +16,8 @@ class CommunicatorClient {
             str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
     }
 
-    public function get($endpoint, $request_params, $service_headers = array()) {
+    public function get($endpoint, $request_params,
+        $service_headers = array(), $with_response_headers = false) {
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -27,7 +28,11 @@ class CommunicatorClient {
 
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1 );
+        if ($with_response_headers) {
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+        }
         $headers = array(
             'nonce: '.$nonce,
             'X-AUTH-TOKEN: '.$auth_token
@@ -43,15 +48,23 @@ class CommunicatorClient {
         $errorMessage = '';
 
         if (false !== $featureSet) {
-            $featureSet = json_decode($featureSet, True);
-            if($responseCode === 200){
-                if (isset($featureSet['result'])) {
+            if ($responseCode === 200) {
+                if ($with_response_headers) {
+                    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+                    $respone_headers = json_decode(substr($featureSet, 0, $header_size), True);
+                    $respone_body = json_decode(substr($featureSet, $header_size), True);
+                    return array(
+                        "response_headers" => $respone_headers,
+                        "response_body" => $respone_body
+                    );
+                } else {
+                    $featureSet = json_decode($featureSet, True);
                     $result = $featureSet['result'];
                     return $result;
                 }
-                return $featureSet;
-            }
-            else{
+
+            } else {
+                $featureSet = json_decode($featureSet, True);
                 $errorMessage = $responseCode.': '. $featureSet['message'];
             }
         }
@@ -65,7 +78,8 @@ class CommunicatorClient {
         }
     }
 
-    public function post($endpoint, $request_params, $service_headers = array()) {
+    public function post($endpoint, $request_params,
+        $service_headers = array(), $with_response_headers = false) {
         $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_secret_key = $this->_communicator_api_key;
@@ -87,20 +101,33 @@ class CommunicatorClient {
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+
+        if ($with_response_headers) {
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+        }
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errorMessage = '';
 
         if (false !== $featureSet) {
-            $featureSet = json_decode($featureSet, True);
-            if($responseCode === 200){
-                if (isset($featureSet['result'])) {
+            if ($responseCode === 200) {
+                if ($with_response_headers) {
+                    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+                    $respone_headers = json_decode(substr($featureSet, 0, $header_size), True);
+                    $respone_body = json_decode(substr($featureSet, $header_size), True);
+                    return array(
+                        "response_headers" => $respone_headers,
+                        "response_body" => $respone_body
+                    );
+                } else {
+                    $featureSet = json_decode($featureSet, True);
                     $result = $featureSet['result'];
                     return $result;
                 }
-                return $featureSet;
-            }
-            else{
+
+            } else {
+                $featureSet = json_decode($featureSet, True);
                 $errorMessage = $responseCode.': '. $featureSet['message'];
             }
         }
