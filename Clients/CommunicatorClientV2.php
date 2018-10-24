@@ -51,7 +51,7 @@ class CommunicatorClientV2 {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $errorMessage = '';
+        $errorMessage = null;
 
         if (false !== $featureSet) {
             if ($responseCode === 200) {
@@ -66,7 +66,9 @@ class CommunicatorClientV2 {
 
             } else {
                 $featureSet = json_decode($featureSet, True);
-                $errorMessage = $responseCode.': '. $featureSet['message'];
+                $errorMessage = array();
+                $errorMessage['response_code'] = $responseCode;
+                $errorMessage['message'] = $featureSet['message'];
             }
         }
         else{
@@ -75,6 +77,9 @@ class CommunicatorClientV2 {
 
         curl_close($ch);
         if($errorMessage){
+            if (is_array($errorMessage)) {
+                $errorMessage = json_encode($errorMessage);
+            }
             throw new \Exception($errorMessage);
         }
     }
@@ -108,7 +113,7 @@ class CommunicatorClientV2 {
 
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $errorMessage = '';
+        $errorMessage = null;
 
         if (false !== $featureSet) {
             if ($responseCode === 200) {
@@ -122,7 +127,9 @@ class CommunicatorClientV2 {
 
             } else {
                 $featureSet = json_decode($featureSet, True);
-                $errorMessage = $responseCode.': '. $featureSet['message'];
+                $errorMessage = array();
+                $errorMessage['response_code'] = $responseCode;
+                $errorMessage['message'] = $featureSet['message'];
             }
         }
         else{
@@ -131,6 +138,9 @@ class CommunicatorClientV2 {
 
         curl_close($ch);
         if($errorMessage){
+            if (is_array($errorMessage)) {
+                $errorMessage = json_encode($errorMessage);
+            }
             throw new \Exception($errorMessage);
         }
     }
