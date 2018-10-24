@@ -38,6 +38,7 @@ class WhatsAppConsent extends Base
             'account_id'    => $accountId,
             'consent_given' => $consentGiven
         ];
+        $serviceHeaders['service'] = $this->_service;
         $result = $client->post("/whatsapp/consent", $params, $serviceHeaders);
 
         return $result;
@@ -60,6 +61,7 @@ class WhatsAppConsent extends Base
             'mobile'     => $mobile,
             'account_id' => $accountId
         ];
+        $serviceHeaders['service'] = $this->_service;
 
         return $client->get('/whatsapp/consent', $params, $serviceHeaders);
     }
