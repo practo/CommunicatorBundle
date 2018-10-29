@@ -215,7 +215,7 @@ services:
   practo_communicator.whatsapp_consent:
     class: %practo_communicator.whatsapp_consent.class%
     arguments:
-      - '%communicator_signging_key%'
+      - '%communicator.api.v2_secret%'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
