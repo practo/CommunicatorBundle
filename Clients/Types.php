@@ -81,6 +81,7 @@ final class StaffEmailType {
   const WELCOME_TO_CONNECT = 25;
   const EXPORT_DATA = 26;
   const MOBILE_ACCESS = 27;
+  const PATIENT_DATA_EXPORT = 28;
 
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
@@ -109,7 +110,8 @@ final class StaffEmailType {
     24 => 'WELCOME_TO_RAY',
     25 => 'WELCOME_TO_CONNECT',
     26 => 'EXPORT_DATA',
-    27 => 'MOBILE_ACCESS'
+    27 => 'MOBILE_ACCESS',
+    28 => 'PATIENT_DATA_EXPORT'
   );
 }
 
