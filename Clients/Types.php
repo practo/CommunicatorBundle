@@ -49,7 +49,7 @@ final class DoctorEmailType {
     8 => 'TERMS_CONFIRMATION',
     9 => 'SHARE_SETTINGS_UPDATE',
     10 => 'MY_DOCTORS_SETTINGS_UPDATE',
-    11 => 'MOBILE_ACCESS'
+    11 => 'MOBILE_ACCESS',
   );
 }
 
@@ -111,7 +111,7 @@ final class StaffEmailType {
     25 => 'WELCOME_TO_CONNECT',
     26 => 'EXPORT_DATA',
     27 => 'MOBILE_ACCESS',
-    28 => 'PATIENT_DATA_EXPORT'
+    28 => 'PATIENT_DATA_EXPORT',
   );
 }
 
@@ -146,7 +146,7 @@ final class DoctorSMSType {
     12 => 'PVR_EMERGENCY',
     13 => 'PVR_VOICEMAIL',
     14 => 'PVR_CALL',
-    15 => 'BLOCKCALENDAR'
+    15 => 'BLOCKCALENDAR',
   );
 }
 
