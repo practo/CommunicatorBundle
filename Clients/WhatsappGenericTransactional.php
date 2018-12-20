@@ -142,6 +142,13 @@ class WhatsappGenericTransactional extends Base
         if (count($missingKeys)) {
            throw new \Exception('Missing keys: ' . implode(',', $missingKeys));
         }
+        
+        $allowedMessageTypes = array(
+            'IMAGE',
+            'AUDIO',
+            'DOCUMENT',
+            'HSM'
+        );
 
         $typeRequiredKeys = array(
             'TEXT'     => array('message_text'),
@@ -152,8 +159,11 @@ class WhatsappGenericTransactional extends Base
         );
 
         $messageType = strtoupper($payload['whatsapp_message_type']);
+        if (!in_array($messageType, $allowedMessageTypes)) {
+            throw new \Exception("Invalid Whatsapp message type $messageType");
+        }
         if (!isset($typeRequiredKeys[$messageType])) {
-            throw new \Exception("Invalid WhatsApp message type $messageType");
+            throw new \Exception("Keys missing for WhatsApp message type $messageType");
         }
 
         $missingKeys = array_diff($typeRequiredKeys[$messageType], array_keys($payload));
