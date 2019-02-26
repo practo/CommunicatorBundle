@@ -171,7 +171,8 @@ class MailGeneric extends Base
             'BOOK_GENERIC_NOTIFICATION',
             'APPOINTMENT_PNS',
             'ENTERPRISE_REPORT',
-            'PROFILE_DATA_VERIFICATION'
+            'PROFILE_DATA_VERIFICATION',
+            'LEAD_FORM'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
