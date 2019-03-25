@@ -102,7 +102,8 @@ abstract class AbstractPush extends Base
     public function validatePushRelationKeys($inputDict) {
         foreach ($this->push_relation_keys as $key) {
             if (array_key_exists($key, $inputDict)) {
-                if (array('value', 'relation') != set(array_keys($inputDict[$key])))
+                if (!in_array('value', array_keys($inputDict[$key])) &&
+                    !in_array('relation', array_keys($inputDict[$key])))
                     throw new PushValidationException("Invalid keys in" . $key);
                 if (!in_array($inputDict[$key]['relation'], $this->push_relations))
                     throw new PushValidationException("Invalid Relation " . $inputDict[$key]['relation']);
