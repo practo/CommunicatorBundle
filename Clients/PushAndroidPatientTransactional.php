@@ -66,7 +66,7 @@ class PushAndroidPatientTransactional extends AbstractPush
             'QUESTION_REJECTED',
             'QUESTION_ASSIGNED',
             'PRIVATE_QUESTION_ASSIGNED',
-            "DOCTOR_BLOCK",
+            'DOCTOR_BLOCK',
             'DOCTOR_VERIFIED',
             'DOCUMENT_SUBMISSION',
             'GROUP_NOTIFICATION',
@@ -81,7 +81,17 @@ class PushAndroidPatientTransactional extends AbstractPush
             'PAID_CONSULTATION_ASSIGNED',
             'PAID_CONSULTATION_NEW_CONVERSATION',
             'PAID_CONSULTATION_SETTLEMENT',
-            'PAID_NEW_CONSULTATION_REQUEST'
+            'PAID_NEW_CONSULTATION_REQUEST',
+            'RAY_FOLLOW_UP_CREATED',
+            'RAY_FOLLOW_UP_COMPLETED',
+            'RAY_FOLLOW_UP_DELETED',
+            'RAY_FOLLOW_UP_EXPIRED',
+            'RAY_FOLLOW_UP_CANCELLED',
+            'FABRIC_MORNING_REMINDER',
+            'RAY_FOLLOW_UP_ANSWERED',
+            'RAY_FOLLOW_UP_ASSIGNED',
+            'ONLINE_APPOINTMENT_CANCELLED',
+            'PAID_CONSULTATION_PATIENT_REMINDER'
         );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new PushValidationException("Invalid message type");
