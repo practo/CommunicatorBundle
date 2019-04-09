@@ -91,7 +91,9 @@ class PushAndroidPatientTransactional extends AbstractPush
             'RAY_FOLLOW_UP_ANSWERED',
             'RAY_FOLLOW_UP_ASSIGNED',
             'ONLINE_APPOINTMENT_CANCELLED',
-            'PAID_CONSULTATION_PATIENT_REMINDER'
+            'PAID_CONSULTATION_PATIENT_REMINDER',
+            'VIDEO_CALL',
+            'VIDEO_CONSULT'
         );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new PushValidationException("Invalid message type");
