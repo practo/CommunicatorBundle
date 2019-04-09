@@ -114,7 +114,7 @@ abstract class AbstractPush extends Base
     public function validateMandatoryKeys($mandatoryKeys, $inputDict) {
         $missing_keys = array_diff($mandatoryKeys, array_keys($inputDict));
         if (count($missing_keys))
-            throw new PushValidationException("Missing Mandatory Keys: " . $missing_keys);
+            throw new PushValidationException("Missing Mandatory Keys: " . implode(', ', $missing_keys));
         foreach ($inputDict as $key => $value) {
             if (in_array($value, array('', null, array())))
                 throw new PushValidationException("Key: " . $key . "Cannot be empty");
