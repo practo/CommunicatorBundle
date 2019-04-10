@@ -160,7 +160,7 @@ class MailGeneric extends Base
             'REACH_REFUND_INITIATION',
             'REACH_REFUND_SUCCESS',
             'REACH_REFUND_FAILURE',
-            'REACH_TRANSACTION_EXPORT_REPORT',            
+            'REACH_TRANSACTION_EXPORT_REPORT',
             'APPOINTMENT_PAYMENT_CONFIRMED',
             'APPOINTMENT_PAYMENT_FAILED',
             'APPOINTMENT_REFUND_COMPLETED',
