@@ -95,7 +95,7 @@ class PushAndroidPatientTransactional extends AbstractPush
             'VIDEO_CALL',
             'VIDEO_CONSULT',
             'ABANDONED_CART_NOTIFICATION',
-	    'CUSTOM_PUSH_NOTIFICATION',
+            'CUSTOM_PUSH_NOTIFICATION',
             'OUT_OF_STOCK_NOTIFICATION',
             'ORDER_STATUS_NOTIFICATION'
         );
