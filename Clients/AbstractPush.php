@@ -47,7 +47,7 @@ abstract class AbstractPush extends Base
     public function removeEmptyKeys($object) {
         $updated_object = array();
         foreach ($object as $key => $value) {
-            if (in_array($value, array('', null, array())))
+            if (in_array($value, array('', null, array())) && $value !== false)
                 continue;
             else if ($this->isAssoc($value)) {
                 $updated_val = $this->removeEmptyKeys($value);
@@ -116,7 +116,7 @@ abstract class AbstractPush extends Base
         if (count($missing_keys))
             throw new PushValidationException("Missing Mandatory Keys: " . implode(', ', $missing_keys));
         foreach ($inputDict as $key => $value) {
-            if (in_array($value, array('', null, array())))
+            if (in_array($value, array('', null, array())) && $value !== false)
                 throw new PushValidationException("Key: " . $key . "Cannot be empty");
         }
     }
@@ -149,7 +149,7 @@ abstract class AbstractPush extends Base
     }
 
     public function validateData($inputDict) {
-        if ($inputDict['is_silent'] === null)
+        if ($inputDict['is_silent'] === null && $inputDict['is_silent'] !== false)
             throw new PushValidationException("Is Silent value cannot be None");
         if ('android' === $inputDict['app_name'])
             $this->validateAndroidData($inputDict['data']);
