@@ -97,7 +97,8 @@ class PushAndroidPatientTransactional extends AbstractPush
             'ABANDONED_CART_NOTIFICATION',
             'CUSTOM_PUSH_NOTIFICATION',
             'OUT_OF_STOCK_NOTIFICATION',
-            'ORDER_STATUS_NOTIFICATION'
+            'ORDER_STATUS_NOTIFICATION',
+            'ORDER_NOTIFICATION',
         );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new PushValidationException("Invalid message type");
