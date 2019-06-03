@@ -40,12 +40,12 @@ parameters:
     legacy_queue.sqs_spool_dir: ~
 
     #communicator_config
-    communicator.base_uri: %communicator.base_uri%
-    communicator.api.secret: %communicator.api.secret%
+    communicator.base_uri: '%communicator.base_uri%'
+    communicator.api.secret: '%communicator.api.secret%'
 
 services:
   practo_communicator.mail_patient:
-    class: %practo_communicator.mail_patient.class%
+    class: '%practo_communicator.mail_patient.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -53,7 +53,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_doctor:
-    class: %practo_communicator.mail_doctor.class%
+    class: '%practo_communicator.mail_doctor.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -61,7 +61,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_staff:
-    class: %practo_communicator.mail_staff.class%
+    class: '%practo_communicator.mail_staff.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -69,7 +69,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_appointment:
-    class: %practo_communicator.mail_appointment.class%
+    class: '%practo_communicator.mail_appointment.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -77,7 +77,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic:
-    class: %practo_communicator.mail_generic.class%
+    class: '%practo_communicator.mail_generic.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -85,7 +85,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic_promotional:
-    class: %practo_communicator.mail_generic_promotional.class%
+    class: '%practo_communicator.mail_generic_promotional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -93,7 +93,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.mail_generic_transactional:
-    class: %practo_communicator.mail_generic_transactional.class%
+    class: '%practo_communicator.mail_generic_transactional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -101,7 +101,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic_transactional:
-    class: %practo_communicator.sms_generic_transactional.class%
+    class: '%practo_communicator.sms_generic_transactional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -109,7 +109,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic_promotional:
-    class: %practo_communicator.sms_generic_promotional.class%
+    class: '%practo_communicator.sms_generic_promotional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -117,7 +117,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_patient:
-    class: %practo_communicator.sms_patient.class%
+    class: '%practo_communicator.sms_patient.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -125,7 +125,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_doctor:
-    class: %practo_communicator.sms_doctor.class%
+    class: '%practo_communicator.sms_doctor.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -133,7 +133,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_generic:
-    class: %practo_communicator.sms_generic.class%
+    class: '%practo_communicator.sms_generic.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -141,7 +141,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_staff:
-    class: %practo_communicator.sms_staff.class%
+    class: '%practo_communicator.sms_staff.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -149,7 +149,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_appointment:
-    class: %practo_communicator.sms_appointment.class%
+    class: '%practo_communicator.sms_appointment.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -157,7 +157,7 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.sms_credit:
-    class: %practo_communicator.sms_credit.class%
+    class: '%practo_communicator.sms_credit.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -171,13 +171,13 @@ services:
     class: Practo\CommunicatorBundle\Queue\AbstractQueue
     factory: 'practo_communicator.queue_factory:get'
   practo_communicator.device_information:
-    class: %practo_communicator.device_information.class%
+    class: '%practo_communicator.device_information.class%'
     arguments:
       - '%communicator.api.secret%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.whatsapp_generic_transactional:
-    class: %practo_communicator.whatsapp_generic_transactional.class%
+    class: '%practo_communicator.whatsapp_generic_transactional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.secret%'
@@ -185,35 +185,35 @@ services:
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_ios_patient_transactional:
-    class: %practo_communicator.push_ios_patient_transactional.class%
+    class: '%practo_communicator.push_ios_patient_transactional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_android_patient_transactional:
-    class: %practo_communicator.push_android_patient_transactional.class%
+    class: '%practo_communicator.push_android_patient_transactional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_android_patient_promotional:
-    class: %practo_communicator.push_android_patient_promotional.class%
+    class: '%practo_communicator.push_android_patient_promotional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_ios_patient_promotional:
-    class: %practo_communicator.push_ios_patient_promotional.class%
+    class: '%practo_communicator.push_ios_patient_promotional.class%'
     arguments:
       - '@practo_communicator.queue'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
   practo_communicator.whatsapp_consent:
-    class: %practo_communicator.whatsapp_consent.class%
+    class: '%practo_communicator.whatsapp_consent.class%'
     arguments:
       - '%communicator.api.v2_secret%'
       - '%communicator.api.app_name%'
