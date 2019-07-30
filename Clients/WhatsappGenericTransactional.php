@@ -165,4 +165,27 @@ class WhatsappGenericTransactional extends Base
             throw new \Exception("Expiry time less than current time. Job would never run.");
         }
     }
+
+    /**
+     * Get WhatsApp messages using Reference ID & Type
+     *
+     * @param string   $referenceId    - Reference ID
+     * @param string   $referenceType  - Reference Type
+     * @param string   $startDate      - format should be YYYY-MM-DD HH:MM:SS
+     * @param string   $endDate        - format should be YYYY-MM-DD HH:MM:SS
+     *
+     * @return array
+     */
+    public function getByRefIdAndType($referenceId, $referenceType, $startDate, $endDate)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = [
+            'reference_id' => $referenceId,
+            'reference_type' => $referenceType,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'app_name' => $this->_service
+        ];
+        return $client->get('/generic_transactional_whatsapp/get_by_ref_id_and_type', $params);
+    }
 }
