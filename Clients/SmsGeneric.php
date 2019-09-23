@@ -91,7 +91,8 @@ class SmsGeneric extends Base
             'APPOINTMENT_PNS_DEFAULT',
             'APPOINTMENT_PNS_THIRD',
             'VN_COOL_OFF_SMS',
-            'VN_PRIME_FORM'
+            'VN_PRIME_FORM',
+            'LEAD_FORM'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
