@@ -40,7 +40,11 @@ class PushIosPatientPromotional extends AbstractPush
 
     protected function validatePushType($pushType)
     {
-        $allowedTypes = array('ORDER_NOTIFICATION', 'AUTOMATED_REFERRAL_NOTIFICATION');
+        $allowedTypes = array(
+            'ORDER_NOTIFICATION',
+            'AUTOMATED_REFERRAL_NOTIFICATION',
+            'PAID_CONSULTATION_PROMOTIONS_TYPE',
+        );
         if (!in_array($pushType, $allowedTypes, true)) {
             throw new PushValidationException("Invalid message type");
         }
