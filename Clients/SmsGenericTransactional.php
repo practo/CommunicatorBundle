@@ -116,7 +116,8 @@ class SmsGenericTransactional extends Base
             'PHR_DIAGNOSTICS_RECORD_SHARED',
             'VN_PRIME_FORM',
             'APPOINTMENT_CSAT_FEEDBACK',
-            'BOOK_APT_PAGE_MAGIC_LINK'
+            'BOOK_APT_PAGE_MAGIC_LINK',
+            'APPOINTMENT_CANCELLED_CASHLESS_PLUS'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \Exception("Invalid message type");
