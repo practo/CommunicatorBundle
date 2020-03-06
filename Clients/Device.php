@@ -38,7 +38,7 @@ class Device extends Base
     )
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
-        $result = $client->get("/push/register_device", [
+        $result = $client->post("/push/register_device", [
             'account_id' => $accountId,
             'app_name' => $appName,
             'app_version' => $appVersion,
