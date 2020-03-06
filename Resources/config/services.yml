@@ -21,6 +21,7 @@ parameters:
     practo_communicator.push_ios_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushIosPatientPromotional
     practo_communicator.whatsapp_generic_transactional.class: Practo\CommunicatorBundle\Clients\WhatsappGenericTransactional
     practo_communicator.whatsapp_consent.class: Practo\CommunicatorBundle\Clients\WhatsAppConsent
+    practo_communicator.device.class: Practo\CommunicatorBundle\Clients\Device
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -217,5 +218,11 @@ services:
     arguments:
       - '%communicator.api.v2_secret%'
       - '%communicator.api.app_name%'
+    calls:
+      - [ setRequest, [ '@request_stack' ]]
+  practo_communicator.device:
+    class: '%practo_communicator.device.class%'
+    arguments:
+      - '%communicator.api.secret%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
