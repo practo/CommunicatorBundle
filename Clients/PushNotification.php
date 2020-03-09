@@ -8,7 +8,7 @@ use Practo\CommunicatorBundle\Clients\Helper;
 /**
  * Client for handling device
  */
-class Device extends Base
+class PushNotification extends Base
 {
     private $_apiSecretKey;
     private $_appName;
@@ -37,7 +37,8 @@ class Device extends Base
         $pushTokenType,
         $pushToken,
         $fcmToken,
-        $appName = null
+        $appName = null,
+        $appVersionCode = null
     )
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
@@ -55,4 +56,3 @@ class Device extends Base
         return $result;
     }
 }
-
