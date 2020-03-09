@@ -3,6 +3,7 @@
 namespace Practo\CommunicatorBundle\Clients;
 
 use Practo\CommunicatorBundle\Clients\CommunicatorClient;
+use Practo\CommunicatorBundle\Clients\Helper;
 
 /**
  * Client for handling device
@@ -10,10 +11,12 @@ use Practo\CommunicatorBundle\Clients\CommunicatorClient;
 class Device extends Base
 {
     private $_apiSecretKey;
+    private $_appName;
 
-    public function __construct($apiSecretKey)
+    public function __construct($apiSecretKey, $appName)
     {
         $this->_apiSecretKey = $apiSecretKey;
+        $this->_appName = Helper::getValidAppName($appName);
     }
 
     /*
@@ -28,19 +31,19 @@ class Device extends Base
      */
     public function registerDevice(
         $accountId,
-        $appName,
         $appVersion,
         $deviceId,
         $lastActive,
         $pushTokenType,
         $pushToken,
-        $fcmToken
+        $fcmToken,
+        $appName = null
     )
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $result = $client->post("/push/register_device", [
             'account_id' => $accountId,
-            'app_name' => $appName,
+            'app_name' => $appName ? $appName : $this->_appName,
             'app_version' => $appVersion,
             'device_id' => $deviceId,
             'last_active' => $lastActive,

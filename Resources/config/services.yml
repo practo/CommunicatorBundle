@@ -224,5 +224,6 @@ services:
     class: '%practo_communicator.device.class%'
     arguments:
       - '%communicator.api.secret%'
+      - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
