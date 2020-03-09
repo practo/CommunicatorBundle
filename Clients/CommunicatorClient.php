@@ -75,18 +75,41 @@ class CommunicatorClient {
         );
     }
 
+    public function patch($endpoint, $request_params) {
+        $communicatorBaseUri = $this->_communicator_base_uri;
+        $api_url = $communicatorBaseUri.$endpoint;
+        $headers = array_merge(
+            $this->getAuthHeaders(),
+            [
+                'Content-type: application/json',
+            ]
+        );
+
+        return $this->makeCurlRequest(
+            $api_url,
+            'PATCH',
+            $headers,
+            $request_params
+        );
+    }
+
     private function makeCurlRequest(
         $api_url,
         $method,
         $headers,
-        $payload
+        $request_params
     ) {
         $ch = curl_init($api_url);
 
         switch($method) {
         case 'POST':
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+            break;
+
+        case 'PATCH':
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
             break;
         }
 
