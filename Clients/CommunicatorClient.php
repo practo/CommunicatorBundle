@@ -58,22 +58,41 @@ class CommunicatorClient {
     }
 
     public function post($endpoint, $request_params) {
-        $nonce = $this->generateNonce();
         $communicatorBaseUri = $this->_communicator_base_uri;
-        $api_secret_key = $this->_communicator_api_key;
-        $auth_token = hash('sha256', $api_secret_key.$nonce);
-
         $api_url = $communicatorBaseUri.$endpoint;
-        $ch = curl_init($api_url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
-        $headers = array(
-            'nonce: '.$nonce,
-            'X-AUTH-TOKEN: '.$auth_token,
-            'Content-type: application/json'
+        $headers = array_merge(
+            $this->getAuthHeaders(),
+            [
+                'Content-type: application/json',
+            ]
         );
+
+        return $this->makeCurlRequest(
+            $api_url,
+            'POST',
+            $headers,
+            $request_params
+        );
+    }
+
+    private function makeCurlRequest(
+        $api_url,
+        $method,
+        $headers,
+        $payload
+    ) {
+        $ch = curl_init($api_url);
+
+        switch($method) {
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+            break;
+        }
+
+        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errorMessage = '';
@@ -96,5 +115,16 @@ class CommunicatorClient {
         if($errorMessage){
             throw new \Exception($errorMessage);
         }
+    }
+
+    private function getAuthHeaders() {
+        $nonce = $this->generateNonce();
+        $api_secret_key = $this->_communicator_api_key;
+        $auth_token = hash('sha256', $api_secret_key.$nonce);
+
+        return array(
+            'nonce: '.$nonce,
+            'X-AUTH-TOKEN: '.$auth_token,
+        );
     }
 }
