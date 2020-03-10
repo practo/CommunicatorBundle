@@ -21,6 +21,8 @@ class PushNotification extends Base
     }
 
     /*
+     * Registers a user's device for push notifications
+     *
      * @param string $accountId      - Practo account id of the user
      * @param string $deviceId       - Unique fingerprint of the user's device
      * @param string $lastActive     - Of format 1970-01-01 00:00:00
@@ -67,7 +69,9 @@ class PushNotification extends Base
     }
 
     /*
-     * @param string $accountId      - Practo account id of the user
+     * Used to update device information, example usescases involve:
+     * 1. Update a push token for a deviceId in case it's refreshed on client
+     *
      * @param string $deviceId       - Unique fingerprint of the user's device
      * @param string $lastActive     - Of format 1970-01-01 00:00:00
      * @param string $pushTokenType  - Push token type
@@ -105,6 +109,59 @@ class PushNotification extends Base
             'push_token_type' => $pushTokenType,
             'push_token' => $pushToken,
             'fcm_token' => $fcmToken,
+        ]);
+
+        return $result;
+    }
+
+    /*
+     * Updates push token related user information, example usecases involve:
+     * 1. Linking the token with an account (in cases where an account_id was not passed in registerDevice)
+     * 2. Delinking token for the user in cases like logout
+     *
+     * @param string $accountId      - Practo account id of the user
+     * @param string $deviceId       - Unique fingerprint of the user's device
+     * @param string $lastActive     - Of format 1970-01-01 00:00:00
+     * @param string $pushTokenType  - Push token type
+     * @param string $pushToken      - Push token type's value
+     * @param string $fcmToken       - User's fcm token
+     * @param string $appVersion     - App version ex: 1.0.0
+     * @param string $appName        - App name ex: fabric-droid, consult-ui
+     * @param bool   $removeUser     - To delink the user account for ex: post logout
+     * @param string $appVersionCode - App version code
+     */
+    public function patchUserInformation(
+        string $accountId,
+        string $deviceId,
+        string $lastActive,
+        string $pushTokenType,
+        string $pushToken,
+        string $fcmToken = null,
+        string $appVersion = null,
+        string $appName = null,
+        string $removeUser = null,
+        string $appVersionCode = null
+    ) {
+        $this->validate(
+            $pushToken,
+            $fcmToken,
+            $appVersion,
+            $appName,
+            $appVersionCode
+        );
+
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $result = $client->patch("/push/user_information", [
+            'account_id' => $accountId,
+            'app_name' => $appName ? $appName : $this->_appName,
+            'app_version' => $appVersion,
+            'app_version_code' => $appVersionCode,
+            'device_id' => $deviceId,
+            'last_active' => $lastActive,
+            'push_token_type' => $pushTokenType,
+            'push_token' => $pushToken,
+            'fcm_token' => $fcmToken,
+            'remove_user' => $removeUser,
         ]);
 
         return $result;
