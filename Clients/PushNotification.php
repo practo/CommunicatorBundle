@@ -7,7 +7,7 @@ use Practo\CommunicatorBundle\Clients\Helper;
 use Practo\CommunicatorBundle\Exceptions\PushValidationException;
 
 /**
- * Client for handling device
+ * Clients for handling PushNotification
  */
 class PushNotification extends Base
 {
@@ -193,7 +193,7 @@ class PushNotification extends Base
         if(!empty($errors)) {
             $errorString = "";
             foreach ($errors as $error) {
-                $errorString .= $error;
+                $errorString .= $error."\n";
             }
             throw new PushValidationException($errorString);
         }
