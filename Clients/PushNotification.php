@@ -23,24 +23,24 @@ class PushNotification extends Base
     /*
      * Registers a user's device for push notifications
      *
-     * @param string $accountId      - Practo account id of the user
      * @param string $deviceId       - Unique fingerprint of the user's device
      * @param string $lastActive     - Of format 1970-01-01 00:00:00
      * @param string $pushTokenType  - Push token type
      * @param string $pushToken      - Push token type's value
      * @param string $fcmToken       - User's fcm token
      * @param string $appVersion     - App version ex: 1.0.0
+     * @param string $accountId      - Practo account id of the user
      * @param string $appName        - App name ex: fabric-droid, consult-ui
      * @param string $appVersionCode - App version code
      */
     public function postRegisterDevice(
-        string $accountId,
         string $deviceId,
         string $lastActive,
         string $pushTokenType,
         string $pushToken,
         string $fcmToken = null,
         string $appVersion = null,
+        string $accountId = null,
         string $appName = null,
         string $appVersionCode = null
     ) {
