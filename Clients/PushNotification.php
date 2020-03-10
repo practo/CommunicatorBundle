@@ -20,34 +20,6 @@ class PushNotification extends Base
         $this->_appName = Helper::getValidAppName($appName);
     }
 
-    public function validateRegisterDevicePayload(
-        string $accountId,
-        string $deviceId,
-        string $lastActive,
-        string $pushTokenType,
-        string $pushToken = null,
-        string $fcmToken = null,
-        string $apnsToken = null,
-        string $appVersion = null,
-        string $appName = null,
-        string $appVersionCode = null
-    ) {
-        $errors = [];        
-        if (empty($appName)) {
-            array_push(
-                $errors,
-                "App Name is required"
-            );
-        }
-        if (empty($pushToken) && empty($fcmToken)) {
-            array_push($errors,
-                "fcm_token and push_token is missing in payload"
-            );  
-        }
-        if (empty($appVersionCode) && empty($appVersion)) {
-            array_push($errors, 'Either of appVersion or appVersionCode is required');
-        }
-    }
     /*
      * @param string $accountId      - Practo account id of the user
      * @param string $deviceId       - Unique fingerprint of the user's device
@@ -66,32 +38,17 @@ class PushNotification extends Base
         string $pushTokenType,
         string $pushToken,
         string $fcmToken = null,
-        string $apnsToken = null,
         string $appVersion = null,
         string $appName = null,
         string $appVersionCode = null
     ) {
-        
-        $errors = $this->validateRegisterDevicePayload(
-            $accountId,
-            $deviceId,
-            $lastActive,
-            $pushTokenType,
+        $this->validateRegisterDevicePayload(
             $pushToken,
             $fcmToken,
-            $apnsToken,
             $appVersion,
             $appName,
             $appVersionCode
         );
-
-        if(!empty($errors)) {
-            $errorString = "";
-            foreach ($errors as $index => $error) {
-                $errorString .= $error;
-            }
-            throw new PushValidationException($errorString);
-        }
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $result = $client->post("/push/register_device", [
@@ -109,4 +66,35 @@ class PushNotification extends Base
         return $result;
     }
 
+    private function validateRegisterDevicePayload(
+        string $pushToken = null,
+        string $fcmToken = null,
+        string $appVersion = null,
+        string $appName = null,
+        string $appVersionCode = null
+    ) {
+        $errors = [];
+        if (empty($appName)) {
+            array_push(
+                $errors,
+                "App Name is required"
+            );
+        }
+        if (empty($pushToken) && empty($fcmToken)) {
+            array_push($errors,
+                "fcm_token and push_token is missing in payload"
+            );  
+        }
+        if (empty($appVersionCode) && empty($appVersion)) {
+            array_push($errors, 'Either of appVersion or appVersionCode is required');
+        }
+
+        if(!empty($errors)) {
+            $errorString = "";
+            foreach ($errors as $error) {
+                $errorString .= $error;
+            }
+            throw new PushValidationException($errorString);
+        }
+    }
 }
