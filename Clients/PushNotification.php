@@ -31,7 +31,7 @@ class PushNotification extends Base
      * @param string $appName        - App name ex: fabric-droid, consult-ui
      * @param string $appVersionCode - App version code
      */
-    public function registerDevice(
+    public function postRegisterDevice(
         string $accountId,
         string $deviceId,
         string $lastActive,
@@ -42,7 +42,7 @@ class PushNotification extends Base
         string $appName = null,
         string $appVersionCode = null
     ) {
-        $this->validateRegisterDevicePayload(
+        $this->validate(
             $pushToken,
             $fcmToken,
             $appVersion,
@@ -66,7 +66,51 @@ class PushNotification extends Base
         return $result;
     }
 
-    private function validateRegisterDevicePayload(
+    /*
+     * @param string $accountId      - Practo account id of the user
+     * @param string $deviceId       - Unique fingerprint of the user's device
+     * @param string $lastActive     - Of format 1970-01-01 00:00:00
+     * @param string $pushTokenType  - Push token type
+     * @param string $pushToken      - Push token type's value
+     * @param string $fcmToken       - User's fcm token
+     * @param string $appVersion     - App version ex: 1.0.0
+     * @param string $appName        - App name ex: fabric-droid, consult-ui
+     * @param string $appVersionCode - App version code
+     */
+    public function patchDeviceInformation(
+        string $deviceId,
+        string $lastActive,
+        string $pushTokenType,
+        string $pushToken,
+        string $fcmToken = null,
+        string $appVersion = null,
+        string $appName = null,
+        string $appVersionCode = null
+    ) {
+        $this->validate(
+            $pushToken,
+            $fcmToken,
+            $appVersion,
+            $appName,
+            $appVersionCode
+        );
+
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $result = $client->patch("/push/device_information", [
+            'app_name' => $appName ? $appName : $this->_appName,
+            'app_version' => $appVersion,
+            'app_version_code' => $appVersionCode,
+            'device_id' => $deviceId,
+            'last_active' => $lastActive,
+            'push_token_type' => $pushTokenType,
+            'push_token' => $pushToken,
+            'fcm_token' => $fcmToken,
+        ]);
+
+        return $result;
+    }
+
+    private function validate(
         string $pushToken = null,
         string $fcmToken = null,
         string $appVersion = null,
