@@ -60,12 +60,12 @@ class CommunicatorClient {
     public function post($endpoint, $request_params, $json_encode_params = true) {
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_url = $communicatorBaseUri.$endpoint;
-        $headers = array_merge(
+        $headers = $json_encode_params ? array_merge(
             $this->getAuthHeaders(),
             [
                 'Content-type: application/json',
             ]
-        );
+        ) : $this->getAuthHeaders();
 
         return $this->makeCurlRequest(
             $api_url,
@@ -75,14 +75,16 @@ class CommunicatorClient {
         );
     }
 
-    public function patch($endpoint, $request_params) {
+    public function patch(
+        $endpoint,
+        $request_params,
+        $additionalHeaders = []
+    ) {
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_url = $communicatorBaseUri.$endpoint;
         $headers = array_merge(
             $this->getAuthHeaders(),
-            [
-                'Content-type: application/json',
-            ]
+            $additionalHeaders
         );
 
         return $this->makeCurlRequest(

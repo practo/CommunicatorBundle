@@ -84,6 +84,7 @@ class PushNotification extends Base
      * @param string $appVersionCode - App version code
      */
     public function patchDeviceInformation(
+        string $authKey,
         string $deviceId,
         string $lastActive,
         string $pushTokenType,
@@ -112,6 +113,9 @@ class PushNotification extends Base
                 'push_token_type' => $pushTokenType,
                 'push_token' => $pushToken,
                 'fcm_token' => $fcmToken,
+            ],
+            [
+                'X-COMM-AUTH-TOKEN' => $authKey,
             ]),
         ]);
 
