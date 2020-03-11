@@ -125,7 +125,7 @@ class CommunicatorClient {
         if (false !== $featureSet) {
             $featureSet = json_decode($featureSet, True);
             if($responseCode === 200){
-                $result = $featureSet['result'];
+                $result = isset($featureSet['result']) ? $featureSet['result'] : $featureSet;
                 return $result;
             }
             else{
