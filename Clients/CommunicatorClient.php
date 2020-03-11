@@ -142,14 +142,17 @@ class CommunicatorClient {
         }
     }
 
-    private function getAuthHeaders() {
+    public function getAuthHeaders($api_secret_key = null) {
+        if (!$api_secret_key) {
+            $api_secret_key = $this->_communicator_api_key;
+        }
+
         $nonce = $this->generateNonce();
-        $api_secret_key = $this->_communicator_api_key;
         $auth_token = hash('sha256', $api_secret_key.$nonce);
 
         return array(
-            'nonce: '.$nonce,
-            'X-AUTH-TOKEN: '.$auth_token,
+            'nonce' => $nonce,
+            'X-AUTH-TOKEN' => $auth_token,
         );
     }
 }

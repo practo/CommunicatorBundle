@@ -103,6 +103,10 @@ class PushNotification extends Base
         );
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+
+        $authHeaders = $client->getAuthHeaders($authKey);
+        $authHeaders['X-COMM-AUTH-TOKEN'] = $authHeaders['X-AUTH-TOKEN'];
+
         $result = $client->patch("/push/device_information", [
             'payload' => json_encode([
                 'app_name' => $appName ? $appName : $this->_appName,
@@ -113,11 +117,10 @@ class PushNotification extends Base
                 'push_token_type' => $pushTokenType,
                 'push_token' => $pushToken,
                 'fcm_token' => $fcmToken,
-            ],
-            [
-                'X-COMM-AUTH-TOKEN' => $authKey,
             ]),
-        ]);
+        ],
+        $authHeaders
+    );
 
         return $result;
     }
