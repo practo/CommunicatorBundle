@@ -244,7 +244,7 @@ class MailPatient extends Base
         );
 
         if (!in_array($type, $allowedTypes, true)) {
-            throw new \Exception("Invalid message type");
+            throw new \InvalidArgumentException("Invalid message type");
         }
     }
 }

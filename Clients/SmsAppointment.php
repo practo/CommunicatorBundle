@@ -77,7 +77,7 @@ class SmsAppointment extends Base
             case "PENDING":
               return praccomm\AppointmentSMSType::PENDING;
             default:
-              throw new \Exception("Invalid message type");
+              throw new \InvalidArgumentException("Invalid message type");
         }
     }
 

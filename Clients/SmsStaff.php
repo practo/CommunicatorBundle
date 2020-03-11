@@ -190,7 +190,7 @@ class SmsStaff extends Base
             case 'CONNECT_LOW_CREDIT':
                 return praccomm\StaffSMSType::CONNECT_LOW_CREDIT;
             default:
-              throw new \Exception("Invalid message type");
+              throw new \InvalidArgumentException("Invalid message type");
         }
     }
 }

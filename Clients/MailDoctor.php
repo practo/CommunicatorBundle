@@ -183,7 +183,7 @@ class MailDoctor extends Base
             case "MOBILE_ACCESS":
               return \praccomm\DoctorEmailType::MOBILE_ACCESS;
             default:
-              throw new \Exception("Invalid message type");
+              throw new \InvalidArgumentException("Invalid message type");
         }
     }
 }
