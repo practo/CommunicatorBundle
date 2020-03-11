@@ -54,16 +54,18 @@ class PushNotification extends Base
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $result = $client->post("/push/register_device", [
-            'account_id' => $accountId,
-            'app_name' => $appName ? $appName : $this->_appName,
-            'app_version' => $appVersion,
-            'app_version_code' => $appVersionCode,
-            'device_id' => $deviceId,
-            'last_active' => $lastActive,
-            'push_token_type' => $pushTokenType,
-            'push_token' => $pushToken,
-            'fcm_token' => $fcmToken,
-        ]);
+            'payload' => json_encode([
+                'account_id' => $accountId,
+                'app_name' => $appName ? $appName : $this->_appName,
+                'app_version' => $appVersion,
+                'app_version_code' => $appVersionCode,
+                'device_id' => $deviceId,
+                'last_active' => $lastActive,
+                'push_token_type' => $pushTokenType,
+                'push_token' => $pushToken,
+                'fcm_token' => $fcmToken,
+            ]),
+        ], false);
 
         return $result;
     }
@@ -101,14 +103,16 @@ class PushNotification extends Base
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $result = $client->patch("/push/device_information", [
-            'app_name' => $appName ? $appName : $this->_appName,
-            'app_version' => $appVersion,
-            'app_version_code' => $appVersionCode,
-            'device_id' => $deviceId,
-            'last_active' => $lastActive,
-            'push_token_type' => $pushTokenType,
-            'push_token' => $pushToken,
-            'fcm_token' => $fcmToken,
+            'payload' => json_encode([
+                'app_name' => $appName ? $appName : $this->_appName,
+                'app_version' => $appVersion,
+                'app_version_code' => $appVersionCode,
+                'device_id' => $deviceId,
+                'last_active' => $lastActive,
+                'push_token_type' => $pushTokenType,
+                'push_token' => $pushToken,
+                'fcm_token' => $fcmToken,
+            ]),
         ]);
 
         return $result;
@@ -152,16 +156,18 @@ class PushNotification extends Base
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $result = $client->patch("/push/user_information", [
-            'account_id' => $accountId,
-            'app_name' => $appName ? $appName : $this->_appName,
-            'app_version' => $appVersion,
-            'app_version_code' => $appVersionCode,
-            'device_id' => $deviceId,
-            'last_active' => $lastActive,
-            'push_token_type' => $pushTokenType,
-            'push_token' => $pushToken,
-            'fcm_token' => $fcmToken,
-            'remove_user' => $removeUser,
+            'payload' => json_encode([
+                'account_id' => $accountId,
+                'app_name' => $appName ? $appName : $this->_appName,
+                'app_version' => $appVersion,
+                'app_version_code' => $appVersionCode,
+                'device_id' => $deviceId,
+                'last_active' => $lastActive,
+                'push_token_type' => $pushTokenType,
+                'push_token' => $pushToken,
+                'fcm_token' => $fcmToken,
+                'remove_user' => $removeUser,
+            ]),
         ]);
 
         return $result;
@@ -184,7 +190,7 @@ class PushNotification extends Base
         if (empty($pushToken) && empty($fcmToken)) {
             array_push($errors,
                 "fcm_token and push_token is missing in payload"
-            );  
+            );
         }
         if (empty($appVersionCode) && empty($appVersion)) {
             array_push($errors, 'Either of appVersion or appVersionCode is required');

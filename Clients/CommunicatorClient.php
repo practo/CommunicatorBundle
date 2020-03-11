@@ -57,7 +57,7 @@ class CommunicatorClient {
         }
     }
 
-    public function post($endpoint, $request_params) {
+    public function post($endpoint, $request_params, $json_encode_params = true) {
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_url = $communicatorBaseUri.$endpoint;
         $headers = array_merge(
@@ -71,7 +71,7 @@ class CommunicatorClient {
             $api_url,
             'POST',
             $headers,
-            $request_params
+            $json_encode_params ? json_encode($request_params) : $request_params
         );
     }
 
@@ -104,12 +104,12 @@ class CommunicatorClient {
         switch($method) {
         case 'POST':
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request_params);
             break;
 
         case 'PATCH':
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request_params);
             break;
         }
 
