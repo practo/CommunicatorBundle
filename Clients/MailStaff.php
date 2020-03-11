@@ -213,7 +213,7 @@ class MailStaff extends Base
         case "PATIENT_DATA_EXPORT":
           return praccomm\StaffEmailType::PATIENT_DATA_EXPORT;
         default:
-          throw new \Exception("Invalid message type");
+          throw new \InvalidArgumentException("Invalid message type");
       }
     }
 }

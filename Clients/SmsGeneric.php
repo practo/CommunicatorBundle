@@ -96,7 +96,7 @@ class SmsGeneric extends Base
             'APPOINTMENT_CANCELLED_CASHLESS_PLUS'
         );
         if (!in_array($type, $allowedTypes, true)) {
-            throw new \Exception("Invalid message type");
+            throw new \InvalidArgumentException("Invalid message type");
         }
     }
 

@@ -189,7 +189,7 @@ class SmsDoctor extends Base
             case "BLOCKCALENDAR":
               return praccomm\DoctorSMSType::BLOCKCALENDAR;
             default:
-              throw new \Exception("Invalid message type");
+              throw new \InvalidArgumentException("Invalid message type");
         }
     }
 }

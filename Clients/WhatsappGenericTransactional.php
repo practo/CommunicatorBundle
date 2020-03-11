@@ -153,16 +153,16 @@ class WhatsappGenericTransactional extends Base
 
         $messageType = strtoupper($payload['whatsapp_message_type']);
         if (!isset($typeRequiredKeys[$messageType])) {
-            throw new \Exception("Invalid WhatsApp message type $messageType");
+            throw new \InvalidArgumentException("Invalid WhatsApp message type $messageType");
         }
 
         $missingKeys = array_diff($typeRequiredKeys[$messageType], array_keys($payload));
         if (count($missingKeys)) {
-           throw new \Exception('Missing keys: ' . implode(',', $missingKeys));
+           throw new \InvalidArgumentException('Missing keys: ' . implode(',', $missingKeys));
         }
 
         if (isset($payload['expires_at']) && ($payload['expires_at'] < strtotime('now'))) {
-            throw new \Exception("Expiry time less than current time. Job would never run.");
+            throw new \InvalidArgumentException("Expiry time less than current time. Job would never run.");
         }
     }
 
