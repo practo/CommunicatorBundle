@@ -11,7 +11,7 @@ class CommunicatorClient {
         $this->_communicator_api_key = $communicator_api_key;
     }
 
-    protected function generateNonce(){
+    public function generateNonce(){
         return time() . '|' . substr(str_shuffle(
             str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
     }
@@ -78,14 +78,10 @@ class CommunicatorClient {
     public function patch(
         $endpoint,
         $request_params,
-        $additionalHeaders = []
+        $headers
     ) {
         $communicatorBaseUri = $this->_communicator_base_uri;
         $api_url = $communicatorBaseUri.$endpoint;
-        $headers = array_merge(
-            $this->getAuthHeaders(),
-            $additionalHeaders
-        );
 
         return $this->makeCurlRequest(
             $api_url,
@@ -142,17 +138,14 @@ class CommunicatorClient {
         }
     }
 
-    public function getAuthHeaders($api_secret_key = null) {
-        if (!$api_secret_key) {
-            $api_secret_key = $this->_communicator_api_key;
-        }
-
+    public function getAuthHeaders() {
+        $api_secret_key = $this->_communicator_api_key;
         $nonce = $this->generateNonce();
         $auth_token = hash('sha256', $api_secret_key.$nonce);
 
         return array(
-            'nonce' => $nonce,
-            'X-AUTH-TOKEN' => $auth_token,
+            'nonce: '.$nonce,
+            'X-AUTH-TOKEN: '.$auth_token,
         );
     }
 }

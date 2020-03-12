@@ -104,8 +104,7 @@ class PushNotification extends Base
 
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
 
-        $authHeaders = $client->getAuthHeaders($authKey);
-        $authHeaders['X-COMM-AUTH-TOKEN'] = $authHeaders['X-AUTH-TOKEN'];
+        $authHeaders = $this->getPatchDeviceInformationAuthHeaders($client->generateNonce(), $authKey);
 
         $result = $client->patch("/push/device_information", [
             'payload' => json_encode([
@@ -210,5 +209,14 @@ class PushNotification extends Base
             }
             throw new PushValidationException($errorString);
         }
+    }
+
+    private function getPatchDeviceInformationAuthHeaders($nonce, $authKey) {
+        $auth_token = hash('sha256', $nonce.$authKey);
+
+        return array(
+            'nonce: '.$nonce,
+            'X-COMM-AUTH-TOKEN: '.$auth_token,
+        );
     }
 }
