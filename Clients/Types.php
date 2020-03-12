@@ -2394,6 +2394,14 @@ class AndroidPushData extends PushData {
   }
 }
 
+class WebPushData extends PushData {
+  public $icon = '';
+
+  public function getName() {
+    return 'WebPushData';
+  }
+}
+
 class IosPushData extends PushData {
   public $badge = '';
 
@@ -2447,6 +2455,19 @@ class AndroidPushObj extends PushObj {
   }
 }
 
+class WebPushObj extends PushObj {
+  public $data = array();
+  public $is_silent = true;
+  public $app_name = 'fabric-web';
+  public function __construct() {
+    $this->data = json_encode(new WebPushData);
+  }
+
+  public function getName() {
+    return 'WebPushObj';
+  }
+}
+
 class PatientPromoAndroidPush extends AndroidPushObj {
   public function getName() {
     return 'PatientPromoAndroidPush';
@@ -2456,6 +2477,18 @@ class PatientPromoAndroidPush extends AndroidPushObj {
 class PatientTransAndroidPush extends AndroidPushObj {
   public function getName() {
     return 'PatientTransAndroidPush';
+  }
+}
+
+class PatientPromoWebPush extends WebPushObj {
+  public function getName() {
+    return 'PatientPromoWebPush';
+  }
+}
+
+class PatientTransWebPush extends WebPushObj {
+  public function getName() {
+    return 'PatientTransWebPush';
   }
 }
 

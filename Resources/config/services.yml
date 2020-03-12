@@ -19,8 +19,11 @@ parameters:
     practo_communicator.push_android_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientTransactional
     practo_communicator.push_android_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushAndroidPatientPromotional
     practo_communicator.push_ios_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushIosPatientPromotional
+    practo_communicator.push_web_patient_transactional.class: Practo\CommunicatorBundle\Clients\PushWebPatientTransactional
+    practo_communicator.push_web_patient_promotional.class: Practo\CommunicatorBundle\Clients\PushWebPatientPromotional
     practo_communicator.whatsapp_generic_transactional.class: Practo\CommunicatorBundle\Clients\WhatsappGenericTransactional
     practo_communicator.whatsapp_consent.class: Practo\CommunicatorBundle\Clients\WhatsAppConsent
+    practo_communicator.push_notification.class: Practo\CommunicatorBundle\Clients\PushNotification
 
     communicator.send_mail_queue: mail_sender
     communicator.update_mail_queue: mail_updater
@@ -199,6 +202,13 @@ services:
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
+  practo_communicator.push_web_patient_transactional:
+    class: '%practo_communicator.push_web_patient_transactional.class%'
+    arguments:
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
+    calls:
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.push_android_patient_promotional:
     class: '%practo_communicator.push_android_patient_promotional.class%'
     arguments:
@@ -213,10 +223,24 @@ services:
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]
+  practo_communicator.push_web_patient_promotional:
+    class: '%practo_communicator.push_web_patient_promotional.class%'
+    arguments:
+      - '@practo_communicator.queue'
+      - '%communicator.api.app_name%'
+    calls:
+      - [ setRequest, [ '@request_stack' ]]
   practo_communicator.whatsapp_consent:
     class: '%practo_communicator.whatsapp_consent.class%'
     arguments:
       - '%communicator.api.v2_secret%'
+      - '%communicator.api.app_name%'
+    calls:
+      - [ setRequest, [ '@request_stack' ]]
+  practo_communicator.push_notification:
+    class: '%practo_communicator.push_notification.class%'
+    arguments:
+      - '%communicator.api.secret%'
       - '%communicator.api.app_name%'
     calls:
       - [ setRequest, [ '@request_stack' ]]

@@ -11,7 +11,7 @@ class CommunicatorClient {
         $this->_communicator_api_key = $communicator_api_key;
     }
 
-    protected function generateNonce(){
+    public function generateNonce(){
         return time() . '|' . substr(str_shuffle(
             str_repeat('abcdefghijklmnopqrstuvwxyz0123456789', 3)), 0, 20);
     }
@@ -57,23 +57,63 @@ class CommunicatorClient {
         }
     }
 
-    public function post($endpoint, $request_params) {
-        $nonce = $this->generateNonce();
+    public function post($endpoint, $request_params, $json_encode_params = true) {
         $communicatorBaseUri = $this->_communicator_base_uri;
-        $api_secret_key = $this->_communicator_api_key;
-        $auth_token = hash('sha256', $api_secret_key.$nonce);
-
         $api_url = $communicatorBaseUri.$endpoint;
-        $ch = curl_init($api_url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 );
-        $headers = array(
-            'nonce: '.$nonce,
-            'X-AUTH-TOKEN: '.$auth_token,
-            'Content-type: application/json'
+        $headers = $json_encode_params ? array_merge(
+            $this->getAuthHeaders(),
+            [
+                'Content-type: application/json',
+            ]
+        ) : $this->getAuthHeaders();
+
+        return $this->makeCurlRequest(
+            $api_url,
+            'POST',
+            $headers,
+            $json_encode_params ? json_encode($request_params) : $request_params
         );
+    }
+
+    public function patch(
+        $endpoint,
+        $request_params,
+        $headers
+    ) {
+        $communicatorBaseUri = $this->_communicator_base_uri;
+        $api_url = $communicatorBaseUri.$endpoint;
+
+        return $this->makeCurlRequest(
+            $api_url,
+            'PATCH',
+            $headers,
+            $request_params
+        );
+    }
+
+    private function makeCurlRequest(
+        $api_url,
+        $method,
+        $headers,
+        $request_params
+    ) {
+        $ch = curl_init($api_url);
+
+        switch($method) {
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request_params);
+            break;
+
+        case 'PATCH':
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request_params);
+            break;
+        }
+
+        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_params));
+
         $featureSet = curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errorMessage = '';
@@ -81,7 +121,7 @@ class CommunicatorClient {
         if (false !== $featureSet) {
             $featureSet = json_decode($featureSet, True);
             if($responseCode === 200){
-                $result = $featureSet['result'];
+                $result = isset($featureSet['result']) ? $featureSet['result'] : $featureSet;
                 return $result;
             }
             else{
@@ -96,5 +136,16 @@ class CommunicatorClient {
         if($errorMessage){
             throw new \Exception($errorMessage);
         }
+    }
+
+    public function getAuthHeaders() {
+        $api_secret_key = $this->_communicator_api_key;
+        $nonce = $this->generateNonce();
+        $auth_token = hash('sha256', $api_secret_key.$nonce);
+
+        return array(
+            'nonce: '.$nonce,
+            'X-AUTH-TOKEN: '.$auth_token,
+        );
     }
 }
