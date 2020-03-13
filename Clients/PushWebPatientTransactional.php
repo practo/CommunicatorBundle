@@ -14,7 +14,7 @@ class PushWebPatientTransactional extends AbstractPush
     public function __construct($queue, $service)
     {
         parent::__construct($queue, $service);
-        $this->comm_app_name = 'consumer-web';
+        $this->comm_app_name = 'fabric-web';
         $this->job = new praccomm\PatientTransWebPush();
         $this->job->service = $service;
     }

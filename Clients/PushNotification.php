@@ -74,6 +74,7 @@ class PushNotification extends Base
      * Used to update device information, example usescases involve:
      * 1. Update a push token for a deviceId in case it's refreshed on client
      *
+     * @param string $authKey        - Auth_key received from registerDevice
      * @param string $deviceId       - Unique fingerprint of the user's device
      * @param string $lastActive     - Of format 1970-01-01 00:00:00
      * @param string $pushTokenType  - Push token type
