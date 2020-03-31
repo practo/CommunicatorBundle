@@ -233,7 +233,8 @@ class SmsPatient extends Base
             'D2P_REMINDER',
             'RECONFIRMATION',
             'D2P_INIT',
-            'D2P_REMINDER_TXN'
+            'D2P_REMINDER_TXN',
+            'PRIME_ONLINE_RAY'
         );
 
         if (!in_array($type, $allowedTypes, true)) {
