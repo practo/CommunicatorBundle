@@ -93,7 +93,8 @@ class SmsGeneric extends Base
             'VN_COOL_OFF_SMS',
             'VN_PRIME_FORM',
             'BOOK_APT_PAGE_MAGIC_LINK',
-            'APPOINTMENT_CANCELLED_CASHLESS_PLUS'
+            'APPOINTMENT_CANCELLED_CASHLESS_PLUS',
+            'PRIME_ONLINE_CONSULT_COMMUNICATION'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
