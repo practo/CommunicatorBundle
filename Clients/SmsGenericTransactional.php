@@ -118,7 +118,11 @@ class SmsGenericTransactional extends Base
             'APPOINTMENT_CSAT_FEEDBACK',
             'BOOK_APT_PAGE_MAGIC_LINK',
             'APPOINTMENT_CANCELLED_CASHLESS_PLUS',
-            'PRIME_ONLINE_CONSULT_COMMUNICATION'
+            'PRIME_ONLINE_CONSULT_COMMUNICATION',
+            'APPOINTMENT_PREPAY_CONFIRMATION_2',
+            'APPOINTMENT_CASHLESS_PLUS_CONFIRM',
+            'APPOINTMENT_PREPAY_RESCHEDULE',
+            'APPOINTMENT_PREPAY_CANCELLATION'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
