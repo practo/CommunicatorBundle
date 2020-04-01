@@ -122,7 +122,8 @@ class SmsGenericTransactional extends Base
             'APPOINTMENT_PREPAY_CONFIRMATION_2',
             'APPOINTMENT_CASHLESS_PLUS_CONFIRM',
             'APPOINTMENT_PREPAY_RESCHEDULE',
-            'APPOINTMENT_PREPAY_CANCELLATION'
+            'APPOINTMENT_PREPAY_CANCELLATION',
+            'APPOINTMENT_CASHLESS_RESCHEDULE'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
