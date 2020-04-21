@@ -212,6 +212,10 @@ class MailStaff extends Base
           return praccomm\StaffEmailType::MOBILE_ACCESS;
         case "PATIENT_DATA_EXPORT":
           return praccomm\StaffEmailType::PATIENT_DATA_EXPORT;
+        case "CREDIT_ZERO":
+          return praccomm\StaffEmailType::CREDIT_ZERO;
+        case "CREDIT_LOW":
+          return praccomm\StaffEmailType::CREDIT_LOW;
         default:
           throw new \InvalidArgumentException("Invalid message type");
       }
