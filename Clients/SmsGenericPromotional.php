@@ -61,7 +61,8 @@ class SmsGenericPromotional extends Base
           'CONSULT_FREE_QUESTION_PROMOTIONAL',
           'CONSULT_PAID_PROMOTIONAL',
           'CONSULT_FOLLOWUP_PROMOTIONAL',
-          'CONSULT_REFERRAL_CODE'
+          'CONSULT_REFERRAL_CODE',
+          'PRIME_ONLINE_RAY',
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
