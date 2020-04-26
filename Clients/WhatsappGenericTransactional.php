@@ -148,7 +148,8 @@ class WhatsappGenericTransactional extends Base
             'IMAGE'    => array('media_s3_url'),
             'AUDIO'    => array('media_s3_url'),
             'DOCUMENT' => array('media_s3_url'),
-            'HSM'      => array('hsm_hash', 'hsm_data')
+            'HSM'      => array('hsm_hash', 'hsm_data'),
+            'TEMPLATE' => array('hsm_hash', 'hsm_data'),
         );
 
         $messageType = strtoupper($payload['whatsapp_message_type']);
