@@ -113,6 +113,7 @@ class MailGeneric extends Base
     private function validateMailType($type)
     {
         $allowedTypes = array(
+            'PRIME_ONLINE_CONSULT_COMMUNICATION',
             'FABRIC_ROI_REPORT',
             'FABRIC_RENEWAL_ALERT',
             'MERGE_ACCOUNTS_NOTIFICATION',
