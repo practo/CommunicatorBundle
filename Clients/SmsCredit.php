@@ -132,6 +132,23 @@ class SmsCredit extends Base
         return $result;
     }
 
+    /**
+     * Is practice exist
+     *
+     * @param integer $pid - Credit Id
+     *
+     * @return array
+     */
+    public function isPracticeExist($pid)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = [];
+        $params['pid'] = $pid;
+        $result = $client->get("/smscredit/is_practice_exist", $params);
+
+        return $result;
+    }
+
     private function getCurrency($curr)
     {
         switch($curr)
