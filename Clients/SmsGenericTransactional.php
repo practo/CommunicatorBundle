@@ -74,6 +74,7 @@ class SmsGenericTransactional extends Base
             'CONSULT_DOCTOR_ONBOARDING',
             'CONSULT_FOLLOWUP',
             'CONSULT_INDIA_HEALTH_HOUR',
+            'CONSULT_TRANSACTION_SUMMARY',
             'ORDER_SMS',
             'SMS_ERROR_RESPONSE',
             'GUARANTEE_CLAIM',
