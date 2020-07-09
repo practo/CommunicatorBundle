@@ -35,7 +35,7 @@ abstract class AbstractPush extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName($queueName)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     public function isAssoc($arr)
