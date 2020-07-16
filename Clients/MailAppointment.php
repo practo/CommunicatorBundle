@@ -78,7 +78,7 @@ class MailAppointment extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_MAIL_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -98,7 +98,7 @@ class MailAppointment extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     public function getMailsByAppointmentId($apptId, $mailTypes)

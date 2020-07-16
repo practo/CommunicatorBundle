@@ -83,7 +83,7 @@ class WhatsappGenericTransactional extends Base
 
         $this->_queue
             ->setQueueName(Queue::GENERIC_TRANSACTIONAL_WHATSAPP_SENDER)
-            ->sendMessage($jsonifiedJob, 10);
+            ->sendMessage($jsonifiedJob);
 
         return $job->transaction_id;
     }

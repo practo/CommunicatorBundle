@@ -82,7 +82,7 @@ class MailPatient extends Base
         $this->_queue->setDomain($this->_domain);
         $this->_queue
              ->setQueueName(Queue::SEND_MAIL_QUEUE)
-             ->sendMessage($jsonified_job, 10);
+             ->sendMessage($jsonified_job);
     }
 
     public function updateMail($hash, $status, $messageId,
@@ -104,7 +104,7 @@ class MailPatient extends Base
         $this->_queue->setDomain($this->_domain);
         $this->_queue
              ->setQueueName(Queue::UPDATE_MAIL_QUEUE)
-             ->sendMessage($jsonified_job, 10);
+             ->sendMessage($jsonified_job);
     }
 
     public function searchMailByPracticeId($pid, $sendDate)
