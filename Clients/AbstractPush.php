@@ -75,6 +75,8 @@ abstract class AbstractPush extends Base
             $pushObject->is_content_available = $inputDict['is_content_available'];
         if (array_key_exists('push_type', $inputDict))
             $pushObject->push_type = $inputDict['push_type'];
+        if (array_key_exists('ttl', $inputDict))
+            $pushObject->ttl = $inputDict['ttl'];
     }
 
     public function addFilters($pushObject, $inputDict) {
