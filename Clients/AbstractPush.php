@@ -77,6 +77,10 @@ abstract class AbstractPush extends Base
             $pushObject->push_type = $inputDict['push_type'];
         if (array_key_exists('ttl', $inputDict))
             $pushObject->ttl = $inputDict['ttl'];
+        if (array_key_exists('max_delivery_attempts', $inputDict))
+            $pushObject->max_delivery_attempts = $inputDict['max_delivery_attempts'];
+        if (array_key_exists('expires_at', $inputDict))
+            $pushObject->expires_at = $inputDict['expires_at'];
     }
 
     public function addFilters($pushObject, $inputDict) {
