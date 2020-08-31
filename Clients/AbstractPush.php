@@ -24,7 +24,6 @@ abstract class AbstractPush extends Base
     abstract protected function validatePushType($pushType);
     abstract protected function validateFilters($inputDict);
 
-
     public function __construct($queue, $service)
     {
         $this->_queue = $queue;
@@ -105,6 +104,8 @@ abstract class AbstractPush extends Base
         $this->addData($pushObject, $inputDict);
     }
 
+
+
     public function validatePushRelationKeys($inputDict) {
         foreach ($this->push_relation_keys as $key) {
             if (array_key_exists($key, $inputDict)) {
@@ -140,6 +141,19 @@ abstract class AbstractPush extends Base
             throw new PushValidationException("No Data in Android Payload");
     }
 
+    public function validateGuaranteedDeliveryPayload($inputDict) {
+
+        if array_key_exists('max_delivery_attempts', $inputDict) {
+            if ($inputDict['max_delivery_attempts'] > 10)
+            throw new PushValidationException("max_delivery_attempts greater than 10");
+        }
+
+        if (array_key_exists('max_delivery_attempts', $inputDict) && 
+            !(array_key_exists('expires_at', $inputDict))) {
+            throw new PushValidationException("Cannot set max_delivery_attempts without expires_at");
+        }
+    }
+
     public function validateIosData($iosData, $isIosSilent, $inputDict) {
         if (empty($iosData))
             throw new PushValidationException("No Data in Ios Payload");
@@ -170,6 +184,7 @@ abstract class AbstractPush extends Base
         $this->validateFilters($inputDict);
         $this->validateData($inputDict);
         $this->validatePushType($inputDict['push_type']);
+        $this->validateGuaranteedDeliveryPayload($inputDict);
         return $inputDict;
     }
 }
