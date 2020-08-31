@@ -154,6 +154,15 @@ abstract class AbstractPush extends Base
         }
     }
 
+    public function validateExpiresAt($expires_at) {
+        if !(is_numeric($expires_at)) {
+            throw new PushValidationException("Invalid type {gettype($expires_at)} passed in expires_at");
+        }
+        if ($expires_at > time()) {
+            throw new PushValidationException("Notification request has already expired.");
+        }
+    }
+
     public function validateIosData($iosData, $isIosSilent, $inputDict) {
         if (empty($iosData))
             throw new PushValidationException("No Data in Ios Payload");
@@ -185,6 +194,9 @@ abstract class AbstractPush extends Base
         $this->validateData($inputDict);
         $this->validatePushType($inputDict['push_type']);
         $this->validateGuaranteedDeliveryPayload($inputDict);
+        if (array_key_exists('expires_at', $inputDict)) {
+            $this->validateExpiresAt($inputDict['expires_at']);
+        }
         return $inputDict;
     }
 }
