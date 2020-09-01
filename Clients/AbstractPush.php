@@ -156,7 +156,7 @@ abstract class AbstractPush extends Base
     }
 
     public function validateExpiresAt($expires_at) {
-        if !(is_numeric($expires_at)) {
+        if (!is_numeric($expires_at)) {
             throw new PushValidationException("Invalid type {gettype($expires_at)} passed in expires_at");
         }
         if ($expires_at < time()) {
