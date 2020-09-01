@@ -158,7 +158,7 @@ abstract class AbstractPush extends Base
         if !(is_numeric($expires_at)) {
             throw new PushValidationException("Invalid type {gettype($expires_at)} passed in expires_at");
         }
-        if ($expires_at > time()) {
+        if ($expires_at < time()) {
             throw new PushValidationException("Notification request has already expired.");
         }
     }
