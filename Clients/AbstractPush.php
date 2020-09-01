@@ -144,8 +144,9 @@ abstract class AbstractPush extends Base
     public function validateGuaranteedDeliveryPayload($inputDict) {
 
         if array_key_exists('max_delivery_attempts', $inputDict) {
-            if ($inputDict['max_delivery_attempts'] > 10)
-            throw new PushValidationException("max_delivery_attempts greater than 10");
+            if ($inputDict['max_delivery_attempts'] > 10) {
+                throw new PushValidationException("max_delivery_attempts greater than 10");
+            }
         }
 
         if (array_key_exists('max_delivery_attempts', $inputDict) && 
