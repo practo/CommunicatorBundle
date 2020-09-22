@@ -24,7 +24,7 @@ class SmsPatient extends Base
     }
 
     public function sendSms($practiceId, $contactId, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
+                            $templateName, $unverified = false, $smsDisabled = false,
                             $dndFail = false, $expiryTime = null,
                             $secondaryMobile = null)
     {
@@ -34,6 +34,7 @@ class SmsPatient extends Base
         $job->patient_contact_id = $contactId;
         $job->name = $name;
         $job->mobile = $to;
+        $job->templateName = $templateName;
         $job->secondary_mobile = $secondaryMobile;
         $job->expiry_time = $expiryTime;
         $job->message_type = $type;
