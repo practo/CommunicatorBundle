@@ -24,13 +24,14 @@ class SmsGeneric extends Base
     }
 
     public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
+                            $name, $to, $messageType, $body, $templateName,
                             $notes = null, $expiryTime = null, $sender_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
         $job = new praccomm\GenericSms();
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
+        $job->templateName = $templateName;
         $job->name = $name;
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
