@@ -23,7 +23,7 @@ class SmsAppointment extends Base
     }
 
     public function sendSms($appointmentId, $name, $to, $personType,
-                            $messageType, $body, $notes = null,
+                            $templateName, $messageType, $body, $notes = null,
                             $expiryTime = null)
     {
         $job = new praccomm\AppointmentSms();
@@ -33,6 +33,7 @@ class SmsAppointment extends Base
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->notes = $notes;
+        $job->templateName = $templateName;
         $job->message_type = $this->getSMSType($messageType);
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
