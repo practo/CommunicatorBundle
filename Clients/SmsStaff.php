@@ -32,6 +32,7 @@ class SmsStaff extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
+        $job->templateName = $templateName;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->message_type = $this->getSMSType($type);
