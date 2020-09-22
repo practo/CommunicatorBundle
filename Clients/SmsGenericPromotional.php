@@ -24,7 +24,7 @@ class SmsGenericPromotional extends Base
     }
 
     public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
+                            $name, $to, $messageType, $body, $templateName,
                             $expiryTime = null, $campaign_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
@@ -34,6 +34,7 @@ class SmsGenericPromotional extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
+        $job->templateName = $templateName;
         $job->message_text = $body;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
