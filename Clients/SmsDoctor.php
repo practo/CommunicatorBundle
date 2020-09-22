@@ -23,8 +23,8 @@ class SmsDoctor extends Base
         $this->_queue = $queue;
     }
 
-    public function sendSms($practiceId, $doctorProfileId, $name, $to, $type,
-                            $body, $unverified = false, $smsDisabled = false,
+    public function sendSms($practiceId, $doctorProfileId, $name, $to, $type, $body, 
+                            $templateName, $unverified = false, $smsDisabled = false,
                             $expiryTime = null, $secondaryMobile = null)
     {
         $job = new praccomm\DoctorSms();
@@ -33,6 +33,7 @@ class SmsDoctor extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
+        $job->templateName = $templateName;
         $job->expiry_time = $expiryTime;
         $job->message_type = $this->getSMSType($type);
         $job->message_text = $body;
