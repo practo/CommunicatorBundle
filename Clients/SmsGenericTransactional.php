@@ -24,7 +24,7 @@ class SmsGenericTransactional extends Base
     }
 
     public function sendSms($reference_id, $reference_type,
-                            $name, $to, $messageType, $body,
+                            $name, $to, $messageType, $body, $templateName,
                             $notes = null, $expiryTime = null, $sender_id = null)
     {
         $this->validateSmsType(strtoupper($messageType));
@@ -35,6 +35,7 @@ class SmsGenericTransactional extends Base
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
+        $job->templateName = $templateName;
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;

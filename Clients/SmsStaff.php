@@ -23,7 +23,7 @@ class SmsStaff extends Base
     }
 
     public function sendSms($practice_id, $staffProfileId, $name, $to, $type, $body,
-                            $unverified = false, $smsDisabled = false,
+                            $templateName, $unverified = false, $smsDisabled = false,
                             $expiryTime = null, $secondaryMobile = null)
     {
         $job = new praccomm\StaffSms();
@@ -32,6 +32,7 @@ class SmsStaff extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->secondary_mobile = $secondaryMobile;
+        $job->templateName = $templateName;
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->message_type = $this->getSMSType($type);
