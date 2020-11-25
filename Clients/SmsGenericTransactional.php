@@ -46,7 +46,7 @@ class SmsGenericTransactional extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_GENERIC_TRANSACTIONAL_SMS_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     private function validateSmsType($type)

@@ -59,7 +59,7 @@ class SmsPatient extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SEND_SMS_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     public function updateSms($key, $status, $deliveryTime,
@@ -77,7 +77,7 @@ class SmsPatient extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::UPDATE_SMS_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
 

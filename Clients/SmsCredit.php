@@ -34,7 +34,7 @@ class SmsCredit extends Base
         $this->_queue->setDomain($this->_domain);
         return $this->_queue
                     ->setQueueName(Queue::SMS_CREDIT_QUEUE)
-                    ->sendMessage($jsonifiedJob, 10);
+                    ->sendMessage($jsonifiedJob);
     }
 
     public function insertPractoCredit($practiceId, $credit)
