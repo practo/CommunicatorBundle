@@ -43,7 +43,7 @@ class SmsGenericTransactional extends Base
         $job->sender_id = $sender_id;
         $job->initiated_at = date("Y-m-d H:i:s");
         $jsonifiedJob = json_encode($job);
-        $decoded_job = json_decode($jsonifiedJob);
+        $decoded_job = json_decode($jsonifiedJob, true);
         $decoded_job['template_name'] = $templateName;
         $jsonifiedJob = json_encode($decoded_job);
         $this->_queue->setDomain($this->_domain);
