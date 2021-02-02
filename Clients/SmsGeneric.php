@@ -32,6 +32,7 @@ class SmsGeneric extends Base
         $job->reference_id = $reference_id;
         $job->reference_type = $reference_type;
         $job->templateName = $templateName;
+        $job->template_name = $templateName;
         $job->name = $name;
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;

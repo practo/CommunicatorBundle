@@ -862,6 +862,7 @@ class DoctorSMS {
   public $expiry_time = null;
   public $cost_deducted_from = null;
   public $retry_for = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -946,6 +947,9 @@ class DoctorSMS {
       if (isset($vals['retry_for'])) {
         $this->retry_for = $vals['retry_for'];
       }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
+      }
     }
   }
 
@@ -1000,6 +1004,7 @@ class PatientSMS {
   public $expiry_time = null;
   public $cost_deducted_from = null;
   public $retry_for = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1084,6 +1089,9 @@ class PatientSMS {
       if (isset($vals['retry_for'])) {
         $this->retry_for = $vals['retry_for'];
       }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
+      }
     }
   }
 
@@ -1138,6 +1146,7 @@ class StaffSMS {
   public $expiry_time = null;
   public $cost_deducted_from = null;
   public $retry_for = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1222,6 +1231,9 @@ class StaffSMS {
       if (isset($vals['retry_for'])) {
         $this->retry_for = $vals['retry_for'];
       }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
+      }
     }
   }
 
@@ -1272,6 +1284,7 @@ class AppointmentSMS {
   public $cost = null;
   public $expiry_time = null;
   public $notes = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1344,6 +1357,9 @@ class AppointmentSMS {
       if (isset($vals['notes'])) {
         $this->notes = $vals['notes'];
       }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
+      }
     }
   }
 
@@ -1378,6 +1394,7 @@ class GenericSMS {
   public $expiry_time = null;
   public $notes = null;
   public $sender_id = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1452,6 +1469,9 @@ class GenericSMS {
       }
       if (isset($vals['sender_id'])) {
         $this->sender_id = $vals['sender_id'];
+      }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
       }
     }
   }
@@ -1489,6 +1509,7 @@ class GenericTransactionalSMS {
   public $notes = null;
   public $sender_id = null;
   public $initiated_at = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1567,6 +1588,9 @@ class GenericTransactionalSMS {
       if (isset($vals['initiated_at'])) {
         $this->initiated_at = $vals['initiated_at'];
       }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
+      }
     }
   }
 
@@ -1594,6 +1618,7 @@ class GenericPromotionalSMS {
   public $app_name = null;
   public $expiry_time = null;
   public $initiated_at = null;
+  public $template_name = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -1653,6 +1678,9 @@ class GenericPromotionalSMS {
       }
       if (isset($vals['expiry_time'])) {
         $this->expiry_time = $vals['expiry_time'];
+      }
+      if (isset($vals['template_name'])) {
+        $this->template_name = $vals['template_name'];
       }
     }
   }

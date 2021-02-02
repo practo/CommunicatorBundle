@@ -36,6 +36,7 @@ class SmsGenericTransactional extends Base
         $job->expiry_time = $expiryTime;
         $job->message_text = $body;
         $job->templateName = $templateName;
+        $job->template_name = $templateName;
         $job->notes = $notes;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;
