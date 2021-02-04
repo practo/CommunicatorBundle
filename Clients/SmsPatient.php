@@ -35,6 +35,7 @@ class SmsPatient extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->templateName = $templateName;
+        $job->template_name = $templateName;
         $job->secondary_mobile = $secondaryMobile;
         $job->expiry_time = $expiryTime;
         $job->message_type = $type;

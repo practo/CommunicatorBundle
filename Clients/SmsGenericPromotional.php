@@ -35,6 +35,7 @@ class SmsGenericPromotional extends Base
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
         $job->templateName = $templateName;
+        $job->template_name = $templateName;
         $job->message_text = $body;
         $job->message_type = strtoupper($messageType);
         $job->app_name = $this->_appName;

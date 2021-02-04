@@ -34,6 +34,7 @@ class SmsAppointment extends Base
         $job->message_text = $body;
         $job->notes = $notes;
         $job->templateName = $templateName;
+        $job->template_name = $templateName;
         $job->message_type = $this->getSMSType($messageType);
         $job->app_name = $this->_appName;
         $job->person_type = $this->getPersonType($personType);
