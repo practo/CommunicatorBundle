@@ -55,4 +55,23 @@ class Helper
             throw new \Exception('Invalid application name. Has to be one of '.$appNameStr);
         }
     }
+
+    /**
+     * if app name is Fabric and template name contains _brand_, then append Practo
+     *
+     * @param $appName - App name of the Product
+     * @param $templateName - Template Name
+     * @param $smsText - SMS Text
+     *
+     * @return string
+     */
+    static function appendBrandNameToFabricSMSText($appName, $templateName, $smsText) {
+        if (strtoupper($appName) == 'FABRIC'
+            && is_string($templateName)
+            && strpos($templateName, '_brand_') !== false) {
+            return $smsText. "\n- Practo";
+        }
+
+        return $smsText;
+    }
 }
