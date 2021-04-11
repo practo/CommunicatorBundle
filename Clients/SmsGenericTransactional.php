@@ -34,7 +34,7 @@ class SmsGenericTransactional extends Base
         $job->name = $name;
         $job->mobile = $to;
         $job->expiry_time = $expiryTime;
-        $job->message_text = $body;
+        $job->message_text = Helper::appendBrandNameToFabricSMSText($this->_appName, $templateName, $body);
         $job->templateName = $templateName;
         $job->template_name = $templateName;
         $job->notes = $notes;
