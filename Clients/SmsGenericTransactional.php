@@ -129,7 +129,9 @@ class SmsGenericTransactional extends Base
             'APPOINTMENT_PREPAY_CANCELLATION',
             'APPOINTMENT_CASHLESS_RESCHEDULE',
             'INDIA_HEALTH_HOUR',
-            'PRIME_ONLINE_RAY'
+            'PRIME_ONLINE_RAY',
+            'APPOINTMENT_CHECKIN_CONFIRM',
+            'VOUCHER_CREDIT'
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
