@@ -1,5 +1,6 @@
 <?php
 namespace Practo\CommunicatorBundle\Clients;
+require_once __DIR__.'/Types.php';
 
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
