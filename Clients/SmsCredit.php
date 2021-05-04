@@ -1,5 +1,6 @@
 <?php
 namespace Practo\CommunicatorBundle\Clients;
+require_once __DIR__.'/Types.php';
 
 use Practo\CommunicatorBundle\Queue\AbstractQueue as Queue;
 use Practo\CommunicatorBundle\Clients\Helper;
@@ -162,5 +163,20 @@ class SmsCredit extends Base
             default:
                 throw new \Exception("Invalid currency");
         }
+    }
+
+    public function insertPracticeCredit($practiceId, $credit, $currency, $planId, $helloPlan, $walletCredit)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = [];
+        $params['pid'] = $practiceId;
+        $params['credit'] = $credit;
+        $params['user_credit'] = $walletCredit;
+        $params['currency'] = $this->getCurrency($currency);
+        $params['plan_id'] = $planId;
+        $params['hello_plan'] = $helloPlan;
+        $result = $client->post("/smscredit/insert_credit", $params);
+
+        return $result;
     }
 }
