@@ -38,7 +38,7 @@ class SmsCredit extends Base
                     ->sendMessage($jsonifiedJob);
     }
 
-    public function insertPractoCredit($practiceId, $credit)
+    public function addPractoCredit($practiceId, $credit)
     {
         $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
         $params = array();
