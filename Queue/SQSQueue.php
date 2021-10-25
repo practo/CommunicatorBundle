@@ -18,6 +18,7 @@ class SQSQueue extends AbstractQueue
 
     const BASE64_EXPAND_RATIO = 1.37;
     const MAX_JOB_SIZE = 262144;
+    const WARN_FILE_EXISTS = 'File exists';
 
     /**
      * Constructor
@@ -152,9 +153,11 @@ class SQSQueue extends AbstractQueue
             }
             $currentTime = time();
             $jobDir = intval($currentTime/100);
+            set_error_handler(array($this, 'handleWarnings'));
             if (!file_exists($this->spoolDir.'/'.$jobDir)) {
                 mkdir($this->spoolDir.'/'.$jobDir);
             }
+            restore_error_handler();
             $filename = str_replace('.', '', microtime(true)) . $this->getRandomString(10);
             $payload = implode("\t", array(
                 $this->region,
@@ -190,6 +193,21 @@ class SQSQueue extends AbstractQueue
             }
             $message->setId($messageId);
         }
+    }
+
+    /**
+     * Handle Warnings while creating directory
+     *
+     * @param string $errorLevel  - Error Level
+     * @param string $errorString - Error String
+     */
+    public function handleWarnings($errorLevel, $errorString)
+    {
+        if (2 === $errorLevel && strpos($errorString, self::WARN_FILE_EXISTS) !== false) {
+            return;
+        }
+
+        return false;
     }
 
     /**
