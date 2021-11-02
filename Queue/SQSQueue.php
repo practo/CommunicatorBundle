@@ -19,6 +19,7 @@ class SQSQueue extends AbstractQueue
     const BASE64_EXPAND_RATIO = 1.37;
     const MAX_JOB_SIZE = 262144;
     const WARN_FILE_EXISTS = 'File exists';
+    const WARNING = 2;
 
     /**
      * Constructor
@@ -203,7 +204,7 @@ class SQSQueue extends AbstractQueue
      */
     public function handleWarnings($errorLevel, $errorString)
     {
-        if (2 === $errorLevel && strpos($errorString, self::WARN_FILE_EXISTS) !== false) {
+        if (WARNING === $errorLevel && strpos($errorString, self::WARN_FILE_EXISTS) !== false) {
             return true;
         }
 
