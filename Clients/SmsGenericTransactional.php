@@ -132,7 +132,8 @@ class SmsGenericTransactional extends Base
             'PRIME_ONLINE_RAY',
             'APPOINTMENT_CHECKIN_CONFIRM',
             'VOUCHER_CREDIT',
-            'CONSULT_VIDEO_CALL_PATIENT'
+            'CONSULT_VIDEO_CALL_PATIENT',
+            'WORKFLOW_PROFILE_ALERT_SMS',
         );
         if (!in_array($type, $allowedTypes, true)) {
             throw new \InvalidArgumentException("Invalid message type");
