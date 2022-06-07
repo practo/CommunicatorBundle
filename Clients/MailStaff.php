@@ -218,6 +218,8 @@ class MailStaff extends Base
           return praccomm\StaffEmailType::CREDIT_ZERO;
         case "CREDIT_LOW":
           return praccomm\StaffEmailType::CREDIT_LOW;
+        case "SUBSCRIPTION_EXPIRY_REMINDER":
+            return praccomm\StaffEmailType::SUBSCRIPTION_EXPIRY_REMINDER;
         default:
           throw new \InvalidArgumentException("Invalid message type");
       }
