@@ -30,7 +30,12 @@ class PushAndroidPatientTransactional extends AbstractPush
         $jobData = $this->validate($jobData);
         $jobData['app_name'] = $this->comm_app_name;
         $jsonifiedJob = json_encode($jobData);
-        return $this->sendPush(Queue::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE, $jsonifiedJob);
+        if ($this->isPriorityPushType($jobData['push_type'])) {
+            $queueName = Queue::SEND_PATIENT_PRIORITY_PUSH_QUEUE;
+        } else {
+            $queueName = Queue::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE;
+        }
+        return $this->sendPush($queueName, $jsonifiedJob);
     }
 
     protected function validateFilters($pushDict)
@@ -40,6 +45,14 @@ class PushAndroidPatientTransactional extends AbstractPush
             throw new PushValidationException(
                 "Account/Device ID is mandatory for transactional pushes"
             );
+    }
+
+    protected function isPriorityPushType($pushType)
+    {
+        $validTypes = array(
+            'VIDEO_CALL',
+        );
+        return in_array($pushType, $validTypes);
     }
 
     protected function validatePushType($pushType)
