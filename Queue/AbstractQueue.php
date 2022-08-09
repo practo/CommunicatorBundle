@@ -35,6 +35,7 @@ abstract class AbstractQueue
     const GENERIC_TRANSACTIONAL_WHATSAPP_SENDER = 'generic_transactional_whatsapp_sender';
     const SEND_PATIENT_PROMOTIONAL_PUSH_QUEUE   = 'patient_promotional_push_notification_sender';
     const SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE = 'patient_transactional_push_notification_sender';
+    const SEND_PATIENT_PRIORITY_PUSH_QUEUE = 'patient_priority_push_notification_sender';
     const PUSH_TOKEN_UPDATE_QUEUE               = 'push_token_updater';
 
     /**
@@ -154,6 +155,7 @@ abstract class AbstractQueue
             case self::GENERIC_TRANSACTIONAL_WHATSAPP_SENDER:
             case self::SEND_PATIENT_PROMOTIONAL_PUSH_QUEUE:
             case self::SEND_PATIENT_TRANSACTIONAL_PUSH_QUEUE:
+            case self::SEND_PATIENT_PRIORITY_PUSH_QUEUE:
             default:
                 return 60;
         }

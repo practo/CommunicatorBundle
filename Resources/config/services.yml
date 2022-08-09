@@ -37,6 +37,7 @@ parameters:
     communicator.send_appointment_sms_queue: appointment_sms_sender
     communicator.update_appointment_sms_queue: appointment_sms_updater
     communicator.send_patient_trans_push_queue: patient_transactional_push_notification_sender
+    communicator.send_patient_priority_push_queue: patient_priority_push_notification_sender
     communicator.send_patient_promo_push_queue: patient_promotional_push_notification_sender
 
     communicator.queue.uri: 'beanstalk://localhost/dev_'
