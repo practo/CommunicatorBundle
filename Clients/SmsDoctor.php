@@ -194,5 +194,16 @@ class SmsDoctor extends Base
               throw new \InvalidArgumentException("Invalid message type");
         }
     }
+
+    public function getMessagesByDateRange($pid, $startDate, $endDate)
+    {
+        $client = new CommunicatorClient($this->getCommunicatorUri(), $this->_apiSecretKey);
+        $params = array();
+        $params['pid'] = $pid;
+        $params['start_date'] = $startDate;
+        $params['end_date'] = $endDate;
+        $result = $client->get("/doctorsms/get_messages_in_date_range", $params);
+        return $result;
+    }
 }
 ?>
