@@ -190,6 +190,8 @@ class SmsDoctor extends Base
               return praccomm\DoctorSMSType::PVR_CALL;
             case "BLOCKCALENDAR":
               return praccomm\DoctorSMSType::BLOCKCALENDAR;
+            case "QUOTA_USAGE":
+              return praccomm\DoctorSMSType::QUOTA_USAGE;
             default:
               throw new \InvalidArgumentException("Invalid message type");
         }

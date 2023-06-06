@@ -135,6 +135,7 @@ final class DoctorSMSType {
   const PVR_VOICEMAIL = 13;
   const PVR_CALL = 14;
   const BLOCKCALENDAR = 15;
+  const QUOTA_USAGE = 16;
   static public $__names = array(
     1 => 'BULK',
     2 => 'CANCELLATION',
@@ -151,6 +152,7 @@ final class DoctorSMSType {
     13 => 'PVR_VOICEMAIL',
     14 => 'PVR_CALL',
     15 => 'BLOCKCALENDAR',
+    16 => 'QUOTA_USAGE'
   );
 }
 
