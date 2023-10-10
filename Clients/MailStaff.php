@@ -222,8 +222,6 @@ class MailStaff extends Base
           return praccomm\StaffEmailType::SUBSCRIPTION_EXPIRY_REMINDER;
         case "SETTLEMENT_REPORT_NOTIFICATION":
           return praccomm\StaffEmailType::SETTLEMENT_REPORT_NOTIFICATION;
-        case "SETTLEMENT_REPORTS":
-          return praccomm\StaffEmailType::SETTLEMENT_REPORTS;
         default:
           throw new \InvalidArgumentException("Invalid message type");
       }
