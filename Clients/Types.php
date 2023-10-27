@@ -84,6 +84,7 @@ final class StaffEmailType {
   const PATIENT_DATA_EXPORT = 28;
   const CREDIT_USAGE_EXPORT = 29;
   const SUBSCRIPTION_EXPIRY_REMINDER=30;
+  const SETTLEMENT_REPORT_NOTIFICATION=31;
 
   static public $__names = array(
     1 => 'ACCOUNT_MAILS',
@@ -116,6 +117,7 @@ final class StaffEmailType {
     28 => 'PATIENT_DATA_EXPORT',
     29 => 'CREDIT_USAGE_EXPORT',
     30 => 'SUBSCRIPTION_EXPIRY_REMINDER',
+    31 => 'SETTLEMENT_REPORT_NOTIFICATION',
   );
 }
 
